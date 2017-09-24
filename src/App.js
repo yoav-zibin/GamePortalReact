@@ -8,7 +8,7 @@ import Footer from './components/Footer';
 class App extends Component {
   render() {
     return (
-        <div>
+        <div className='login-root'>
             <Header/>
             <Login />
             <Footer/>
