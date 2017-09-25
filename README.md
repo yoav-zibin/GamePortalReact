@@ -11,3 +11,9 @@
 
 ### After installing firebase  
 firebase init
+
+### Resources:
+1. [Adding firebase to react app](https://www.codementor.io/yurio/all-you-need-is-react-firebase-4v7g9p4kf)
+
+### TODO:
+1. for google signin : need to update isAuthenticated method in firebase.js

@@ -10,3 +10,7 @@ var config = {
 export const firebaseApp = firebase.initializeApp(config);
 export const googleProvider = new firebase.auth.GoogleAuthProvider();
 export const auth = firebaseApp.auth();
+export const db = firebaseApp.database();
+export const isAuthenticated = () => {
+  return !!auth.currentUser;
+}
