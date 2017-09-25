@@ -2,11 +2,17 @@ import React, { Component } from 'react';
 import logo from '../logo.svg';
 import '../App.css';
 import './css/Login.css';
+import {firebaseApp, auth, googleProvider} from '../firebase'
 
 export default class Login extends Component {
 
   loginWithGoogle = ()=>{
     console.log('signin with google');
+    auth.signInWithPopup(googleProvider).then(function (result) {
+    //   this.createUserIfNotExists();
+    //   this.setState({redirectToReferrer: true});
+    
+    }.bind(this));
   }
 
   render() {
