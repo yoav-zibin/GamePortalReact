@@ -4,9 +4,14 @@ import '../App.css';
 import './css/Login.css';
 
 export default class Login extends Component {
+
+  loginWithGoogle = ()=>{
+    console.log('signin with google');
+  }
+
   render() {
     return (
-        <div className="container">
+        <div className="container text-center col-md-6">
         <form className="form-signin">
           <h2 className="form-signin-heading">
             Please sign in
@@ -22,6 +27,7 @@ export default class Login extends Component {
           </div>
           <button className="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
         </form>
+        <button className="btn btn-lg btn-primary btn-block" onClick={this.loginWithGoogle}>Google signin</button>
     </div>
     );
   }
