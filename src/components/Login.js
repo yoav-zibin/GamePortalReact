@@ -4,6 +4,13 @@ import '../App.css';
 import './css/Login.css';
 import {firebaseApp, auth, googleProvider, isAuthenticated, db} from '../firebase';
 
+
+function setErrorMsg(error) {
+  return {
+    loginMessage: error
+  }
+}
+
 export default class Login extends Component {
 
     createUserIfNotExists = () => {
@@ -29,6 +36,46 @@ export default class Login extends Component {
       }
     }
 
+
+  handleSubmit = () => {
+      if (auth.currentUser) {
+        // [START signout]
+        auth.signOut();
+        // [END signout]
+      } else {
+        var email = document.getElementById('inputEmail').value;
+        var password = document.getElementById('inputPassword').value;
+        if (email.length < 4) {
+          alert('Please enter an email address.');
+          return;
+        }
+        if (password.length < 4) {
+          alert('Please enter a password.');
+          return;
+        }
+        // Sign in with email and pass.
+        // [START authwithemail]
+        auth.signInWithEmailAndPassword(email, password).catch(function(error) {
+          // Handle Errors here.
+          var errorCode = error.code;
+          var errorMessage = error.message;
+          // [START_EXCLUDE]
+          if (errorCode === 'auth/wrong-password') {
+            alert('Wrong password.');
+          } else {
+            alert(errorMessage);
+          }
+          console.log(error);
+          document.getElementById('signin').disabled = false;
+          // [END_EXCLUDE]
+        });
+        // [END authwithemail]
+      }
+      document.getElementById('signin').disabled = true;
+      this.createUserIfNotExists();
+
+  }
+
   loginWithGoogle = ()=>{
     // console.log('signin with google');
     auth.signInWithPopup(googleProvider).then(function (result) {
@@ -36,6 +83,8 @@ export default class Login extends Component {
     //   this.setState({redirectToReferrer: true});
     }.bind(this));
   }
+
+
 
   render() {
     return (
@@ -53,9 +102,11 @@ export default class Login extends Component {
               <input type="checkbox" value="remember-me"/> Remember me
             </label>
           </div>
-          <button className="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+          <button id = "signin" className="btn btn-lg btn-primary btn-block" onClick={this.handleSubmit}>Sign in</button>
+          <button className="btn btn-lg btn-primary btn-block" onClick={this.handlesignup}>Sign up</button>
+
+          <button className="btn btn-lg btn-danger btn-block" onClick={this.loginWithGoogle}>Google signin</button>
         </form>
-        <button className="btn btn-lg btn-danger btn-block" onClick={this.loginWithGoogle}>Google signin</button>
     </div>
     );
   }

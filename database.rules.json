@@ -1,11 +1,6 @@
 {
   "rules": {
     ".read": "auth != null",
-    ".write": "auth != null",
-    "images": {
-      ".indexOn": [
-        "is_board_image"
-      ]
-    }
+    ".write": "auth != null"
   }
 }
