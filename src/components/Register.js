@@ -11,7 +11,7 @@ function setErrorMsg(error) {
   }
 }
 
-export default class Login extends Component {
+export default class Register extends Component {
 
     createUserIfNotExists = () => {
       if (isAuthenticated()) {
@@ -37,28 +37,35 @@ export default class Login extends Component {
     }
 
 
-  handleSubmit = () => {
-      if (auth.currentUser) {
-        // [START signout]
-        auth.signOut();
-        // [END signout]
-      } else {
-        var email = document.getElementById('inputEmail').value;
-        var password = document.getElementById('inputPassword').value;
-        if (email.length < 4) {
-          alert('Please enter an email address.');
-          return;
-        }
-        if (password.length < 4) {
-          alert('Please enter a password.');
-          return;
-        }
-        // Sign in with email and pass.
-        // [START authwithemail]
-        auth.signInWithEmailAndPassword(email, password).then(function (result) {
+  handlesignup = () => {
+      var email = document.getElementById('inputEmail').value;
+      var password = document.getElementById('inputPassword').value;
+      if (email.length < 4) {
+        alert('Please enter an email address.');
+        return;
+      }
+      if (password.length < 4) {
+        alert('Please enter a password.');
+        return;
+      }
+      // Sign in with email and pass.
+      // [START createwithemail]
+      auth.createUserWithEmailAndPassword(email, password).then(function (result) {
           this.createUserIfNotExists();
-          document.getElementById('signin').disabled = true;
         }, function(error) {
+        // Handle Errors here.
+        var errorCode = error.code;
+        var errorMessage = error.message;
+        // [START_EXCLUDE]
+        if (errorCode == 'auth/weak-password') {
+          alert('The password is too weak.');
+        } else {
+          alert(errorMessage);
+        }
+        console.log(error);
+        // [END_EXCLUDE]
+      });
+      auth.signInWithEmailAndPassword(email, password).catch(function(error) {
           // Handle Errors here.
           var errorCode = error.code;
           var errorMessage = error.message;
@@ -69,22 +76,10 @@ export default class Login extends Component {
             alert(errorMessage);
           }
           console.log(error);
-          document.getElementById('signin').disabled = false;
           // [END_EXCLUDE]
         });
         // [END authwithemail]
-      }
-  }
-
-
-  loginWithGoogle = ()=>{
-    // console.log('signin with google');
-    auth.signInWithPopup(googleProvider).then(function (result) {
-    this.createUserIfNotExists();
-    //   this.setState({redirectToReferrer: true});
-    }.bind(this));
-  }
-
+    }
 
 
   render() {
@@ -92,20 +87,13 @@ export default class Login extends Component {
         <div className="container text-center col-md-6">
         <form className="form-signin">
           <h2 className="form-signin-heading">
-            Please sign in
+            Please sign up
           </h2>
           <label for="inputEmail" className="sr-only">Email address</label>
           <input type="email" id="inputEmail" className="form-control" placeholder="Email address" required autofocus/>
           <label for="inputPassword" className="sr-only">Password</label>
           <input type="password" id="inputPassword" className="form-control" placeholder="Password" required/>
-          <div className="checkbox">
-            <label>
-              <input type="checkbox" value="remember-me"/> Remember me
-            </label>
-          </div>
-          <button id = "signin" className="btn btn-lg btn-primary btn-block" onClick={this.handleSubmit}>Sign in</button>
-
-          <button className="btn btn-lg btn-danger btn-block" onClick={this.loginWithGoogle}>Google Signin</button>
+          <button className="btn btn-lg btn-primary btn-block" onClick={this.handlesignup}>Sign up</button>
         </form>
     </div>
     );
