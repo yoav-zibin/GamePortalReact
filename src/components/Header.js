@@ -5,6 +5,7 @@ import { NavLink as RRNavLink } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import Login from './Login';
 
+var authenticated = true;
 export default class Header extends React.Component {
 
   constructor(props) {
@@ -28,18 +29,15 @@ export default class Header extends React.Component {
           <NavbarBrand href="/">GamePortal</NavbarBrand>
           <Collapse isOpen={this.state.isOpen} navbar>
             <Nav className="ml-auto" navbar>
+              {authenticated ? (
               <NavItem>
-                <NavLink tag={Link} to="Hello" style={{}} activeClassName="active">Welcome</NavLink>
+                <NavLink tag={Link} to="#">Logout</NavLink>
               </NavItem>
+              ) : (
               <NavItem>
-                <NavLink tag={Link} to="Login" style={{color: 'Green'}} >Sign in</NavLink>
+                <NavLink tag={Link} to="Signup" activeClassName="active">Sign up</NavLink>
               </NavItem>
-              <NavItem>
-                <NavLink tag={Link} to="Signup" style={{color: 'Blue'}} activeClassName="active">Sign up</NavLink>
-              </NavItem>
-              <NavItem>
-                <NavLink href="https://github.com/yoav-zibin/GamePortalReact" style={{color: 'Red'}}>Github</NavLink>
-              </NavItem>
+              )}
             </Nav>
           </Collapse>
         </Navbar>

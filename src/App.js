@@ -8,12 +8,21 @@ import Register from './components/Register';
 import Hello from './components/Hello';
 import Main from './components/Main';
 
+let authenticated = true;
 class App extends Component {
   render() {
-    return (
+    if(authenticated)
+      return (
         <div className='login-root'>
             <Header/>
-            <Main />
+            <Login />
+            <Footer/>
+        </div>
+    )
+    else return(
+        <div className='login-root'>
+            <Header/>
+            <Hello />
             <Footer/>
         </div>
     )
