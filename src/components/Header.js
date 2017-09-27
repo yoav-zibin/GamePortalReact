@@ -4,6 +4,7 @@ import Hello from './Hello';
 import { NavLink as RRNavLink } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import Login from './Login';
+import {auth} from '../firebase';
 
 var authenticated = true;
 export default class Header extends React.Component {
@@ -21,6 +22,11 @@ export default class Header extends React.Component {
       isOpen: !this.state.isOpen
     });
   }
+
+  handleLogoutClick() {
+      auth.signOut();
+  }
+
   render() {
     return (
       <div>
@@ -31,7 +37,7 @@ export default class Header extends React.Component {
             <Nav className="ml-auto" navbar>
               {authenticated ? (
               <NavItem>
-                <NavLink tag={Link} to="#">Logout</NavLink>
+                <NavLink tag={Link} onClick={this.handleLogoutClick.bind(this)} to="#">Logout</NavLink>
               </NavItem>
               ) : (
               <NavItem>
