@@ -22,6 +22,7 @@ export const firebaseApp = firebase.initializeApp(config);
 export const googleProvider = new firebase.auth.GoogleAuthProvider();
 export const auth = firebaseApp.auth();
 export const db = firebaseApp.database();
+export const storageKey = 'GAME_BUILDER_LOCAL_STORAGE_$UID';
 export const isAuthenticated = () => {
   return !!auth.currentUser;
 }
