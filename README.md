@@ -7,7 +7,8 @@
 
 ### Tools for development:
 - npm install -g firebase-tools  
-- npm install -g create-react-app  
+- npm install -g create-react-app 
+- npm install firebaseui --save 
 
 ### After installing firebase  
 firebase init

@@ -85,7 +85,9 @@ export default class Login extends Component {
     }.bind(this));
   }
 
+  loginWithPhone = ()=>{
 
+  }
 
   render() {
     return (
@@ -106,7 +108,10 @@ export default class Login extends Component {
           <button id = "signin" className="btn btn-lg btn-primary btn-block" onClick={this.handleSubmit}>Sign in</button>
 
           <button className="btn btn-lg btn-danger btn-block" onClick={this.loginWithGoogle}>Google Signin</button>
+          <button className="btn btn-lg btn-danger btn-block" onClick={this.loginWithPhone}>Phone Signin</button>
+          <div id="firebaseui-auth-container"></div>
         </form>
+       
     </div>
     );
   }
