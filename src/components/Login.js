@@ -3,11 +3,34 @@ import logo from '../logo.svg';
 import '../App.css';
 import './css/Login.css';
 import {firebaseApp, auth, googleProvider, isAuthenticated, db} from '../firebase';
+import Hello from './Hello'
 
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link,
+  Redirect,
+  withRouter
+} from 'react-router-dom'
 
 function setErrorMsg(error) {
   return {
     loginMessage: error
+  }
+}
+
+
+
+const fakeAuth = {
+  isAuthenticated: false,
+  authenticate(cb) {
+    this.isAuthenticated = true
+    setTimeout(cb, 100) // fake async
+  },
+  signout(cb) {
+    this.isAuthenticated = false
+    setTimeout(cb, 100)
   }
 }
 
@@ -85,8 +108,12 @@ export default class Login extends Component {
     }.bind(this));
   }
 
-  loginWithPhone = ()=>{
+  state = {
+    redirectToReferrer: false
+  }
 
+  loginWithPhone = ()=>{
+      window.location.reload();
   }
 
   render() {
@@ -105,11 +132,9 @@ export default class Login extends Component {
               <input type="checkbox" value="remember-me"/> Remember me
             </label>
           </div>
-          <button id = "signin" className="btn btn-lg btn-primary btn-block" onClick={this.handleSubmit}>Sign in</button>
-
-          <button className="btn btn-lg btn-danger btn-block" onClick={this.loginWithGoogle}>Google Signin</button>
-          <button className="btn btn-lg btn-danger btn-block" onClick={this.loginWithPhone}>Phone Signin</button>
-          <div id="firebaseui-auth-container"></div>
+          <button id = "signin" className="btn btn-lg btn-primary btn-block" onClick={this.handleSubmit}>Log in with Email</button>
+          <button className="btn btn-lg btn-danger btn-block" onClick={this.loginWithGoogle}>Log in with Google</button>
+          <button className="btn btn-lg btn-danger btn-block" onClick={this.loginWithPhone} > {<Link to='/PhoneAuth' style={{decoration: 'none', color: 'white'}}>Log in with Phone</Link>}</button>
         </form>
        
     </div>

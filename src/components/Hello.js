@@ -6,8 +6,6 @@ import {firebaseApp, auth, googleProvider, isAuthenticated, db} from '../firebas
 
 
 export default class Hello extends Component {
-
-
   render() {
     return (
         <div className="container text-center col-md-6">

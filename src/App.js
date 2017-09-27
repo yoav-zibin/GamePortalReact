@@ -6,13 +6,14 @@ import Header from './components/Header';
 import Footer from './components/Footer';
 import Register from './components/Register';
 import Hello from './components/Hello';
+import Main from './components/Main';
 
 class App extends Component {
   render() {
     return (
         <div className='login-root'>
             <Header/>
-            <Login/>
+            <Main />
             <Footer/>
         </div>
     )
