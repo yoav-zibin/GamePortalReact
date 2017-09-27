@@ -7,7 +7,7 @@ import Footer from './components/Footer';
 import Register from './components/Register';
 import Hello from './components/Hello';
 
-class App extends Component {
+class signin extends Component {
   render() {
     return (
         <div className='login-root'>

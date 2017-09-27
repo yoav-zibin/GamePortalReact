@@ -12,7 +12,7 @@ class App extends Component {
     return (
         <div className='login-root'>
             <Header/>
-            <Hello/>
+            <Login/>
             <Footer/>
         </div>
     )
