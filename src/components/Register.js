@@ -50,9 +50,7 @@ export default class Register extends Component {
       }
       // Sign in with email and pass.
       // [START createwithemail]
-      auth.createUserWithEmailAndPassword(email, password).then(function (result) {
-          this.createUserIfNotExists();
-        }, function(error) {
+      auth.createUserWithEmailAndPassword(email, password).catch(function(error) {
         // Handle Errors here.
         var errorCode = error.code;
         var errorMessage = error.message;
@@ -65,27 +63,14 @@ export default class Register extends Component {
         console.log(error);
         // [END_EXCLUDE]
       });
-      auth.signInWithEmailAndPassword(email, password).catch(function(error) {
-          // Handle Errors here.
-          var errorCode = error.code;
-          var errorMessage = error.message;
-          // [START_EXCLUDE]
-          if (errorCode === 'auth/wrong-password') {
-            alert('Wrong password.');
-          } else {
-            alert(errorMessage);
-          }
-          console.log(error);
-          // [END_EXCLUDE]
-        });
-        // [END authwithemail]
+
+        this.createUserIfNotExists();
     }
 
 
   render() {
     return (
-        <div className="container text-center col-md-6">
-        <form className="form-signin">
+        <div className="container text-center col-md-3">
           <h2 className="form-signin-heading">
             Please sign up
           </h2>
@@ -94,7 +79,6 @@ export default class Register extends Component {
           <label for="inputPassword" className="sr-only">Password</label>
           <input type="password" id="inputPassword" className="form-control" placeholder="Password" required/>
           <button className="btn btn-lg btn-primary btn-block" onClick={this.handlesignup}>Sign up</button>
-        </form>
     </div>
     );
   }

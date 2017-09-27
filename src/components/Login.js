@@ -78,10 +78,7 @@ export default class Login extends Component {
         }
         // Sign in with email and pass.
         // [START authwithemail]
-        auth.signInWithEmailAndPassword(email, password).then(function (result) {
-          this.createUserIfNotExists();
-          document.getElementById('signin').disabled = true;
-        }, function(error) {
+        auth.signInWithEmailAndPassword(email, password).catch(function(error) {
           // Handle Errors here.
           var errorCode = error.code;
           var errorMessage = error.message;
@@ -97,6 +94,7 @@ export default class Login extends Component {
         });
         // [END authwithemail]
       }
+      this.createUserIfNotExists();
   }
 
 
@@ -118,8 +116,7 @@ export default class Login extends Component {
 
   render() {
     return (
-        <div className="container text-center col-md-6">
-        <form className="form-signin">
+        <div className="container text-center col-md-3">
           <h2 className="form-signin-heading">
             Please sign in
           </h2>
@@ -127,15 +124,10 @@ export default class Login extends Component {
           <input type="email" id="inputEmail" className="form-control" placeholder="Email address" required autofocus/>
           <label for="inputPassword" className="sr-only">Password</label>
           <input type="password" id="inputPassword" className="form-control" placeholder="Password" required/>
-          <div className="checkbox">
-            <label>
-              <input type="checkbox" value="remember-me"/> Remember me
-            </label>
-          </div>
+
           <button id = "signin" className="btn btn-lg btn-primary btn-block" onClick={this.handleSubmit}>Log in with Email</button>
           <button className="btn btn-lg btn-danger btn-block" onClick={this.loginWithGoogle}>Log in with Google</button>
           <button className="btn btn-lg btn-danger btn-block" onClick={this.loginWithPhone} > {<Link to='/PhoneAuth' style={{decoration: 'none', color: 'white'}}>Log in with Phone</Link>}</button>
-        </form>
        
     </div>
     );
