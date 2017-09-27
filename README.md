@@ -9,6 +9,8 @@
 - npm install -g firebase-tools  
 - npm install -g create-react-app 
 - npm install firebaseui --save 
+- npm install react-router-dom
+
 
 ### After installing firebase  
 firebase init
