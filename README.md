@@ -9,12 +9,15 @@
 - npm install -g firebase-tools  
 - npm install -g create-react-app 
 - npm install firebaseui --save 
+- npm install react-router-dom
+
 
 ### After installing firebase  
 firebase init
 
 ### Resources:
 1. [Adding firebase to react app](https://www.codementor.io/yurio/all-you-need-is-react-firebase-4v7g9p4kf)
+2. [A Simple React Router v4 Tutorial](https://medium.com/@pshrmn/a-simple-react-router-v4-tutorial-7f23ff27adf)
 
 ### TODO:
 1. for google signin : need to update isAuthenticated method in firebase.js
