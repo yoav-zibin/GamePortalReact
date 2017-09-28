@@ -28,7 +28,7 @@ class App extends Component {
   render() {
         if (this.state.uid != -1) {
 
-            return (<div className='login-root'>
+            return (<div className='root'>
                 <Header/>
                 {this.state.uid ? (<Hello />) : (<Main />)}
                 <Footer/>

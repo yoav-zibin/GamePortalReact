@@ -1,3 +1,23 @@
+.signin-root{
+    position: absolute;
+    top: 25%;
+    left: 25%;
+}
+.signin-container{
+    border-right: 1px solid black;
+    padding: 15px;
+}
+.login-options-container{
+    padding: 15px;
+}
+.form-signin-heading{
+    text-align: center;
+}
+.login-container{
+    margin: 15px;
+    display: flex;
+    justify-content: center space-around;
+}
 .form-signin {
   max-width: 330px;
   padding: 15px;

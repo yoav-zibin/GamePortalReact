@@ -11,14 +11,14 @@ import Register from "./Register";
 // with /roster or /schedule. The / route will only match
 // when the pathname is exactly the string "/"
 const Main = () => (
-  <main>
+  <div>
     <Switch>
       <Route exact path="/Hello" component={Hello} />
       <Route path="/PhoneAuth" component={PhoneAuth} />
       <Route exact path="/" component={Login} />
       <Route path="/Register" component={Register} />
     </Switch>
-  </main>
+</div>
 );
 
 export default Main;
