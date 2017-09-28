@@ -37,7 +37,7 @@ export default class Header extends React.Component {
             <Nav className="ml-auto" navbar>
               {authenticated ? (
               <NavItem>
-                <NavLink tag={Link} onClick={this.handleLogoutClick.bind(this)} to="#">Logout</NavLink>
+                <NavLink tag={Link} onClick={this.handleLogoutClick.bind(this)} to="Login">Logout</NavLink>
               </NavItem>
               ) : (
               <NavItem>

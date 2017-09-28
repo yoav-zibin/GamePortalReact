@@ -4,6 +4,7 @@ import '../App.css';
 import './css/Login.css';
 import {firebaseApp, auth, googleProvider, isAuthenticated, db} from '../firebase';
 import Hello from './Hello'
+import PhoneAuth from './PhoneAuth'
 
 import {
   BrowserRouter as Router,
@@ -124,11 +125,9 @@ export default class Login extends Component {
           <input type="email" id="inputEmail" className="form-control" placeholder="Email address" required autofocus/>
           <label for="inputPassword" className="sr-only">Password</label>
           <input type="password" id="inputPassword" className="form-control" placeholder="Password" required/>
-
-          <button id = "signin" className="btn btn-lg btn-primary btn-block" onClick={this.handleSubmit}>Log in with Email</button>
-          <button className="btn btn-lg btn-danger btn-block" onClick={this.loginWithGoogle}>Log in with Google</button>
+          <button id = "signin" className="btn btn-lg btn-primary btn-block" onClick={this.handleSubmit} > {<Link to='/' style={{decoration: 'none', color: 'white'}}>Log in with Email</Link>}</button>
+          <button className="btn btn-lg btn-danger btn-block" onClick={this.loginWithGoogle} > {<Link to='/' style={{decoration: 'none', color: 'white'}}>Log in with Google</Link>}</button>
           <button className="btn btn-lg btn-danger btn-block" onClick={this.loginWithPhone} > {<Link to='/PhoneAuth' style={{decoration: 'none', color: 'white'}}>Log in with Phone</Link>}</button>
-       
     </div>
     );
   }
