@@ -71,6 +71,7 @@ export default class Register extends Component {
   render() {
     return (
         <div className="container text-center col-md-3">
+          <br />
           <h2 className="form-signin-heading">
             Please sign up
           </h2>
@@ -78,6 +79,7 @@ export default class Register extends Component {
           <input type="email" id="inputEmail" className="form-control" placeholder="Email address" required autofocus/>
           <label for="inputPassword" className="sr-only">Password</label>
           <input type="password" id="inputPassword" className="form-control" placeholder="Password" required/>
+          <br />
           <button className="btn btn-lg btn-primary btn-block" onClick={this.handlesignup}>Sign up</button>
     </div>
     );

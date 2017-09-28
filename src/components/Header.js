@@ -5,9 +5,27 @@ import { NavLink as RRNavLink } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import Login from './Login';
 import {auth} from '../firebase';
+import Register from './Register';
+import { storageKey } from '../firebase';
 
 var authenticated = true;
+
 export default class Header extends React.Component {
+    state = {
+      uid: null
+    };
+
+    componentDidMount() {
+      auth.onAuthStateChanged(user => {
+        if (user) {
+          window.localStorage.setItem(storageKey, user.uid);
+          this.setState({uid: user.uid});
+        } else {
+          window.localStorage.removeItem(storageKey);
+          this.setState({uid: null});
+        }
+      });
+    }
 
   constructor(props) {
     super(props);
@@ -24,7 +42,12 @@ export default class Header extends React.Component {
   }
 
   handleLogoutClick() {
+      authenticated = false;
       auth.signOut();
+  }
+
+  handleSignUpClick() {
+      authenticated = true;
   }
 
   render() {
@@ -35,13 +58,13 @@ export default class Header extends React.Component {
           <NavbarBrand href="/">GamePortal</NavbarBrand>
           <Collapse isOpen={this.state.isOpen} navbar>
             <Nav className="ml-auto" navbar>
-              {authenticated ? (
+              {this.state.uid ? (
               <NavItem>
-                <NavLink tag={Link} onClick={this.handleLogoutClick.bind(this)} to="Login">Logout</NavLink>
+                <NavLink tag={Link} onClick={this.handleLogoutClick.bind(this)} to="/">Log out</NavLink>
               </NavItem>
               ) : (
               <NavItem>
-                <NavLink tag={Link} to="Signup" activeClassName="active">Sign up</NavLink>
+                <NavLink tag={Link} onClick={this.handleSignUpClick.bind(this)} to="Register" activeClassName="active">Sign up</NavLink>
               </NavItem>
               )}
             </Nav>

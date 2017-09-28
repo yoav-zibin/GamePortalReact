@@ -5,7 +5,7 @@ import './css/Login.css';
 import {firebaseApp, auth, googleProvider, isAuthenticated, db} from '../firebase';
 import Hello from './Hello'
 import PhoneAuth from './PhoneAuth'
-
+import Main from './Main'
 import {
   BrowserRouter as Router,
   Switch,

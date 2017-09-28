@@ -1,4 +1,5 @@
 import firebase from 'firebase'
+
 var config = {
   apiKey: "AIzaSyDA5tCzxNzykHgaSv1640GanShQze3UK-M",
   authDomain: "universalgamemaker.firebaseapp.com",
@@ -39,7 +40,7 @@ ui.start('#firebaseui-auth-container', {
       recaptchaParameters: {
         type: 'image', // 'audio'
         size: 'normal', // 'invisible' or 'compact'
-        badge: 'inline' //' bottomright' or 'inline' applies to invisible.
+        badge: 'bottomright' //' bottomright' or 'inline' applies to invisible.
       },
       defaultCountry: 'US' // Set default country to the United Kingdom (+44).
     }

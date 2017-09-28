@@ -13,10 +13,10 @@ import Register from "./Register";
 const Main = () => (
   <main>
     <Switch>
-      <Route path="/Hello" component={Hello} />
+      <Route exact path="/Hello" component={Hello} />
       <Route path="/PhoneAuth" component={PhoneAuth} />
-      <Route path="/Login" component={Login} />
-      <Route path="/Signup" component={Register} />
+      <Route exact path="/" component={Login} />
+      <Route path="/Register" component={Register} />
     </Switch>
   </main>
 );
