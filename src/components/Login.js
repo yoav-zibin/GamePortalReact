@@ -127,9 +127,10 @@ export default class Login extends Component {
           <label for="inputPassword" className="sr-only">Password</label>
           <input type="password" id="inputPassword" className="form-control" placeholder="Password" required/>
           <br />
-          <button id = "signin" className="btn btn-lg btn-primary btn-block" onClick={this.handleSubmit} > {<Link to='/' style={{decoration: 'none', color: 'white'}}>Log in with Email</Link>}</button>
-          <button className="btn btn-lg btn-primary btn-block" onClick={this.loginWithGoogle} > {<Link to='/' style={{decoration: 'none', color: 'white'}}>Log in with Google</Link>}</button>
+          <button id = "signin" className="btn btn-lg btn-primary btn-block" onClick={this.handleSubmit} >Log in with Email</button>
+          <button className="btn btn-lg btn-primary btn-block" onClick={this.loginWithGoogle} >Log in with Google</button>
           <button className="btn btn-lg btn-primary btn-block" onClick={this.loginWithPhone} > {<Link to='/PhoneAuth' style={{decoration: 'none', color: 'white'}}>Log in with Phone</Link>}</button>
+          <button className="btn btn-lg btn-primary btn-block" onClick={this.loginAnonymous}> Anonymous Login</button>
     </div>
     );
   }
