@@ -1,6 +1,10 @@
 html, body, #root, .root {
     height: 100%;
 }
+div .root{
+    background: url('components/res/pexels-photo-51055.jpg');
+    background-size: cover;
+}
 body {
   margin: 0;
   padding: 0;

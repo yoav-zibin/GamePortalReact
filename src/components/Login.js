@@ -119,7 +119,7 @@ export default class Login extends Component {
     return (
         <div className="container col-md-6 col-xs-12 signin-root">
             <h2 className="form-signin-heading">
-                Sign in
+                Sign In
             </h2>
             <div className="login-container">
                 <div className="signin-container col-md-6 col-xs-12">

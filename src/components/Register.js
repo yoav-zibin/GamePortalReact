@@ -80,7 +80,7 @@ export default class Register extends Component {
           <label for="inputPassword" className="sr-only">Password</label>
           <input type="password" id="inputPassword" className="form-control" placeholder="Password" required/>
           <br />
-          <button className="btn btn-lg btn-primary btn-block" onClick={this.handlesignup}>Sign up</button>
+          <button className="btn btn-md btn-primary btn-block" onClick={this.handlesignup}>Sign up</button>
     </div>
     );
   }
