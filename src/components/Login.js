@@ -118,16 +118,18 @@ export default class Login extends Component {
   render() {
     return (
         <div className="container text-center col-md-3">
+        <br />
           <h2 className="form-signin-heading">
-            Please sign in
+          Please Log in
           </h2>
           <label for="inputEmail" className="sr-only">Email address</label>
           <input type="email" id="inputEmail" className="form-control" placeholder="Email address" required autofocus/>
           <label for="inputPassword" className="sr-only">Password</label>
           <input type="password" id="inputPassword" className="form-control" placeholder="Password" required/>
+          <br />
           <button id = "signin" className="btn btn-lg btn-primary btn-block" onClick={this.handleSubmit} > {<Link to='/' style={{decoration: 'none', color: 'white'}}>Log in with Email</Link>}</button>
-          <button className="btn btn-lg btn-danger btn-block" onClick={this.loginWithGoogle} > {<Link to='/' style={{decoration: 'none', color: 'white'}}>Log in with Google</Link>}</button>
-          <button className="btn btn-lg btn-danger btn-block" onClick={this.loginWithPhone} > {<Link to='/PhoneAuth' style={{decoration: 'none', color: 'white'}}>Log in with Phone</Link>}</button>
+          <button className="btn btn-lg btn-primary btn-block" onClick={this.loginWithGoogle} > {<Link to='/' style={{decoration: 'none', color: 'white'}}>Log in with Google</Link>}</button>
+          <button className="btn btn-lg btn-primary btn-block" onClick={this.loginWithPhone} > {<Link to='/PhoneAuth' style={{decoration: 'none', color: 'white'}}>Log in with Phone</Link>}</button>
     </div>
     );
   }
