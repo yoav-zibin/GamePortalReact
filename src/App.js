@@ -10,7 +10,7 @@ import Main from './components/Main';
 
 class App extends Component {
     state = {
-      uid: null
+      uid: -1
     };
 
     componentDidMount() {
@@ -26,14 +26,17 @@ class App extends Component {
     }
 
   render() {
-      return (
-        <div className='login-root'>
-            <Header/>
-            {this.state.uid ? (<Hello />) : (<Main />)}
-            <Footer/>
-        </div>
-      )
-    }
+        if (this.state.uid != -1) {
+
+            return (<div className='login-root'>
+                <Header/>
+                {this.state.uid ? (<Hello />) : (<Main />)}
+                <Footer/>
+            </div>)
+        } else {
+            return (<div></div>)
+        }
+  }
 }
 
 export default App;
