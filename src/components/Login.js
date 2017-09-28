@@ -107,6 +107,18 @@ export default class Login extends Component {
     }.bind(this));
   }
 
+  // If the user logs in successfully using this API,
+  // onAuthStateChanged will be called which is registered in App.js
+  // User_id for anonymous user will be received there.
+  loginAnonymous(){
+      auth.signInAnonymously().catch(function(error) {
+      var errorCode = error.code;
+      var errorMessage = error.message;
+      console.error(errorCode, errorMessage);
+      });
+
+  }
+
   state = {
     redirectToReferrer: false
   }
