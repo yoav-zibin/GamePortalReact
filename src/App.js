@@ -29,7 +29,7 @@ class App extends Component {
       return (
         <div className='login-root'>
             <Header/>
-            {this.state.uid ? (<Hello />) : (<Main />)}
+            {this.state.uid ? (<Hello />) : (<Login />)}
             <Footer/>
         </div>
       )
