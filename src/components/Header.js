@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 import Login from './Login';
 import {auth} from '../firebase';
 import Register from './Register';
-import { storageKey } from '../firebase';
+import { storageKey, hidePresence } from '../firebase';
 
 var authenticated = true;
 
@@ -43,6 +43,8 @@ export default class Header extends React.Component {
 
   handleLogoutClick() {
       authenticated = false;
+      // hidePresence has to be called before auth.signOut()
+      hidePresence();
       auth.signOut();
   }
 
