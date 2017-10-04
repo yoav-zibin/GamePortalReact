@@ -46,3 +46,30 @@ ui.start('#firebaseui-auth-container', {
     }
   ]
 });
+
+export const addPresenceListeners = () => {
+    if(isAuthenticated()){
+        const uid = auth.currentUser.uid;
+        // stores the timestamp of my last disconnect (the last time I was seen online)
+        var lastOnlineRef = firebaseApp.database().ref('users/'+uid+'/lastonline');
+        var myConnectionsRef = firebaseApp.database().ref('users/'+uid+'/connections');
+
+        var connectedRef = firebaseApp.database().ref('.info/connected');
+        connectedRef.on('value', function(snapshot) {
+          if (snapshot.val() === true) {
+            // We're connected (or reconnected)! Do anything here that should happen only if online (or on reconnect)
+            var con = myConnectionsRef.push();
+
+            // When I disconnect, remove this device
+            con.onDisconnect().remove();
+
+            // Add this device to my connections list
+            // this value could contain info about the device or a timestamp too
+            con.set(true);
+
+            // When I disconnect, update the last time I was seen online
+            lastOnlineRef.onDisconnect().set(firebase.database.ServerValue.TIMESTAMP);
+          }
+        });
+    }
+}

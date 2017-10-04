@@ -21,8 +21,6 @@ function setErrorMsg(error) {
   }
 }
 
-
-
 const fakeAuth = {
   isAuthenticated: false,
   authenticate(cb) {

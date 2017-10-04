@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import './App.css';
-import { storageKey, auth } from './firebase';
+import { storageKey, auth, addPresenceListeners } from './firebase';
 import Login from './components/Login';
 import Header from './components/Header';
 import Footer from './components/Footer';
@@ -15,6 +15,10 @@ class App extends Component {
 
     componentDidMount() {
       auth.onAuthStateChanged(user => {
+        // adding presence listeners here because when the app initially loads the
+        // isAuthenticated function returns false, and after some time only
+        // it stats returning true when the state of the auth changes
+        addPresenceListeners();
         if (user) {
           window.localStorage.setItem(storageKey, user.uid);
           this.setState({uid: user.uid});
