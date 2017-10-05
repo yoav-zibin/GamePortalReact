@@ -7,8 +7,8 @@
 
 ### Tools for development:
 - npm install -g firebase-tools  
-- npm install -g create-react-app 
-- npm install firebaseui --save 
+- npm install -g create-react-app
+- npm install firebaseui --save
 - npm install react-router-dom
 - npm install --save react-sidenav
 
@@ -21,3 +21,4 @@ firebase init
 
 ### TODO:
 1. for google signin : need to update isAuthenticated method in firebase.js
+2. Remove anonymous user id from database on logoff or disconnect.

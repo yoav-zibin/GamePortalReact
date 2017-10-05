@@ -27,12 +27,13 @@ export default class Hello extends Component {
             if (snapshot.child(key + '/isConnected').val() == true) {
                 if (snapshot.hasChild(key + '/privateFields/email'))
                     username = snapshot.child(key + '/privateFields/email').val();
-                else
+                else if(snapshot.hasChild(key + '/privateFields/phone_number'))
                     username = snapshot.child(key + '/privateFields/phone_number').val();
-
-                list.push({
-                  user: username.toString(),
-                });
+                if(username != null){
+                    list.push({
+                      user: username.toString(),
+                    });
+                }
               }
           }
           updateUsers(list);
@@ -49,12 +50,12 @@ export default class Hello extends Component {
         );
 
     return (
-    <div style={{background: '#2c3e50', color: '#FFF', width: 200}}> 
-        <SideNav>       
+    <div style={{background: '#2c3e50', color: '#FFF', width: 200}}>
+        <SideNav>
           <Nav>
             <NavText>
-            Online Users 
-            </NavText> 
+            Online Users
+            </NavText>
             {content}
           </Nav>
         </SideNav>
