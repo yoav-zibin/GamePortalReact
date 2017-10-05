@@ -16,12 +16,12 @@ export default class Hello extends Component {
 
     componentDidMount(){
         var usereference = firebaseApp.database().ref('users');
-        var list = [];
         var updateUsers = (users) =>{
             this.setState({content : users});
         }
         usereference.on('value', function(snapshot) {
         var current_users = snapshot.val();
+        var list = [];
         for (var key in current_users){
             var username;
             if (snapshot.child(key + '/isConnected').val() == true) {
