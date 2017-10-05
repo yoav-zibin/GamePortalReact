@@ -40,3 +40,17 @@ firebase init
 ```
 4. Deploy the site by running npm run deploy  
 `npm run deploy`
+5. The app can be viewed [here](https://yoav-zibin.github.io/GamePortalReact/)
+
+### Steps to host on Surge:
+- As react router has many issues with gh-pages we'll be using surge to host our app.
+1. Install surge globally.   
+`npm install -g surge`
+2. Prepare code for deployment.   
+`npm run build`
+3. Run the surge command in your project’s root:   
+`surge`
+4. If this is your first time running surge you'll be prompted to create an account. Add an email and password, then hit enter.
+5. If your project path is path/to/my-project, edit this to path/to/my-project/build. Once you’ve made this change, press enter to confirm.
+6. Surge will suggest a random domain to use. You can delete it and add your own domain if you wish. It just needs to have the .surge.sh extension at the end.
+7. The app can be viewed [here](http://gameportal.surge.sh/).
