@@ -22,3 +22,21 @@ firebase init
 ### TODO:
 1. for google signin : need to update isAuthenticated method in firebase.js
 2. Remove anonymous user id from database on logoff or disconnect.
+
+### Steps to host on gh-pages:
+1. Open your package.json and add a homepage field:
+```
+  "homepage": "https://myusername.github.io/my-app",
+```
+2. `npm install --save gh-pages`
+3. Add the following scripts in your package.json:
+```
+"scripts": {
++   "predeploy": "npm run build",
++   "deploy": "gh-pages -d build",
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+}
+```
+4. Deploy the site by running npm run deploy  
+`npm run deploy`

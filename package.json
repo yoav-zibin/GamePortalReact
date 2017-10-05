@@ -2,11 +2,13 @@
   "name": "game-portal",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://yoav-zibin.github.io/GamePortalReact/",
   "dependencies": {
     "bootstrap": "^4.0.0-alpha.6",
     "create-react-app": "^1.4.1",
     "firebase": "^4.4.0",
     "firebaseui": "^2.3.0",
+    "gh-pages": "^1.0.0",
     "react": "^15.6.2",
     "react-addons-css-transition-group": "^15.6.0",
     "react-addons-transition-group": "^15.6.0",
@@ -23,6 +25,8 @@
     "redux-thunk": "^2.2.0"
   },
   "scripts": {
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
