@@ -34,6 +34,7 @@ var connectedRef = null;
 var myConnectionsRef = null;
 var lastOnlineRef = null;
 var connection = null;
+var hidePresenceIntentional = false;
 
 ui.start('#firebaseui-auth-container', {
   signInSuccessUrl: 'http://localhost:3000/',
@@ -70,6 +71,13 @@ export const addPresenceListeners = () => {
             // Add this device to my connections list
             // this value could contain info about the device or a timestamp too
             myConnectionsRef.set(true);
+            // Attaching a listener so that whenever value is changed to false and if a user
+            // is still logged in from some other device, it will again update its value to true
+            myConnectionsRef.on('value', function(snapshot) {
+                if(hidePresenceIntentional === false && isAuthenticated()){
+                    myConnectionsRef.set(true);
+                }
+            });
 
             // When I disconnect, update the last time I was seen online
             lastOnlineRef.onDisconnect().set(firebase.database.ServerValue.TIMESTAMP);
@@ -79,8 +87,14 @@ export const addPresenceListeners = () => {
 }
 
 export const hidePresence = () => {
+    hidePresenceIntentional = true;
     if(myConnectionsRef)
         myConnectionsRef.set(false);
     if(lastOnlineRef)
         lastOnlineRef.set(firebase.database.ServerValue.TIMESTAMP);
+}
+
+export const signOut = () =>{
+    auth.signOut();
+    hidePresenceIntentional = false;
 }

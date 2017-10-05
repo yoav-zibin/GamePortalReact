@@ -4,7 +4,7 @@ import Hello from './Hello';
 import { NavLink as RRNavLink } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import Login from './Login';
-import {auth} from '../firebase';
+import {auth, signOut} from '../firebase';
 import Register from './Register';
 import { storageKey, hidePresence } from '../firebase';
 
@@ -45,7 +45,7 @@ export default class Header extends React.Component {
       authenticated = false;
       // hidePresence has to be called before auth.signOut()
       hidePresence();
-      auth.signOut();
+      signOut();
   }
 
   handleSignUpClick() {
