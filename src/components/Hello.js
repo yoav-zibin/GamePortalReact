@@ -4,7 +4,6 @@ import '../App.css';
 import firebase from 'firebase';
 import './css/Login.css';
 import {firebaseApp, auth, googleProvider, isAuthenticated, db} from '../firebase';
-import UserList from './UserList'
 export default class Hello extends Component {
 
     constructor(){
@@ -17,7 +16,7 @@ export default class Hello extends Component {
         var list = [];
         var updateUsers = (users) =>{
             console.log(users);
-            this.setState({content : [{user:1, online:'yes'}]});
+            this.setState({content : users});
         }
         usereference.on('value', function(snapshot) {
         var current_users = snapshot.val();
