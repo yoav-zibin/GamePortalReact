@@ -4,6 +4,9 @@ import '../App.css';
 import firebase from 'firebase';
 import './css/Login.css';
 import {firebaseApp, auth, googleProvider, isAuthenticated, db} from '../firebase';
+import SideNav, { Nav, NavIcon, NavText} from 'react-sidenav';
+
+
 export default class Hello extends Component {
 
     constructor(){
@@ -15,26 +18,20 @@ export default class Hello extends Component {
         var usereference = firebaseApp.database().ref('users');
         var list = [];
         var updateUsers = (users) =>{
-            console.log(users);
             this.setState({content : users});
         }
         usereference.on('value', function(snapshot) {
         var current_users = snapshot.val();
         for (var key in current_users){
-            var is_online = "Offline";
             var username;
-            if (snapshot.hasChild(key + '/privateFields')) {
-                if (snapshot.hasChild(key + '/connections'))
-                    is_online = "Online";
+            if (snapshot.child(key + '/isConnected').val() == true) {
                 if (snapshot.hasChild(key + '/privateFields/email'))
                     username = snapshot.child(key + '/privateFields/email').val();
                 else
                     username = snapshot.child(key + '/privateFields/phone_number').val();
 
                 list.push({
-                  key : key,
-                  user: username,
-                  online: is_online
+                  user: username.toString(),
                 });
               }
           }
@@ -46,23 +43,23 @@ export default class Hello extends Component {
   render() {
 
         var content = this.state.content.map((users) =>
-        <div>
-          <h3>{users.user}</h3>
-          <p>{users.online}</p>
-        </div>
+          <Nav>
+          <NavText>{users.user}</NavText>
+          </Nav>
         );
 
-        console.log(content);
-
     return (
-        <div className="container text-center col-md-6">
-        <form className="form-signin">
-          <h2 className="form-signin-heading">
-            Welcome!
-          </h2>
-          {content}
-          </form>
+    <div style={{background: '#2c3e50', color: '#FFF', width: 200}}> 
+        <SideNav>       
+          <Nav>
+            <NavText>
+            Online Users 
+            </NavText> 
+            {content}
+          </Nav>
+        </SideNav>
     </div>
+
     );
   }
 }
