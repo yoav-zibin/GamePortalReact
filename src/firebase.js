@@ -56,20 +56,20 @@ export const addPresenceListeners = () => {
         const uid = auth.currentUser.uid;
         // stores the timestamp of my last disconnect (the last time I was seen online)
         lastOnlineRef = firebaseApp.database().ref('users/'+uid+'/lastonline');
-        myConnectionsRef = firebaseApp.database().ref('users/'+uid+'/connections');
+        myConnectionsRef = firebaseApp.database().ref('users/'+uid+'/isConnected');
 
         connectedRef = firebaseApp.database().ref('.info/connected');
         connectedRef.on('value', function(snapshot) {
           if (snapshot.val() === true) {
             // We're connected (or reconnected)! Do anything here that should happen only if online (or on reconnect)
-            connection = myConnectionsRef.push();
+            myConnectionsRef.set(true);
 
             // When I disconnect, remove this device
-            connection.onDisconnect().remove();
+            myConnectionsRef.onDisconnect().set(false);
 
             // Add this device to my connections list
             // this value could contain info about the device or a timestamp too
-            connection.set(true);
+            myConnectionsRef.set(true);
 
             // When I disconnect, update the last time I was seen online
             lastOnlineRef.onDisconnect().set(firebase.database.ServerValue.TIMESTAMP);
@@ -79,8 +79,8 @@ export const addPresenceListeners = () => {
 }
 
 export const hidePresence = () => {
-    if(connection)
-        connection.remove();
+    if(myConnectionsRef)
+        myConnectionsRef.set(false);
     if(lastOnlineRef)
         lastOnlineRef.set(firebase.database.ServerValue.TIMESTAMP);
 }
