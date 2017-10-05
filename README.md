@@ -10,7 +10,7 @@
 - npm install -g create-react-app 
 - npm install firebaseui --save 
 - npm install react-router-dom
-
+- npm install --save react-sidenav
 
 ### After installing firebase  
 firebase init
