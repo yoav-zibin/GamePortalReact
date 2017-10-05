@@ -7,10 +7,18 @@ import {firebaseApp, auth, googleProvider, isAuthenticated, db} from '../firebas
 import UserList from './UserList'
 export default class Hello extends Component {
 
+    constructor(){
+        super();
+        this.state = {content : []};
+    }
 
-  render() {
+    componentDidMount(){
         var usereference = firebaseApp.database().ref('users');
         var list = [];
+        var updateUsers = (users) =>{
+            console.log(users);
+            this.setState({content : [{user:1, online:'yes'}]});
+        }
         usereference.on('value', function(snapshot) {
         var current_users = snapshot.val();
         for (var key in current_users){
@@ -28,19 +36,23 @@ export default class Hello extends Component {
                   key : key,
                   user: username,
                   online: is_online
-                }); 
+                });
               }
           }
+          updateUsers(list);
         });
+    }
 
-        var content = list.map((users) =>
+
+  render() {
+
+        var content = this.state.content.map((users) =>
         <div>
           <h3>{users.user}</h3>
           <p>{users.online}</p>
         </div>
         );
 
-        console.log(list);
         console.log(content);
 
     return (
