@@ -86,6 +86,15 @@ export const addPresenceListeners = () => {
     }
 }
 
+export const addToRecentlyConnected = () => {
+    var recentlyConnectedRef = db.ref('recentlyConnected');
+    var userInfo = {
+        uid: auth.currentUser.uid,
+        timestamp: firebase.database.ServerValue.TIMESTAMP
+    };
+    recentlyConnectedRef.push(userInfo);
+}
+
 export const hidePresence = () => {
     hidePresenceIntentional = true;
     if(myConnectionsRef)

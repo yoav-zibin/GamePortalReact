@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import './App.css';
-import { storageKey, auth, addPresenceListeners } from './firebase';
+import { storageKey, auth, addPresenceListeners, addToRecentlyConnected } from './firebase';
 import Login from './components/Login';
 import Header from './components/Header';
 import Footer from './components/Footer';
@@ -22,6 +22,7 @@ class App extends Component {
           window.localStorage.setItem(storageKey, user.uid);
           this.setState({uid: user.uid});
           addPresenceListeners();
+          addToRecentlyConnected()
         } else {
           window.localStorage.removeItem(storageKey);
           this.setState({uid: null});

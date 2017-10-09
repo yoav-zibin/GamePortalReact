@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import logo from '../logo.svg';
 import '../App.css';
 import firebase from 'firebase';
 import './css/Login.css';
@@ -15,7 +14,7 @@ export default class Hello extends Component {
     }
 
     componentDidMount(){
-        var usereference = firebaseApp.database().ref('users');
+        var usereference = firebaseApp.database().ref('recentlyConnected');
         var updateUsers = (users) =>{
             this.setState({content : users});
         }
@@ -23,20 +22,16 @@ export default class Hello extends Component {
         var current_users = snapshot.val();
         var list = [];
         for (var key in current_users){
-            var username;
-            if (snapshot.child(key + '/isConnected').val() == true) {
-                if (snapshot.hasChild(key + '/privateFields/email'))
-                    username = snapshot.child(key + '/privateFields/email').val();
-                else if(snapshot.hasChild(key + '/privateFields/phone_number'))
-                    username = snapshot.child(key + '/privateFields/phone_number').val();
-                if(username != null){
-                    list.push({
-                      user: username.toString(),
-                    });
-                }
-              }
+            var uid = snapshot.child(key + '/uid').val();
+            var usernameRef = db.ref('users/'+uid+'/publicFields/displayName')
+            usernameRef.once('value').then(function(snapshot) {
+                var username = snapshot.val();
+                list.push({
+                  user: username.toString(),
+                });
+                updateUsers(list);
+            });;
           }
-          updateUsers(list);
         });
     }
 
@@ -50,11 +45,11 @@ export default class Hello extends Component {
         );
 
     return (
-    <div style={{background: '#2c3e50', color: '#FFF', width: 200}}>
+    <div style={{background: '#2c3e50', color: '#FFF', width: 300}}>
         <SideNav>
           <Nav>
             <NavText>
-            Online Users
+            Recently Connected
             </NavText>
             {content}
           </Nav>
