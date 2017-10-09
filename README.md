@@ -23,7 +23,6 @@ firebase init
 1. for google signin : need to update isAuthenticated method in firebase.js
 2. Remove anonymous user id from database on logoff or disconnect.
 3. Setting up avatar and display name for anonymous users
-4. Cannot see online users because permission denied while reading all users
 5. While adding ourselves to recently connected, delete last item is list is greater than 20.
 
 ### Steps to host on gh-pages:

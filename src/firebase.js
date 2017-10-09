@@ -88,11 +88,17 @@ export const addPresenceListeners = () => {
 
 export const addToRecentlyConnected = () => {
     var recentlyConnectedRef = db.ref('recentlyConnected');
+    var uid = auth.currentUser.uid;
     var userInfo = {
-        uid: auth.currentUser.uid,
+        uid: uid,
         timestamp: firebase.database.ServerValue.TIMESTAMP
     };
-    recentlyConnectedRef.push(userInfo);
+    recentlyConnectedRef.orderByChild("uid").equalTo(uid).once("value",snapshot => {
+        const userData = snapshot.val();
+        if (!userData){
+          recentlyConnectedRef.push(userInfo);
+        }
+    });
 }
 
 export const hidePresence = () => {
