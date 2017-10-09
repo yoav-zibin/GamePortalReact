@@ -10,7 +10,10 @@ export default class Hello extends Component {
 
     constructor(){
         super();
-        this.state = {content : []};
+        this.state = {
+            content : [],
+            chats: []
+        };
     }
 
     componentDidMount(){
@@ -19,39 +22,67 @@ export default class Hello extends Component {
             this.setState({content : users});
         }
         usereference.on('value', function(snapshot) {
-        var current_users = snapshot.val();
-        var list = [];
-        for (var key in current_users){
-            var uid = snapshot.child(key + '/uid').val();
-            var usernameRef = db.ref('users/'+uid+'/publicFields/displayName')
-            usernameRef.once('value').then(function(snapshot) {
-                var username = snapshot.val();
+            var current_users = snapshot.val();
+            var list = [];
+            for (var key in current_users){
+                var uid = snapshot.child(key + '/uid').val();
+                var usernameRef = db.ref('users/'+uid+'/publicFields/displayName')
+                usernameRef.once('value').then(function(snapshot) {
+                    var username = snapshot.val();
+                    list.push({
+                      user: username.toString(),
+                    });
+                    updateUsers(list);
+                });;
+              }
+        });
+
+        var uid = auth.currentUser.uid;
+        var chatReference = firebaseApp.database().ref('users/'+uid+'/privateButAddable/chats');
+        var updatechats = (chats) =>{
+            this.setState({chats : chats});
+        }
+        chatReference.on('value', function(snapshot) {
+            var chatIds = snapshot.val();
+            var list = [];
+            for (var key in chatIds){
                 list.push({
-                  user: username.toString(),
+                  chat: key.toString(),
                 });
-                updateUsers(list);
-            });;
-          }
+            }
+            updatechats(list);
         });
     }
 
 
   render() {
 
-        var content = this.state.content.map((users) =>
-          <Nav>
-          <NavText>{users.user}</NavText>
-          </Nav>
-        );
+    var content = this.state.content.map((users) =>
+      <Nav>
+      <NavText>{users.user}</NavText>
+      </Nav>
+    );
+
+    var chats = this.state.chats.map((chats) =>
+      <Nav>
+      <NavText>{chats.chat}</NavText>
+      </Nav>
+    );
 
     return (
     <div style={{background: '#2c3e50', color: '#FFF', width: 300}}>
-        <SideNav>
-          <Nav>
+        <SideNav highlightBgColor="#00bcd4">
+          <Nav id="recently-connected">
             <NavText>
             Recently Connected
             </NavText>
             {content}
+          </Nav>
+          <Nav id="chats">
+            <NavText>
+                Chats
+            </NavText>
+            {chats}
           </Nav>
         </SideNav>
     </div>
