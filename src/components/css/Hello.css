@@ -1,0 +1,15 @@
+.root-container{
+    color: #FFF;
+    width: 250;
+    display: flex;
+}
+.side-nav{
+    flex:2;
+    background: #2c3e50;
+}
+.play-arena{
+    flex: 5;
+}
+.side-chat{
+    flex: 2;
+}

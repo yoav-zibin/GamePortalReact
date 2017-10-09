@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import '../App.css';
 import firebase from 'firebase';
-import './css/Login.css';
+import './css/Hello.css';
 import {firebaseApp, auth, googleProvider, isAuthenticated, db} from '../firebase';
 import SideNav, { Nav, NavIcon, NavText} from 'react-sidenav';
+import Chat from './Chat'
 
 
 export default class Hello extends Component {
@@ -70,21 +71,31 @@ export default class Hello extends Component {
     );
 
     return (
-    <div style={{background: '#2c3e50', color: '#FFF', width: 300}}>
-        <SideNav highlightBgColor="#00bcd4">
-          <Nav id="recently-connected">
-            <NavText>
-            Recently Connected
-            </NavText>
-            {content}
-          </Nav>
-          <Nav id="chats">
-            <NavText>
-                Chats
-            </NavText>
-            {chats}
-          </Nav>
-        </SideNav>
+    <div className="root-container">
+        <div className="side-nav">
+            <SideNav highlightBgColor="#00bcd4">
+              <Nav id="recently-connected">
+                <NavText>
+                Recently Connected
+                </NavText>
+                {content}
+              </Nav>
+              <Nav id="chats">
+                <NavText>
+                    Chats
+                </NavText>
+                {chats}
+              </Nav>
+            </SideNav>
+        </div>
+
+        <div className="play-arena">
+            PLAY ARENA
+        </div>
+        <div className="side-chat">
+            <Chat/>
+        </div>
+
     </div>
 
     );
