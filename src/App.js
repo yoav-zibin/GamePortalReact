@@ -18,10 +18,10 @@ class App extends Component {
         // adding presence listeners here because when the app initially loads the
         // isAuthenticated function returns false, and after some time only
         // it stats returning true when the state of the auth changes
-        addPresenceListeners();
         if (user) {
           window.localStorage.setItem(storageKey, user.uid);
           this.setState({uid: user.uid});
+          addPresenceListeners();
         } else {
           window.localStorage.removeItem(storageKey);
           this.setState({uid: null});

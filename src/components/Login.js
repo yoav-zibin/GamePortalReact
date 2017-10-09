@@ -3,9 +3,10 @@ import logo from '../logo.svg';
 import '../App.css';
 import './css/Login.css';
 import {firebaseApp, auth, googleProvider, isAuthenticated, db} from '../firebase';
-import Hello from './Hello'
-import PhoneAuth from './PhoneAuth'
-import Main from './Main'
+import firebase from 'firebase';
+import Hello from './Hello';
+import PhoneAuth from './PhoneAuth';
+import Main from './Main';
 import {
   BrowserRouter as Router,
   Switch,
@@ -42,11 +43,14 @@ export default class Login extends Component {
         let usersRef = db.ref("users");
         let userData = {
           'privateFields': {
-              'email': user.email
+              'email': user.email,
+              'createdOn': firebase.database.ServerValue.TIMESTAMP
           },
           'publicFields': {
-            'avatarImageUrl': user.photoURL || '',
-            'displayName': user.displayName || user.email
+            'avatarImageUrl': user.photoURL || 'https://ssl.gstatic.com/images/branding/product/1x/avatar_circle_blue_512dp.png',
+            'displayName': user.displayName || user.email,
+            'isConnected': true,
+            'lastSeen':firebase.database.ServerValue.TIMESTAMP
           }
         };
 
@@ -114,7 +118,6 @@ export default class Login extends Component {
       var errorMessage = error.message;
       console.error(errorCode, errorMessage);
       });
-
   }
 
   state = {

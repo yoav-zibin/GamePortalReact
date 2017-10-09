@@ -56,8 +56,8 @@ export const addPresenceListeners = () => {
     if(isAuthenticated()){
         const uid = auth.currentUser.uid;
         // stores the timestamp of my last disconnect (the last time I was seen online)
-        lastOnlineRef = firebaseApp.database().ref('users/'+uid+'/lastonline');
-        myConnectionsRef = firebaseApp.database().ref('users/'+uid+'/isConnected');
+        lastOnlineRef = firebaseApp.database().ref('users/'+uid+'/publicFields/lastSeen');
+        myConnectionsRef = firebaseApp.database().ref('users/'+uid+'/publicFields/isConnected');
 
         connectedRef = firebaseApp.database().ref('.info/connected');
         connectedRef.on('value', function(snapshot) {

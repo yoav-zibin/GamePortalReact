@@ -22,6 +22,7 @@ firebase init
 ### TODO:
 1. for google signin : need to update isAuthenticated method in firebase.js
 2. Remove anonymous user id from database on logoff or disconnect.
+3. Setting up avatar and display name for anonymous users
 
 ### Steps to host on gh-pages:
 1. Open your package.json and add a homepage field:
