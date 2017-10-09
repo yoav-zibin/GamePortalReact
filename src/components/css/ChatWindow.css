@@ -1,0 +1,6 @@
+.chatWindowVisible{
+    visibility: visible;
+}
+.chatWindowInvisible{
+    visibility: hidden;
+}
