@@ -93,11 +93,15 @@ export const addToRecentlyConnected = () => {
         uid: uid,
         timestamp: firebase.database.ServerValue.TIMESTAMP
     };
-    recentlyConnectedRef.orderByChild("uid").equalTo(uid).once("value",snapshot => {
+    var myKeyRef = recentlyConnectedRef.orderByChild("uid").equalTo(uid);
+    myKeyRef.once("value",snapshot => {
         const userData = snapshot.val();
-        if (!userData){
-          recentlyConnectedRef.push(userInfo);
+        if (userData){
+            for(var key in userData){
+                db.ref('recentlyConnected/'+key).set(null);
+            }
         }
+        recentlyConnectedRef.push(userInfo);
     });
 }
 
