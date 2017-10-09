@@ -81,7 +81,7 @@ export default class Login extends Component {
         }
         // Sign in with email and pass.
         // [START authwithemail]
-        auth.signInWithEmailAndPassword(email, password).catch(function(error) {
+        var loginPromise = auth.signInWithEmailAndPassword(email, password).catch(function(error) {
           // Handle Errors here.
           var errorCode = error.code;
           var errorMessage = error.message;
@@ -94,10 +94,10 @@ export default class Login extends Component {
           console.log(error);
           document.getElementById('signin').disabled = false;
           // [END_EXCLUDE]
-        });
+      });
         // [END authwithemail]
+        loginPromise.then(this.createUserIfNotExists);
       }
-      this.createUserIfNotExists();
   }
 
 
