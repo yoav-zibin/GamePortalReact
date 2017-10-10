@@ -1,0 +1,9 @@
+.sentBySelf{
+    background-color: #88DC99;
+    position: relative;
+    left: 50px;
+}
+
+.sentByPartner{
+    background-color: #DD88CC;
+}

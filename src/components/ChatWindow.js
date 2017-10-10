@@ -31,7 +31,7 @@ export default class ChatWindow extends Component {
   render() {
     return (
         <div className={this.props.chatWindowVisible}>
-            <ChatDisplay/>
+            <ChatDisplay chatId={this.props.chatId}/>
             <textarea
                 className="message"
                 type="text"
