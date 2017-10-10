@@ -15,7 +15,6 @@ export default class ChatWindow extends Component {
   }
 
   sendMessage(){
-      console.log(this.state.textMessage);
       let message_info = {
           senderUid: auth.currentUser.uid,
           message: this.state.textMessage,
