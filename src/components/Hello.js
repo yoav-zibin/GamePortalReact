@@ -30,10 +30,12 @@ export default class Hello extends Component {
                 var usernameRef = db.ref('users/'+uid+'/publicFields/displayName')
                 usernameRef.once('value').then(function(snapshot) {
                     var username = snapshot.val();
-                    list.push({
-                      user: username.toString(),
-                    });
-                    updateUsers(list);
+                    if(username!=null){
+                        list.push({
+                          user: username.toString(),
+                        });
+                        updateUsers(list);
+                    }
                 });;
               }
         });
