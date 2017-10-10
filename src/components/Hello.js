@@ -51,11 +51,23 @@ export default class Hello extends Component {
             var chatIds = snapshot.val();
             var list = [];
             for (var key in chatIds){
-                list.push({
-                  chat: key.toString(),
-                });
-            }
+                var chatsReference = firebaseApp.database().ref('chats/'+ key +'/participants');
+                chatsReference.once('value').then(function(snapshot) {
+                    var participantIds = snapshot.val();
+                    for(var key in participantIds) {
+                        if(key!==uid) {
+                            var displayNameReference = firebaseApp.database().ref('users/'+key+'/publicFields/displayName');
+                            displayNameReference.once('value').then(function(snapshot) {
+                                var participantName = snapshot.val();
+                                list.push({
+                                    chat: participantName.toString(),
+                                })
+                            })
+                        }
+                    }
+                })
             updatechats(list);
+         }
         });
     }
 
@@ -77,7 +89,7 @@ export default class Hello extends Component {
     return (
     <div className="root-container">
         <div className="side-nav">
-            <SideNav highlightBgColor="#00bcd4">
+            <SideNav highlightBgColor="#00bad4">
               <Nav id="recently-connected">
                 <NavText>
                 Recently Connected
@@ -96,6 +108,7 @@ export default class Hello extends Component {
         <div className="play-arena">
             PLAY ARENA
         </div>
+
         <div className="side-chat">
             <Chat/>
         </div>
