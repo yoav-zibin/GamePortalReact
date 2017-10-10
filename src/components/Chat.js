@@ -30,6 +30,9 @@ export default class Chat extends Component {
   }
 
   loadChat(index){
+      if (index === 0){
+          this.chats = [];
+      }
       var self = this;
       var chatId = self.selfChatIds[index];
       var chatReference = db.ref("chats/"+chatId);
