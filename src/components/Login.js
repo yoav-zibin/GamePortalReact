@@ -6,6 +6,7 @@ import {firebaseApp, auth, googleProvider, isAuthenticated, db} from '../firebas
 import firebase from 'firebase';
 import Hello from './Hello';
 import PhoneAuth from './PhoneAuth';
+import {getName} from '../pokemon';
 import Main from './Main';
 import {
   BrowserRouter as Router,
@@ -41,18 +42,34 @@ export default class Login extends Component {
         let user = auth.currentUser;
         // console.log(user);
         let usersRef = db.ref("users");
-        let userData = {
-          'privateFields': {
-              'email': user.email,
-              'createdOn': firebase.database.ServerValue.TIMESTAMP
-          },
-          'publicFields': {
-            'avatarImageUrl': user.photoURL || 'https://ssl.gstatic.com/images/branding/product/1x/avatar_circle_blue_512dp.png',
-            'displayName': user.displayName || user.email,
-            'isConnected': true,
-            'lastSeen':firebase.database.ServerValue.TIMESTAMP
-          }
-        };
+        let userData = null;
+        if(user.isAnonymous){
+            userData = {
+              'privateFields': {
+                  'email': "anonymous.user@gmail.com",
+                  'createdOn': firebase.database.ServerValue.TIMESTAMP
+              },
+              'publicFields': {
+                'avatarImageUrl': 'https://ssl.gstatic.com/images/branding/product/1x/avatar_circle_blue_512dp.png',
+                'displayName': getName(),
+                'isConnected': true,
+                'lastSeen':firebase.database.ServerValue.TIMESTAMP
+              }
+            };
+        }else{
+            userData = {
+              'privateFields': {
+                  'email': user.email,
+                  'createdOn': firebase.database.ServerValue.TIMESTAMP
+              },
+              'publicFields': {
+                'avatarImageUrl': user.photoURL || 'https://ssl.gstatic.com/images/branding/product/1x/avatar_circle_blue_512dp.png',
+                'displayName': user.displayName || user.email,
+                'isConnected': true,
+                'lastSeen':firebase.database.ServerValue.TIMESTAMP
+              }
+            };
+        }
 
         usersRef.child(user.uid).transaction(function(currentUserData) {
           if (currentUserData === null || !currentUserData.email) {
@@ -113,11 +130,12 @@ export default class Login extends Component {
   // onAuthStateChanged will be called which is registered in App.js
   // User_id for anonymous user will be received there.
   loginAnonymous(){
-      auth.signInAnonymously().catch(function(error) {
-      var errorCode = error.code;
-      var errorMessage = error.message;
-      console.error(errorCode, errorMessage);
+      var loginPromise = auth.signInAnonymously().catch(function(error) {
+          var errorCode = error.code;
+          var errorMessage = error.message;
+          console.error(errorCode, errorMessage);
       });
+      loginPromise.then(this.createUserIfNotExists);
   }
 
   state = {
@@ -146,7 +164,7 @@ export default class Login extends Component {
                 <div className="login-options-container col-md-6 col-xs-12">
                     <button className="btn btn-md btn-primary btn-block" onClick={this.loginWithGoogle} >Google Signin</button>
                     <button className="btn btn-md btn-primary btn-block" onClick={this.loginWithPhone} > {<Link to='/PhoneAuth' style={{decoration: 'none', color: 'white'}}>Signin with Phone</Link>}</button>
-                    <button className="btn btn-md btn-primary btn-block" onClick={this.loginAnonymous}> Anonymous Signin</button>
+                    <button className="btn btn-md btn-primary btn-block" onClick={this.loginAnonymous.bind(this)}> Anonymous Signin</button>
                 </div>
             </div>
         </div>
