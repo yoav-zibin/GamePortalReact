@@ -36,6 +36,7 @@ export default class Chat extends Component {
       index = index + 1;
       chatReference.once('value', function(snapshot) {
         var chat = snapshot.val();
+        chat.id = chatId;
         self.chats.push(chat);
         if(index < self.selfChatIds.length)
             self.loadChat(index);
@@ -47,7 +48,6 @@ export default class Chat extends Component {
   }
 
   startChat(){
-      var chatId = "-Kw2Q76uMnXg-HSUMtkb";
       var chatId = this.getOldChatIdOrStartNewChat();
       this.setState({
           chatId: chatId,
@@ -56,11 +56,12 @@ export default class Chat extends Component {
   }
 
   getOldChatIdOrStartNewChat(){
-      if(0===1){
-          console.log('');
-      }else{
-          return this.startNewChat();
+      for(var index in this.chats){
+          var chat = this.chats[index];
+          if(this.state.partner in chat.participants)
+            return chat.id;
       }
+      return this.startNewChat();
   }
 
   startNewChat(){
