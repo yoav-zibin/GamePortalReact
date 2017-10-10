@@ -36,7 +36,7 @@ export default class Hello extends Component {
                         });
                         updateUsers(list);
                     }
-                });;
+                });
               }
         });
 

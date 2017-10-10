@@ -4,7 +4,7 @@ import Hello from './Hello';
 import { NavLink as RRNavLink } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import Login from './Login';
-import {auth, signOut} from '../firebase';
+import {auth, signOut, db, isAuthenticated, firebaseApp, googleProvider} from '../firebase';
 import Register from './Register';
 import { storageKey, hidePresence } from '../firebase';
 
@@ -16,10 +16,16 @@ export default class Header extends React.Component {
     };
 
     componentDidMount() {
+      var self = this;
       auth.onAuthStateChanged(user => {
         if (user) {
           window.localStorage.setItem(storageKey, user.uid);
-          this.setState({uid: user.uid});
+          var usernameRef = db.ref('users/'+user.uid+'/publicFields/displayName');
+          usernameRef.once('value').then(function(snapshot) {
+            var username = snapshot.val();
+            self.setState({uid: username});
+          });
+
         } else {
           window.localStorage.removeItem(storageKey);
           this.setState({uid: null});
@@ -62,7 +68,7 @@ export default class Header extends React.Component {
             <Nav className="ml-auto" navbar>
               {this.state.uid ? (
               <NavItem>
-                <NavLink tag={Link} onClick={this.handleLogoutClick.bind(this)} to="/">Log out</NavLink>
+                <NavLink tag={Link} onClick={this.handleLogoutClick.bind(this)} to="/"> {this.state.uid}  Log Out</NavLink>
               </NavItem>
               ) : (
               <NavItem>
