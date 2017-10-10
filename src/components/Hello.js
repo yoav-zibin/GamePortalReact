@@ -25,8 +25,10 @@ export default class Hello extends Component {
         usereference.on('value', function(snapshot) {
             var current_users = snapshot.val();
             var list = [];
+            var myuid = auth.currentUser.uid;
             for (var key in current_users){
                 var uid = snapshot.child(key + '/uid').val();
+                if (uid == myuid) continue;
                 var usernameRef = db.ref('users/'+uid+'/publicFields/displayName')
                 usernameRef.once('value').then(function(snapshot) {
                     var username = snapshot.val();
