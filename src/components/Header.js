@@ -12,7 +12,8 @@ var authenticated = true;
 
 export default class Header extends React.Component {
     state = {
-      uid: null
+      uid: null,
+      username: null
     };
 
     componentDidMount() {
@@ -20,10 +21,11 @@ export default class Header extends React.Component {
       auth.onAuthStateChanged(user => {
         if (user) {
           window.localStorage.setItem(storageKey, user.uid);
+          this.setState({uid: user.uid});
           var usernameRef = db.ref('users/'+user.uid+'/publicFields/displayName');
           usernameRef.once('value').then(function(snapshot) {
             var username = snapshot.val();
-            self.setState({uid: username});
+            self.setState({username: username});
           });
 
         } else {
@@ -68,7 +70,7 @@ export default class Header extends React.Component {
             <Nav className="ml-auto" navbar>
               {this.state.uid ? (
               <NavItem>
-                <NavLink tag={Link} onClick={this.handleLogoutClick.bind(this)} to="/"> {this.state.uid}  Log Out</NavLink>
+                <NavLink tag={Link} onClick={this.handleLogoutClick.bind(this)} to="/"> {this.state.username}  Log Out</NavLink>
               </NavItem>
               ) : (
               <NavItem>
