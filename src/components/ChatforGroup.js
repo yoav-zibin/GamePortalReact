@@ -4,7 +4,7 @@ import ChatWindow from './ChatWindow';
 import {db, auth} from '../firebase';
 import firebase from 'firebase';
 
-export default class Chat extends Component {
+export default class ChatforGroup extends Component {
 
   constructor(){
       super();
@@ -78,19 +78,19 @@ export default class Chat extends Component {
       for(var index in this.chats){
           var chat = this.chats[index];
           var exsistPartners = 0;
-          var p = 0;
+          var nofparticipants = 0;
           for(var partnerIndex in this.state.partnerList) {
             if (this.state.partnerList[partnerIndex] in chat.participants) {
               exsistPartners ++;
             }
           }
 
-          for(var ps in this.chats[index].participants) {
-            p++;
+          for(var pt in this.chats[index].participants) {
+            nofparticipants++;
           }
 
-          if(p === this.state.partnerList.length+1) {
-            if (p === exsistPartners+1) return chat.id;
+          if(nofparticipants === this.state.partnerList.length+1) {
+            if (nofparticipants === exsistPartners+1) return chat.id;
           } 
       }
       return this.startNewChat();
@@ -136,18 +136,14 @@ export default class Chat extends Component {
   }
 
   render() {
-
-
     var partnerids = this.state.partnerList.map((user) =>
       <input type="text" value={user} />
     );
 
     return (
         <div>
-
-            Group Chat
+            Chat
             Partners: <br/>
-
             {partnerids}
             <hr/>
             <input type="text" value={this.state.partner} onChange={this.handleUidChange.bind(this)} placeholder="Enter partner uid"/><br/>

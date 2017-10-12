@@ -119,7 +119,6 @@ export default class Hello extends Component {
         </div>
 
         <div className="side-chat">
-            <Chat/>
             <ChatforGroup/>
         </div>
 
