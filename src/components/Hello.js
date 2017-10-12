@@ -35,7 +35,7 @@ export default class Hello extends Component {
                     var username = snapshot.val();
                     if(username!=null){
                         list.push({
-                          uid: uid,
+                          uid: snapshot.ref.parent.parent.key,
                           user: username.toString(),
                         });
                         updateUsers(list);
@@ -70,7 +70,7 @@ export default class Hello extends Component {
                 })*/
                 list.push({
                     chat: key,
-                })            
+                })
             updatechats(list);
          }
         });
