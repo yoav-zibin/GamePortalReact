@@ -5,6 +5,7 @@ import './css/Hello.css';
 import {firebaseApp, auth, googleProvider, isAuthenticated, db} from '../firebase';
 import SideNav, { Nav, NavIcon, NavText} from 'react-sidenav';
 import Chat from './Chat'
+import ChatforGroup from './ChatforGroup'
 
 
 export default class Hello extends Component {
@@ -51,7 +52,7 @@ export default class Hello extends Component {
             var chatIds = snapshot.val();
             var list = [];
             for (var key in chatIds){
-                var chatsReference = firebaseApp.database().ref('chats/'+ key +'/participants');
+            /*    var chatsReference = firebaseApp.database().ref('chats/'+ key +'/participants');
                 chatsReference.once('value').then(function(snapshot) {
                     var participantIds = snapshot.val();
                     for(var key in participantIds) {
@@ -65,7 +66,10 @@ export default class Hello extends Component {
                             })
                         }
                     }
-                })
+                })*/
+                list.push({
+                    chat: key,
+                })            
             updatechats(list);
          }
         });
@@ -106,11 +110,15 @@ export default class Hello extends Component {
         </div>
 
         <div className="play-arena">
-            PLAY ARENA
+            <div>PLAY ARENA</div>
+            <div>reactportal: R8KuDqOLXzL92SmSmm31WaxF21U2</div>
+            <div>xw1449@nyu.edu: Kb72AVDAJdZNbV3QB1HDG8ESzvM2</div>
+            <div>kathywxt@gmail.com: ngWOnVjnoISjeycllrr4yEeVNPl1</div>
         </div>
 
         <div className="side-chat">
             <Chat/>
+            <ChatforGroup/>
         </div>
 
     </div>
