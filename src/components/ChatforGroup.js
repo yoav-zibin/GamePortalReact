@@ -78,15 +78,20 @@ export default class Chat extends Component {
       for(var index in this.chats){
           var chat = this.chats[index];
           var exsistPartners = 0;
-          var partnerCount = 0;
-
+          var p = 0;
           for(var partnerIndex in this.state.partnerList) {
-            partnerCount ++;
             if (this.state.partnerList[partnerIndex] in chat.participants) {
               exsistPartners ++;
             }
           }
-          if (exsistPartners === partnerCount) return chat.id;
+
+          for(var ps in this.chats[index].participants) {
+            p++;
+          }
+
+          if(p === this.state.partnerList.length+1) {
+            if (p === exsistPartners+1) return chat.id;
+          } 
       }
       return this.startNewChat();
   }
@@ -131,9 +136,7 @@ export default class Chat extends Component {
   }
 
   render() {
-    var partnerids = (
-      <div>With: <input type="text" value={this.state.partnerList} onChange={this.handleUidsChange.bind(this)} /></div>
-    );
+
 
     var partnerids = this.state.partnerList.map((user) =>
       <input type="text" value={user} />
@@ -141,7 +144,10 @@ export default class Chat extends Component {
 
     return (
         <div>
+
+            Group Chat
             Partners: <br/>
+
             {partnerids}
             <hr/>
             <input type="text" value={this.state.partner} onChange={this.handleUidChange.bind(this)} placeholder="Enter partner uid"/><br/>
