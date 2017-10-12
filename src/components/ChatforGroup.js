@@ -99,7 +99,7 @@ export default class Chat extends Component {
     for(var index in uidPartners) {
       participants[uidPartners[index]]= true;
     }
-    
+
     let chatref = db.ref('chats');
     let newChat = chatref.push({
         participants:participants,
@@ -118,7 +118,7 @@ export default class Chat extends Component {
       let partnerRef = db.ref('users/'+uidPartners[index]+'/privateButAddable/chats/'+newChatId);
       partnerRef.set(newChatInfo);
     }
-    
+
     return newChatId;
   }
 
@@ -135,9 +135,15 @@ export default class Chat extends Component {
       <div>With: <input type="text" value={this.state.partnerList} onChange={this.handleUidsChange.bind(this)} /></div>
     );
 
+    var partnerids = this.state.partnerList.map((user) =>
+      <input type="text" value={user} />
+    );
+
     return (
         <div>
+            Partners: <br/>
             {partnerids}
+            <hr/>
             <input type="text" value={this.state.partner} onChange={this.handleUidChange.bind(this)} placeholder="Enter partner uid"/><br/>
             <Button color="success" onClick={this.addUser.bind(this)}>Add User</Button>
             <Button color="success" onClick={this.startChat.bind(this)}>Start Chat</Button>
