@@ -35,6 +35,7 @@ export default class Hello extends Component {
                     var username = snapshot.val();
                     if(username!=null){
                         list.push({
+                          uid: uid,
                           user: username.toString(),
                         });
                         updateUsers(list);
@@ -78,6 +79,7 @@ export default class Hello extends Component {
 
   render() {
 
+    console.log(this.state.content);
     var content = this.state.content.map((users) =>
       <Nav>
       <NavText>{users.user}</NavText>
