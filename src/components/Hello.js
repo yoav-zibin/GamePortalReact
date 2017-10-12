@@ -114,6 +114,8 @@ export default class Hello extends Component {
             <div>reactportal: R8KuDqOLXzL92SmSmm31WaxF21U2</div>
             <div>xw1449@nyu.edu: Kb72AVDAJdZNbV3QB1HDG8ESzvM2</div>
             <div>kathywxt@gmail.com: ngWOnVjnoISjeycllrr4yEeVNPl1</div>
+            <div>ssg441@nyu.edu: p0t6ex7Wgaf6jWdBd5lG8SfXxcU2</div>
+            <div>yq577@nyu.edu: LwnimAsjHsR9uOvfIaj0FqcTsrE2</div>
         </div>
 
         <div className="side-chat">
