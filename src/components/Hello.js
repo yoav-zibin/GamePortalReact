@@ -14,7 +14,8 @@ export default class Hello extends Component {
         super();
         this.state = {
             content : [],
-            chats: []
+            chats: [],
+            puid: null,
         };
     }
 
@@ -77,11 +78,19 @@ export default class Hello extends Component {
     }
 
 
-  render() {
+  handleclick(id, parent){
+    if (parent != null) {
+        parent = parent.toString()
+        if (parent == 'recently-connected'){
+            id = id.substring(19);
+            this.setState({puid: id});
+        }
+    }
+  }
 
-    console.log(this.state.content);
+  render() {
     var content = this.state.content.map((users) =>
-      <Nav>
+      <Nav id={users.uid}>
       <NavText>{users.user}</NavText>
       </Nav>
     );
@@ -95,7 +104,7 @@ export default class Hello extends Component {
     return (
     <div className="root-container">
         <div className="side-nav">
-            <SideNav highlightBgColor="#00bad4">
+            <SideNav highlightBgColor="#00bad4" onItemSelection={ (id, parent) => {this.handleclick(id, parent)}} >
               <Nav id="recently-connected">
                 <NavText>
                 Recently Connected
@@ -121,11 +130,10 @@ export default class Hello extends Component {
         </div>
 
         <div className="side-chat">
-            <ChatforGroup/>
+            <ChatforGroup />
+        }
         </div>
-
     </div>
-
     );
   }
 }
