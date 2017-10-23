@@ -2,8 +2,9 @@ import React, { Component } from 'react';
 import logo from '../logo.svg';
 import '../App.css';
 import './css/Login.css';
+import Main from './Main';
 import {firebaseApp, auth, googleProvider, isAuthenticated, db} from '../firebase';
-
+import firebase from 'firebase';
 
 function setErrorMsg(error) {
   return {
@@ -20,11 +21,20 @@ export default class Register extends Component {
         let usersRef = db.ref("users");
         let userData = {
           'privateFields': {
-              'email': user.email
+            'email': user.email,
+            'createdOn': db.ServerValue.TIMESTAMP,
+            facebookId: "",
+            githubId: "",
+            googleId: "",
+            phoneNumber: "",
+            pushNotificationsToken: "",
+            twitterId: "",
           },
           'publicFields': {
-            'avatarImageUrl': user.photoURL || '',
-            'displayName': user.displayName || user.email
+                'avatarImageUrl': user.photoURL || 'https://ssl.gstatic.com/images/branding/product/1x/avatar_circle_blue_512dp.png',
+                'displayName': user.displayName || user.email,
+                'isConnected': true,
+                'lastSeen':db.ServerValue.TIMESTAMP
           }
         };
 
@@ -60,7 +70,6 @@ export default class Register extends Component {
         } else {
           alert(errorMessage);
         }
-        console.log(error);
         // [END_EXCLUDE]
       });
 

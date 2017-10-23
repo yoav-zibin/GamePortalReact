@@ -86,9 +86,6 @@ export default class Hello extends Component {
             this.setState({puid: id});
         }
     }
-    else {
-        this.setState({puid: id});
-    }
   }
 
   render() {

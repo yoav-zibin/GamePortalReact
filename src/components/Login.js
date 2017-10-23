@@ -47,7 +47,13 @@ export default class Login extends Component {
             userData = {
               'privateFields': {
                   'email': "anonymous.user@gmail.com",
-                  'createdOn': firebase.database.ServerValue.TIMESTAMP
+                  'createdOn': firebase.database.ServerValue.TIMESTAMP,
+                  facebookId: "",
+                  githubId: "",
+                  googleId: "",
+                  phoneNumber: "",
+                  pushNotificationsToken: "",
+                  twitterId: "",
               },
               'publicFields': {
                 'avatarImageUrl': 'https://ssl.gstatic.com/images/branding/product/1x/avatar_circle_blue_512dp.png',
@@ -60,7 +66,13 @@ export default class Login extends Component {
             userData = {
               'privateFields': {
                   'email': user.email,
-                  'createdOn': firebase.database.ServerValue.TIMESTAMP
+                  'createdOn': firebase.database.ServerValue.TIMESTAMP,
+                  facebookId: "",
+                  githubId: "",
+                  googleId: "",
+                  phoneNumber: "",
+                  pushNotificationsToken: "",
+                  twitterId: "",
               },
               'publicFields': {
                 'avatarImageUrl': user.photoURL || 'https://ssl.gstatic.com/images/branding/product/1x/avatar_circle_blue_512dp.png',
