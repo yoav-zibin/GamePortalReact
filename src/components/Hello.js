@@ -14,12 +14,13 @@ export default class Hello extends Component {
         super();
         this.state = {
             content : [],
-            chats: []
+            chats: [],
+            puid: null,
         };
     }
 
     componentDidMount(){
-        var usereference = firebaseApp.database().ref('recentlyConnected');
+        var usereference = firebaseApp.database().ref('gamePortal/recentlyConnected');
         var updateUsers = (users) =>{
             this.setState({content : users});
         }
@@ -28,13 +29,14 @@ export default class Hello extends Component {
             var list = [];
             var myuid = auth.currentUser.uid;
             for (var key in current_users){
-                var uid = snapshot.child(key + '/uid').val();
+                var uid = snapshot.child(key + '/userId').val();
                 if (uid == myuid) continue;
                 var usernameRef = db.ref('users/'+uid+'/publicFields/displayName')
                 usernameRef.once('value').then(function(snapshot) {
                     var username = snapshot.val();
                     if(username!=null){
                         list.push({
+                          uid: snapshot.ref.parent.parent.key,
                           user: username.toString(),
                         });
                         updateUsers(list);
@@ -69,17 +71,29 @@ export default class Hello extends Component {
                 })*/
                 list.push({
                     chat: key,
-                })            
+                })
             updatechats(list);
          }
         });
     }
 
 
-  render() {
+  handleclick(id, parent){
+    if (parent != null) {
+        parent = parent.toString()
+        if (parent == 'recently-connected'){
+            id = id.substring(19);
+            this.setState({puid: id});
+        }
+    }
+    else {
+        this.setState({puid: id});
+    }
+  }
 
+  render() {
     var content = this.state.content.map((users) =>
-      <Nav>
+      <Nav id={users.uid}>
       <NavText>{users.user}</NavText>
       </Nav>
     );
@@ -93,7 +107,7 @@ export default class Hello extends Component {
     return (
     <div className="root-container">
         <div className="side-nav">
-            <SideNav highlightBgColor="#00bad4">
+            <SideNav highlightBgColor="#00bad4" onItemSelection={ (id, parent) => {this.handleclick(id, parent)}} >
               <Nav id="recently-connected">
                 <NavText>
                 Recently Connected
@@ -119,11 +133,10 @@ export default class Hello extends Component {
         </div>
 
         <div className="side-chat">
-            <ChatforGroup/>
+            <ChatforGroup myprop={this.state.puid}/>
+        }
         </div>
-
     </div>
-
     );
   }
 }
