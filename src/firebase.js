@@ -87,22 +87,24 @@ export const addPresenceListeners = () => {
 }
 
 export const addToRecentlyConnected = () => {
-    var recentlyConnectedRef = db.ref('recentlyConnected');
+    var recentlyConnectedRef = db.ref('gameProtal/recentlyConnected');
     var uid = auth.currentUser.uid;
     var userInfo = {
-        uid: uid,
+        userId: uid,
         timestamp: firebase.database.ServerValue.TIMESTAMP
     };
-    var myKeyRef = recentlyConnectedRef.orderByChild("uid").equalTo(uid);
+    var myKeyRef = recentlyConnectedRef.orderByChild("userId").equalTo(uid);
     myKeyRef.once("value",snapshot => {
         const userData = snapshot.val();
         if (userData){
             for(var key in userData){
-                db.ref('recentlyConnected/'+key).set(null);
+                db.ref('gamePortal/recentlyConnected/'+key).set(null);
             }
         }
         recentlyConnectedRef.push(userInfo);
     });
+
+
 }
 
 export const hidePresence = () => {
