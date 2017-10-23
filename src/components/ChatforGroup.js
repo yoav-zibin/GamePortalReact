@@ -54,6 +54,7 @@ export default class ChatforGroup extends Component {
 
   startChat(){
       var chatId = this.getOldChatIdOrStartNewChat();
+      console.log("mylog,", this.props.myprop);
       this.setState({
           chatId: chatId,
           chatWindowVisible: "chatWindowVisible"
@@ -132,7 +133,8 @@ export default class ChatforGroup extends Component {
   }
 
   handleUidsChange(e){
-      this.setState({partnerList: e.target.value})
+      this.setState({partnerList: e.target.value});
+
   }
 
   render() {

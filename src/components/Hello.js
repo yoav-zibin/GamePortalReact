@@ -20,7 +20,7 @@ export default class Hello extends Component {
     }
 
     componentDidMount(){
-        var usereference = firebaseApp.database().ref('recentlyConnected');
+        var usereference = firebaseApp.database().ref('gamePortal/recentlyConnected');
         var updateUsers = (users) =>{
             this.setState({content : users});
         }
@@ -29,7 +29,7 @@ export default class Hello extends Component {
             var list = [];
             var myuid = auth.currentUser.uid;
             for (var key in current_users){
-                var uid = snapshot.child(key + '/uid').val();
+                var uid = snapshot.child(key + '/userId').val();
                 if (uid == myuid) continue;
                 var usernameRef = db.ref('users/'+uid+'/publicFields/displayName')
                 usernameRef.once('value').then(function(snapshot) {
@@ -86,6 +86,9 @@ export default class Hello extends Component {
             this.setState({puid: id});
         }
     }
+    else {
+        this.setState({puid: id});
+    }
   }
 
   render() {
@@ -130,7 +133,7 @@ export default class Hello extends Component {
         </div>
 
         <div className="side-chat">
-            <ChatforGroup />
+            <ChatforGroup myprop={this.state.puid}/>
         }
         </div>
     </div>
