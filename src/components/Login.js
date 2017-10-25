@@ -166,9 +166,9 @@ export default class Login extends Component {
             </h2>
             <div className="login-container">
                 <div className="signin-container col-md-6 col-xs-12">
-                    <label for="inputEmail" className="sr-only">Email address</label>
-                    <input type="email" id="inputEmail" className="form-control" placeholder="Email address" required autofocus/>
-                    <label for="inputPassword" className="sr-only">Password</label>
+                    <label htmlFor="inputEmail" className="sr-only">Email address</label>
+                    <input type="email" id="inputEmail" className="form-control" placeholder="Email address" required autoFocus/>
+                    <label htmlFor="inputPassword" className="sr-only">Password</label>
                     <input type="password" id="inputPassword" className="form-control" placeholder="Password" required/>
                     <br />
                     <button id = "signin" className="btn btn-md btn-primary btn-block" onClick={this.handleSubmit} >Log In</button>
