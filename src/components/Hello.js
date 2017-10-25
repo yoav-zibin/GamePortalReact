@@ -6,6 +6,7 @@ import {firebaseApp, auth, googleProvider, isAuthenticated, db} from '../firebas
 import SideNav, { Nav, NavIcon, NavText} from 'react-sidenav';
 import Chat from './Chat'
 import ChatforGroup from './ChatforGroup'
+import PlayArena from './PlayArena'
 
 
 export default class Hello extends Component {
@@ -119,19 +120,17 @@ export default class Hello extends Component {
               </Nav>
             </SideNav>
         </div>
-
         <div className="play-arena">
-            <div>PLAY ARENA</div>
-            <div>reactportal: R8KuDqOLXzL92SmSmm31WaxF21U2</div>
-            <div>xw1449@nyu.edu: Kb72AVDAJdZNbV3QB1HDG8ESzvM2</div>
-            <div>kathywxt@gmail.com: ngWOnVjnoISjeycllrr4yEeVNPl1</div>
-            <div>ssg441@nyu.edu: p0t6ex7Wgaf6jWdBd5lG8SfXxcU2</div>
-            <div>yq577@nyu.edu: LwnimAsjHsR9uOvfIaj0FqcTsrE2</div>
+            <PlayArena/>
         </div>
 
         <div className="side-chat">
             <ChatforGroup myprop={this.state.puid}/>
-        }
+            reactportal: R8KuDqOLXzL92SmSmm31WaxF21U2
+            xw1449@nyu.edu: Kb72AVDAJdZNbV3QB1HDG8ESzvM2
+            kathywxt@gmail.com: ngWOnVjnoISjeycllrr4yEeVNPl1
+            ssg441@nyu.edu: p0t6ex7Wgaf6jWdBd5lG8SfXxcU2
+            yq577@nyu.edu: LwnimAsjHsR9uOvfIaj0FqcTsrE2
         </div>
     </div>
     );
