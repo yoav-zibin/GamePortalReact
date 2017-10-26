@@ -87,12 +87,13 @@ export const addPresenceListeners = () => {
 }
 
 export const addToRecentlyConnected = () => {
-    var recentlyConnectedRef = db.ref('gameProtal/recentlyConnected');
+    var recentlyConnectedRef = db.ref('gamePortal/recentlyConnected');
     var uid = auth.currentUser.uid;
     var userInfo = {
         userId: uid,
         timestamp: firebase.database.ServerValue.TIMESTAMP
     };
+    
     var myKeyRef = recentlyConnectedRef.orderByChild("userId").equalTo(uid);
     myKeyRef.once("value",snapshot => {
         const userData = snapshot.val();
