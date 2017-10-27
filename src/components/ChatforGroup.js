@@ -94,7 +94,7 @@ export default class ChatforGroup extends Component {
   componentDidUpdate() {
     if (this.props.myprops.name === 'group') {
       var id = this.props.myprops.id;
-      var groupref = db.ref('gamePortal/groups/' + id + '/participants');
+/*      var groupref = db.ref('gamePortal/groups/' + id + '/participants');
       groupref.once('value', function(snapshot) {
         var list = [];
         var participantslist = snapshot.val();
@@ -112,7 +112,7 @@ export default class ChatforGroup extends Component {
             }
           });
         }
-      });
+      });*/
       this.setState({
           chatId: this.props.myprops.id,
           chatWindowVisible: "chatWindowVisible"      

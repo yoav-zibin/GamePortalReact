@@ -22,8 +22,18 @@ export default class ChatWindow extends Component {
 
               var usernameRef = db.ref('users/'+messages[index].senderUid+'/publicFields/displayName')
               usernameRef.on("value",function(snapshot){
-                  userName = snapshot.val()
+                  userName = snapshot.val();
+                  list.push({
+                    message: messages[index].message,
+                    sentBySelf: messages[index].senderUid === auth.currentUser.uid,
+                    sentUid: messages[index].senderUid,
+                    sentdisplayname: userName
+                });
+                console.log(list);
+                self.setState({messages:list});
               })
+          }
+              /*
 
                 list.push({
                     message: messages[index].message,
@@ -32,7 +42,7 @@ export default class ChatWindow extends Component {
                 })
 
           }
-          self.setState({messages:list});
+          self.setState({messages:list});*/
       });
   }
 
@@ -48,7 +58,7 @@ export default class ChatWindow extends Component {
       } else{
           applyClass = "sentByPartner";
       }
-      return (<span className={applyClass}>{message.sentUid}:{message.message}<br/></span>);
+      return (<span className={applyClass}>{message.sentdisplayname}:{message.message}<br/></span>);
     });
     return (
         <div>
