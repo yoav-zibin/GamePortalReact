@@ -107,13 +107,25 @@ export default class ChatforGroup extends Component {
     }
 
     let chatRef = db.ref('gamePortal/groups');
-    let newChat = chatRef.push({
+
+    var participantId = auth.currentUser.uid;
+
+    let me = {};
+    me[participantId] = {participantIndex : 0};
+    let newgroupinfo = {
         createdOn: firebase.database.ServerValue.TIMESTAMP,
         groupName: "ReactPortaltest",
         matches: "",
-    });
+        participants: me,
+    }
+
+    let newChat = chatRef.push(newgroupinfo);
 
     let newChatId = newChat.key;
+    participantId = "Kb72AVDAJdZNbV3QB1HDG8ESzvM2"; 
+    var st = 'gamePortal/groups/' + newChatId + "/participants/" + participantId;
+    console.log(st);
+    db.ref(st).set({participantIndex : 1});
 
 
     let newChatInfo = {
