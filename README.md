@@ -11,6 +11,8 @@
 - npm install firebaseui --save
 - npm install react-router-dom
 - npm install --save react-sidenav
+- npm install react-select --save
+- npm install -g react-konva
 
 ### After installing firebase  
 firebase init
