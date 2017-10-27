@@ -4,7 +4,6 @@ import firebase from 'firebase';
 import './css/Hello.css';
 import {firebaseApp, auth, googleProvider, isAuthenticated, db} from '../firebase';
 import SideNav, { Nav, NavIcon, NavText} from 'react-sidenav';
-import Chat from './Chat'
 import ChatforGroup from './ChatforGroup'
 import PlayArena from './PlayArena'
 

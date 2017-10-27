@@ -10,6 +10,7 @@ export default class ChatforGroup extends Component {
       super();
       this.state = {
           chatId: "",
+          chatName: "",
           partner: "",
           partnerList: [],
           chatWindowVisible: "chatWindowInvisible"
@@ -109,7 +110,7 @@ export default class ChatforGroup extends Component {
     me[participantId] = {participantIndex : 0};
     let newgroupinfo = {
         createdOn: firebase.database.ServerValue.TIMESTAMP,
-        groupName: "ReactPortaltest",
+        groupName: this.state.chatName,
         matches: "",
         participants: me,
     }
@@ -149,6 +150,11 @@ export default class ChatforGroup extends Component {
 
   }
 
+  handleCNameChange(e){
+      this.setState({chatName: e.target.value});
+
+  }
+
   render() {
     var partnerids = this.state.partnerList.map((user) =>
       <input type="text" value={user} />
@@ -159,8 +165,10 @@ export default class ChatforGroup extends Component {
             Chat
             Partners: <br/>
             {partnerids}
+            <input type="text" value={this.state.chatName} onChange={this.handleCNameChange.bind(this)} placeholder="Enter group name"/><br/>
             <hr/>
             <input type="text" value={this.state.partner} onChange={this.handleUidChange.bind(this)} placeholder="Enter partner uid"/><br/>
+
             <Button color="success" onClick={this.addUser.bind(this)}>Add User</Button>
             <Button color="success" onClick={this.startChat.bind(this)}>Start Chat</Button>
             <ChatWindow chatId={this.state.chatId} chatWindowVisible={this.state.chatWindowVisible}/>
