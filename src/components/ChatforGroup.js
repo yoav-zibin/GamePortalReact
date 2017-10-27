@@ -12,7 +12,7 @@ export default class ChatforGroup extends Component {
       super();
       this.state = {
           chatId: "",
-          chatName: "",
+          chatName: "Chat",
           partner: [{value: '', label: ''}],
           partnerList: [],
           chatWindowVisible: "chatWindowInvisible",
@@ -136,7 +136,7 @@ export default class ChatforGroup extends Component {
 
           if(nofparticipants === this.state.partnerList.length+1) {
             if (nofparticipants === exsistPartners+1) return chat.id;
-          } 
+          }
       }
       return this.startNewChat();
   }
