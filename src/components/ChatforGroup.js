@@ -100,11 +100,6 @@ export default class ChatforGroup extends Component {
   startNewChat(){
     let uidSelf = auth.currentUser.uid;
     let uidPartners = this.state.partnerList;
-    let participants = {};
-    participants[uidSelf] = true;
-    for(var index in uidPartners) {
-      participants[uidPartners[index]] = true;
-    }
 
     let chatRef = db.ref('gamePortal/groups');
 
@@ -122,11 +117,13 @@ export default class ChatforGroup extends Component {
     let newChat = chatRef.push(newgroupinfo);
 
     let newChatId = newChat.key;
-    participantId = "Kb72AVDAJdZNbV3QB1HDG8ESzvM2"; 
-    var st = 'gamePortal/groups/' + newChatId + "/participants/" + participantId;
-    console.log(st);
-    db.ref(st).set({participantIndex : 1});
 
+    var st = 'gamePortal/groups/' + newChatId + "/participants/";
+    var indexnum = 1;
+    for(var index in uidPartners) {
+      db.ref(st + uidPartners[index]).set({participantIndex : indexnum});
+      indexnum++;
+    }
 
     let newChatInfo = {
         addedByUid: auth.currentUser.uid,
