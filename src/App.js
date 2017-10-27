@@ -19,7 +19,6 @@ class App extends Component {
         // isAuthenticated function returns false, and after some time only
         // it stats returning true when the state of the auth changes
         if (user) {
-          console.log("hello", user.uid);
           window.localStorage.setItem(storageKey, user.uid);
           this.setState({uid: user.uid});
           addPresenceListeners();
