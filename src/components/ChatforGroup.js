@@ -157,7 +157,8 @@ export default class ChatforGroup extends Component {
 
   render() {
     var partnerids = this.state.partnerList.map((user) =>
-      <input type="text" value={user} />
+
+      <div>{user}</div>
     );
 
     return (
