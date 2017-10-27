@@ -12,11 +12,7 @@ export default class ChatforGroup extends Component {
       super();
       this.state = {
           chatId: "",
-<<<<<<< HEAD
           chatName: "GroupChat",
-=======
-          chatName: "Chat",
->>>>>>> aa386658409104065ad36294620c6e16b0416f47
           partner: [{value: '', label: ''}],
           partnerList: [],
           chatWindowVisible: "chatWindowInvisible",
