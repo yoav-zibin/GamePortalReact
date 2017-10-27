@@ -94,12 +94,15 @@ export default class ChatforGroup extends Component {
   }
 
   startChat(){
+    if(this.state.partnerList.length !== 0)
+    {
       var chatId = this.getOldChatIdOrStartNewChat();
       console.log("mylog,", this.props.myprop);
       this.setState({
           chatId: chatId,
           chatWindowVisible: "chatWindowVisible"
       });
+    }
   }
 
   addUser(){
