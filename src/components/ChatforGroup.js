@@ -13,11 +13,10 @@ export default class ChatforGroup extends Component {
       this.state = {
           chatId: "",
           chatName: "",
-          partner: "",
+          partner: [{value: '', label: ''}],
           partnerList: [],
           chatWindowVisible: "chatWindowInvisible",
-          onlineUsers: []
-
+          onlineUsers: [{value: '', label: ''}]
       };
       this.chats = [];
 
@@ -37,7 +36,9 @@ export default class ChatforGroup extends Component {
   }
 
   getOnlineUsers(){
-   /*     var usereference = firebaseApp.database().ref('gamePortal/recentlyConnected');
+
+
+        var usereference = firebaseApp.database().ref('gamePortal/recentlyConnected');
         var updateUsers = (users) =>{
             this.setState({onlineUsers : users});
         }
@@ -48,19 +49,23 @@ export default class ChatforGroup extends Component {
             for (var key in current_users){
                 var uid = snapshot.child(key + '/userId').val();
                 if (uid == myuid) continue;
-                var usernameRef = db.ref('users/'+uid+'/publicFields/displayName')
+
+                var usernameRef = db.ref('users/'+uid+'/publicFields')
                 usernameRef.once('value').then(function(snapshot) {
-                    var username = snapshot.val();
-                    if(username!=null){
-                        list.push({
-                          value: snapshot.ref.parent.parent.key,
-                          label: username.toString(),
-                        });
-                        updateUsers(list);
-                    }
+                    var isConnected = snapshot.child('/isConnected').val();
+                    if(isConnected == true) {
+                      var username = snapshot.child('/displayName').val();
+                      if(username!=null){
+                          list.push({
+                            value: snapshot.ref.parent.key,
+                            label: username.toString(),
+                          })
+                          updateUsers(list);
+                      }
+                     }
                 });
               }
-        });*/
+        });
 
   }
 
@@ -100,7 +105,7 @@ export default class ChatforGroup extends Component {
   addUser(){
     var isThere = false;
     for(var partner in this.state.partnerList) {
-      if(this.state.partner === this.state.partnerList[partner]) {
+      if(this.state.partner.value === this.state.partnerList[partner].value) {
         isThere = true;
       }
     }
@@ -117,7 +122,7 @@ export default class ChatforGroup extends Component {
           var exsistPartners = 0;
           var nofparticipants = 0;
           for(var partnerIndex in this.state.partnerList) {
-            if (this.state.partnerList[partnerIndex] in chat.participants) {
+            if (this.state.partnerList[partnerIndex].value in chat.participants) {
               exsistPartners ++;
             }
           }
@@ -157,7 +162,7 @@ export default class ChatforGroup extends Component {
     var st = 'gamePortal/groups/' + newChatId + "/participants/";
     var indexnum = 1;
     for(var index in uidPartners) {
-      db.ref(st + uidPartners[index]).set({participantIndex : indexnum});
+      db.ref(st + uidPartners[index].value).set({participantIndex : indexnum});
       indexnum++;
     }
 
@@ -169,7 +174,7 @@ export default class ChatforGroup extends Component {
     selfRef.set(newChatInfo);
 
     for(var index in uidPartners){
-      let partnerRef = db.ref('users/'+uidPartners[index]+'/privateButAddable/groups/'+newChatId);
+      let partnerRef = db.ref('users/'+uidPartners[index].value +'/privateButAddable/groups/'+newChatId);
       partnerRef.set(newChatInfo);
     }
 
@@ -191,12 +196,13 @@ export default class ChatforGroup extends Component {
   }
   logChange(val) {
       console.log('Selected: ', val);
-      this.setState({partner: val.value})
+      this.setState({partner: val})
+      console.log(this.state.partner);
     }
 
   render() {
     var partnerids = this.state.partnerList.map((user) =>
-      <div>{user}</div>
+      <div>{user.label}</div>
     );
 
     var options = [
@@ -218,7 +224,7 @@ export default class ChatforGroup extends Component {
             <Select
               name="form-field-name"
               value={this.state.partner}
-              options={options}
+              options={this.state.onlineUsers}
               onChange={this.logChange.bind(this)}
             />
 

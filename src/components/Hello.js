@@ -125,11 +125,7 @@ export default class Hello extends Component {
 
         <div className="side-chat">
             <ChatforGroup myprop={this.state.puid}/>
-            reactportal: R8KuDqOLXzL92SmSmm31WaxF21U2
-            xw1449@nyu.edu: Kb72AVDAJdZNbV3QB1HDG8ESzvM2
-            kathywxt@gmail.com: ngWOnVjnoISjeycllrr4yEeVNPl1
-            ssg441@nyu.edu: p0t6ex7Wgaf6jWdBd5lG8SfXxcU2
-            yq577@nyu.edu: LwnimAsjHsR9uOvfIaj0FqcTsrE2
+
         </div>
     </div>
     );
