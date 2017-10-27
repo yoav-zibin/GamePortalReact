@@ -12,7 +12,7 @@ export default class ChatforGroup extends Component {
       super();
       this.state = {
           chatId: "",
-          chatName: "",
+          chatName: "GroupChat",
           partner: [{value: '', label: ''}],
           partnerList: [],
           chatWindowVisible: "chatWindowInvisible",
@@ -36,8 +36,6 @@ export default class ChatforGroup extends Component {
   }
 
   getOnlineUsers(){
-
-
         var usereference = firebaseApp.database().ref('gamePortal/recentlyConnected');
         var updateUsers = (users) =>{
             this.setState({onlineUsers : users});
@@ -90,14 +88,45 @@ export default class ChatforGroup extends Component {
       this.getSelfParticipatedChatIds();
       this.getOnlineUsers();
 
+  }
 
+
+  componentDidUpdate() {
+    if (this.props.myprops.name === 'group') {
+      var id = this.props.myprops.id;
+      var groupref = db.ref('gamePortal/groups/' + id + '/participants');
+      groupref.once('value', function(snapshot) {
+        var list = [];
+        var participantslist = snapshot.val();
+        for (var key in participantslist){
+          if (key == auth.currentUser.uid) continue;
+          var userref = db.ref('users/' + key + '/publicFields/displayName');
+          userref.once('value').then(function(snapshot) {
+            var username = snapshot.val();
+            if(username!=null){
+                list.push({
+                    value: snapshot.ref.parent.parent.key,
+                    label: username.toString(),
+                });
+              this.setState({partnerList: list});
+            }
+          });
+        }
+      });
+      this.setState({
+          chatId: this.props.myprops.id,
+          chatWindowVisible: "chatWindowVisible"      
+      });
+    }
+    else if (this.props.myprops.name === 'person') {
+
+    }
   }
 
   startChat(){
     if(this.state.partnerList.length !== 0)
     {
       var chatId = this.getOldChatIdOrStartNewChat();
-      console.log("mylog,", this.props.myprop);
       this.setState({
           chatId: chatId,
           chatWindowVisible: "chatWindowVisible"
@@ -129,11 +158,9 @@ export default class ChatforGroup extends Component {
               exsistPartners ++;
             }
           }
-
           for(var pt in this.chats[index].participants) {
             nofparticipants++;
           }
-
           if(nofparticipants === this.state.partnerList.length+1) {
             if (nofparticipants === exsistPartners+1) return chat.id;
           } 

@@ -15,7 +15,7 @@ export default class Hello extends Component {
         this.state = {
             content : [],
             chats: [],
-            puid: null,
+            props: {name: "hello", id: null, displayName:null},
         };
     }
 
@@ -54,26 +54,16 @@ export default class Hello extends Component {
             var chatIds = snapshot.val();
             var list = [];
             for (var key in chatIds){
-            /*    var chatsReference = firebaseApp.database().ref('chats/'+ key +'/participants');
-                chatsReference.once('value').then(function(snapshot) {
-                    var participantIds = snapshot.val();
-                    for(var key in participantIds) {
-                        if(key!==uid) {
-                            var displayNameReference = firebaseApp.database().ref('users/'+key+'/publicFields/displayName');
-                            displayNameReference.once('value').then(function(snapshot) {
-                                var participantName = snapshot.val();
-                                list.push({
-                                    chat: participantName.toString(),
-                                })
-                            })
-                        }
-                    }
-                })*/
-                list.push({
-                    chat: key,
-                })
-            updatechats(list);
-         }
+                var groupref = db.ref('gamePortal/groups/' + key + '/groupName');
+                groupref.once('value').then(function(snapshot) {
+                    var groupname = snapshot.val();
+                    list.push({
+                        groupid: snapshot.ref.parent.key,
+                        name : groupname
+                    })
+                    updatechats(list);
+                });
+            }
         });
     }
 
@@ -83,7 +73,20 @@ export default class Hello extends Component {
         parent = parent.toString()
         if (parent == 'recently-connected'){
             id = id.substring(19);
-            this.setState({puid: id});
+            let list = {
+                name: 'person',
+                id: id
+            }
+            this.setState({props: list});
+        }
+        else {
+            id = id.substring(6);
+            let list = {
+                name: 'group',
+                id: id
+
+            }
+            this.setState({props: list});
         }
     }
   }
@@ -96,8 +99,8 @@ export default class Hello extends Component {
     );
 
     var chats = this.state.chats.map((chats) =>
-      <Nav>
-      <NavText>{chats.chat}</NavText>
+      <Nav id={chats.groupid}>
+      <NavText>{chats.name}</NavText>
       </Nav>
     );
 
@@ -124,7 +127,7 @@ export default class Hello extends Component {
         </div>
 
         <div className="side-chat">
-            <ChatforGroup myprop={this.state.puid}/>
+            <ChatforGroup myprops={this.state.props}/>
 
         </div>
     </div>
