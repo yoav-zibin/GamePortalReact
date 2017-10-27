@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 import { Button } from 'reactstrap';
 import ChatWindow from './ChatWindow';
-import {db, auth} from '../firebase';
+import {db, auth, firebaseApp} from '../firebase';
 import firebase from 'firebase';
+import Select from 'react-select';
+import 'react-select/dist/react-select.css';
 
 export default class ChatforGroup extends Component {
 
@@ -13,10 +15,12 @@ export default class ChatforGroup extends Component {
           chatName: "",
           partner: "",
           partnerList: [],
-          chatWindowVisible: "chatWindowInvisible"
+          chatWindowVisible: "chatWindowInvisible",
+          onlineUsers: []
 
       };
       this.chats = [];
+
   }
 
   getSelfParticipatedChatIds(){
@@ -30,6 +34,34 @@ export default class ChatforGroup extends Component {
         if(self.selfChatIds.length > 0)
             self.loadChat(0);
       });
+  }
+
+  getOnlineUsers(){
+   /*     var usereference = firebaseApp.database().ref('gamePortal/recentlyConnected');
+        var updateUsers = (users) =>{
+            this.setState({onlineUsers : users});
+        }
+        usereference.on('value', function(snapshot) {
+            var current_users = snapshot.val();
+            var list = [];
+            var myuid = auth.currentUser.uid;
+            for (var key in current_users){
+                var uid = snapshot.child(key + '/userId').val();
+                if (uid == myuid) continue;
+                var usernameRef = db.ref('users/'+uid+'/publicFields/displayName')
+                usernameRef.once('value').then(function(snapshot) {
+                    var username = snapshot.val();
+                    if(username!=null){
+                        list.push({
+                          value: snapshot.ref.parent.parent.key,
+                          label: username.toString(),
+                        });
+                        updateUsers(list);
+                    }
+                });
+              }
+        });*/
+
   }
 
   loadChat(index){
@@ -51,6 +83,9 @@ export default class ChatforGroup extends Component {
 
   componentWillMount(){
       this.getSelfParticipatedChatIds();
+      this.getOnlineUsers();
+
+
   }
 
   startChat(){
@@ -154,26 +189,45 @@ export default class ChatforGroup extends Component {
       this.setState({chatName: e.target.value});
 
   }
+  logChange(val) {
+      console.log('Selected: ', val);
+      this.setState({partner: val.value})
+    }
 
   render() {
     var partnerids = this.state.partnerList.map((user) =>
-
       <div>{user}</div>
     );
 
+    var options = [
+      { value: 'R8KuDqOLXzL92SmSmm31WaxF21U2', label: 'reactportal' },
+      { value: 'Kb72AVDAJdZNbV3QB1HDG8ESzvM2', label: 'Xintong Wang' },
+      { value: 'p0t6ex7Wgaf6jWdBd5lG8SfXxcU2', label: 'ssg441@nyu.edu' },
+      { value: 'LwnimAsjHsR9uOvfIaj0FqcTsrE2', label: 'yq577@nyu.edu' }     
+    ];
+
     return (
+
         <div>
             Chat
             Partners: <br/>
             {partnerids}
             <input type="text" value={this.state.chatName} onChange={this.handleCNameChange.bind(this)} placeholder="Enter group name"/><br/>
             <hr/>
-            <input type="text" value={this.state.partner} onChange={this.handleUidChange.bind(this)} placeholder="Enter partner uid"/><br/>
+            
+            <Select
+              name="form-field-name"
+              value={this.state.partner}
+              options={options}
+              onChange={this.logChange.bind(this)}
+            />
 
             <Button color="success" onClick={this.addUser.bind(this)}>Add User</Button>
             <Button color="success" onClick={this.startChat.bind(this)}>Start Chat</Button>
             <ChatWindow chatId={this.state.chatId} chatWindowVisible={this.state.chatWindowVisible}/>
+
         </div>
+
     );
   }
 }
