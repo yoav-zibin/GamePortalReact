@@ -47,7 +47,7 @@ export default class Hello extends Component {
         });
 
         var uid = auth.currentUser.uid;
-        var chatReference = firebaseApp.database().ref('users/'+uid+'/privateButAddable/chats');
+        var chatReference = firebaseApp.database().ref('users/'+uid+'/privateButAddable/groups');
         var updatechats = (chats) =>{
             this.setState({chats : chats});
         }

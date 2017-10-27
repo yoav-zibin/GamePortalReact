@@ -20,7 +20,7 @@ export default class ChatWindow extends Component {
           message: this.state.textMessage,
           timestamp: firebase.database.ServerValue.TIMESTAMP
       };
-      let messagesRef = db.ref('chats/'+this.props.chatId+'/messages');
+      let messagesRef = db.ref('gamePortal/groups/'+this.props.chatId+'/messages');
       messagesRef.push(message_info);
   }
 

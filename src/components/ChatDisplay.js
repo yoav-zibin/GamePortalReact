@@ -12,7 +12,7 @@ export default class ChatWindow extends Component {
 
   loadMessages(){
       var self = this;
-      var messagesRef = db.ref("chats/"+this.props.chatId+"/messages");
+      var messagesRef = db.ref("gamePortal/groups/"+this.props.chatId+"/messages");
       messagesRef.on('value', function(snapshot) {
           var messages = snapshot.val();
           var list = [];

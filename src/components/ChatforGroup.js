@@ -20,7 +20,7 @@ export default class ChatforGroup extends Component {
 
   getSelfParticipatedChatIds(){
       var self = this;
-      var selfChatIdsRef = db.ref("users/"+auth.currentUser.uid+"/privateButAddable/chats");
+      var selfChatIdsRef = db.ref("users/"+auth.currentUser.uid+"/privateButAddable/groups");
       selfChatIdsRef.on('value', function(snapshot) {
         self.selfChatIds = [];
         for (var key in snapshot.val()){
@@ -37,7 +37,7 @@ export default class ChatforGroup extends Component {
       }
       var self = this;
       var chatId = self.selfChatIds[index];
-      var chatReference = db.ref("chats/"+chatId);
+      var chatReference = db.ref("gamePortal/groups/"+chatId);
       index = index + 1;
       chatReference.once('value', function(snapshot) {
         var chat = snapshot.val();
@@ -103,25 +103,28 @@ export default class ChatforGroup extends Component {
     let participants = {};
     participants[uidSelf] = true;
     for(var index in uidPartners) {
-      participants[uidPartners[index]]= true;
+      participants[uidPartners[index]] = true;
     }
 
-    let chatref = db.ref('chats');
-    let newChat = chatref.push({
-        participants:participants,
+    let chatRef = db.ref('gamePortal/groups');
+    let newChat = chatRef.push({
         createdOn: firebase.database.ServerValue.TIMESTAMP,
-        groupName: "ReactPortaltest"
+        groupName: "ReactPortaltest",
+        matches: "",
     });
+
     let newChatId = newChat.key;
+
+
     let newChatInfo = {
         addedByUid: auth.currentUser.uid,
         timestamp: firebase.database.ServerValue.TIMESTAMP
     };
-    let selfRef = db.ref('users/'+uidSelf+'/privateButAddable/chats/'+newChatId);
+    let selfRef = db.ref('users/'+uidSelf+'/privateButAddable/groups/'+newChatId);
     selfRef.set(newChatInfo);
 
     for(var index in uidPartners){
-      let partnerRef = db.ref('users/'+uidPartners[index]+'/privateButAddable/chats/'+newChatId);
+      let partnerRef = db.ref('users/'+uidPartners[index]+'/privateButAddable/groups/'+newChatId);
       partnerRef.set(newChatInfo);
     }
 

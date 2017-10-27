@@ -19,7 +19,7 @@ export default class Chat extends Component {
 
   getSelfParticipatedChatIds(){
       var self = this;
-      var selfChatIdsRef = db.ref("users/"+auth.currentUser.uid+"/privateButAddable/chats");
+      var selfChatIdsRef = db.ref("users/"+auth.currentUser.uid+"/privateButAddable/groups");
       selfChatIdsRef.on('value', function(snapshot) {
         self.selfChatIds = [];
         for (var key in snapshot.val()){
@@ -36,7 +36,7 @@ export default class Chat extends Component {
       }
       var self = this;
       var chatId = self.selfChatIds[index];
-      var chatReference = db.ref("chats/"+chatId);
+      var chatReference = db.ref("gamePortal/groups/"+chatId);
       index = index + 1;
       chatReference.once('value', function(snapshot) {
         var chat = snapshot.val();
@@ -77,7 +77,7 @@ export default class Chat extends Component {
     let participants = {};
     participants[uidSelf] = true;
     participants[uidPartner]= true;
-    let chatref = db.ref('chats');
+    let chatref = db.ref('gamePortal/groups');
     let newChat = chatref.push({
         participants:participants,
         createdOn: firebase.database.ServerValue.TIMESTAMP,
@@ -88,8 +88,8 @@ export default class Chat extends Component {
         addedByUid: auth.currentUser.uid,
         timestamp: firebase.database.ServerValue.TIMESTAMP
     };
-    let selfRef = db.ref('users/'+uidSelf+'/privateButAddable/chats/'+newChatId);
-    let partnerRef = db.ref('users/'+uidPartner+'/privateButAddable/chats/'+newChatId);
+    let selfRef = db.ref('users/'+uidSelf+'/privateButAddable/groups/'+newChatId);
+    let partnerRef = db.ref('users/'+uidPartner+'/privateButAddable/groups/'+newChatId);
     selfRef.set(newChatInfo);
     partnerRef.set(newChatInfo);
     return newChatId;
