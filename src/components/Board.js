@@ -3,19 +3,35 @@ import { Layer, Stage, Image } from 'react-konva';
 import CanvasImage from './CanvasImage';
 
 export default class Board extends Component {
+  constructor(){
+      super();
+      this.height = 500;
+      this.width = 500;
+  }
+
   render() {
-    //Temp variables
-    var board = 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d7/Chessboard480.svg/1200px-Chessboard480.svg.png';
-    var piece = 'https://www.shareicon.net/data/128x128/2016/07/20/799015_chess_512x512.png';
+    let self = this;
+    let board = this.props.board;
+    let pieces = this.props.pieces.map(
+        (piece, index) => {
+            return (
+                <CanvasImage ref='image'
+                draggable={true}
+                height={piece.height*self.height/board.height}
+                width={piece.width*self.width/board.width}
+                src={piece.src} />
+            );
+        }
+    );
 
     return (
     <div>
-      <Stage width={400} height={400}>
+      <Stage width={this.width} height={this.height}>
         <Layer>
-          <CanvasImage height={400} width={400} src={board} />
+          <CanvasImage height={this.height} width={this.height} src={board.src} />
         </Layer>
         <Layer>
-            <CanvasImage ref='image' draggable={true} height={50} width={50} src={piece} />
+            {pieces}
         </Layer>
       </Stage>
     </div>
