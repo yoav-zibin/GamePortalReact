@@ -30,7 +30,6 @@ export default class ChatWindow extends Component {
                     uid: snapshot.ref.parent.parent.key,
                     displayname: userName
                 });
-                console.log(list);
                 self.setState({participants:list});
               })
           }
@@ -56,7 +55,6 @@ export default class ChatWindow extends Component {
                     sentUid: messages[index].senderUid,
                     sentdisplayname: userName
                 });
-                console.log(list);
                 self.setState({messages:list});
               })
           }
