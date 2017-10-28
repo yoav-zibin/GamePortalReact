@@ -7,28 +7,36 @@ export default class Board extends Component {
       super();
       this.height = 500;
       this.width = 500;
+      this.board = null;
+      this.boardCanvas = null;
   }
 
   render() {
     let self = this;
-    let board = this.props.board;
-    let pieces = this.props.pieces.map(
-        (piece, index) => {
-            return (
-                <CanvasImage ref='image'
-                draggable={true}
-                height={piece.height*self.height/board.height}
-                width={piece.width*self.width/board.width}
-                src={piece.src} />
-            );
+    let pieces = null;
+    if (this.props.board){
+        if(this.board !== this.props.board){
+            this.board = this.props.board;
+            this.boardCanvas = (<CanvasImage height={this.height} width={this.height} src={this.board.src} />);
         }
-    );
+        pieces = this.props.pieces.map(
+            (piece, index) => {
+                return (
+                    <CanvasImage ref='image'
+                    draggable={true}
+                    height={piece.height*self.height/this.board.height}
+                    width={piece.width*self.width/this.board.width}
+                    src={piece.src} />
+                );
+            }
+        );
+    }
 
     return (
     <div>
       <Stage width={this.width} height={this.height}>
         <Layer>
-          <CanvasImage height={this.height} width={this.height} src={board.src} />
+          {this.boardCanvas}
         </Layer>
         <Layer>
             {pieces}
