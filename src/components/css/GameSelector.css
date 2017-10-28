@@ -1,0 +1,11 @@
+.game-selector-container{
+    display: flex;
+    justify-content: center;
+    margin: 5px 0px;
+}
+.spec-selector{
+    width: 300px;
+}
+.load-game-btn{
+    margin: 0px 15px;
+}

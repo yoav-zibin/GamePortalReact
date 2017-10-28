@@ -7,8 +7,12 @@
     flex:2;
     background: #2c3e50;
 }
-.play-arena{
+.play-arena-container{
     flex: 5;
+}
+.play-arena-component{
+    display: flex;
+    justify-content: center;
 }
 .side-chat{
     flex: 2;
