@@ -17,7 +17,6 @@ class CanvasImage extends React.Component {
   }
 
   render() {
-      console.log('simi', this.props);
     return <Image ref="image" {...this.props} image={this.state.image} />;
   }
 }
