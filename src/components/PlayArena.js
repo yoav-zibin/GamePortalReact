@@ -9,11 +9,16 @@ export default class PlayArena extends Component {
           board: null,
           pieces: []
       };
-      this.setBoardImage(this.props.spec.board.imageId);
-      this.setPieces(this.props.spec.pieces);
+      this.loadSpec();
   }
 
-  setBoardImage(imageId){
+  loadSpec(){
+      this.setBoardImage();
+      this.setPieces();
+  }
+
+  setBoardImage(){
+      var imageId = this.props.spec.board.imageId;
       var self = this;
       let imageRef = db.ref('gameBuilder/images/'+imageId);
       imageRef.once('value').then(function(snapshot) {
@@ -26,7 +31,8 @@ export default class PlayArena extends Component {
       });
   }
 
-  setPieces(pieces){
+  setPieces(){
+      var pieces = this.props.spec.pieces;
       this.allPieces = [];
       var self = this;
       var numPieces = pieces.length;

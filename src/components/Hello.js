@@ -19,6 +19,7 @@ export default class Hello extends Component {
             props: {name: "hello", id: null, displayName:null},
             spec: null
         };
+        this.playArena = null;
     }
 
     componentDidMount(){
@@ -111,9 +112,8 @@ export default class Hello extends Component {
       </Nav>
     );
 
-    var playArena = null;
     if(this.state.spec){
-        playArena = (<PlayArena spec={this.state.spec}/>);
+        this.playArena = (<PlayArena spec={this.state.spec}/>);
     }
 
     return (
@@ -137,7 +137,7 @@ export default class Hello extends Component {
         <div className="play-arena-container">
             <GameSelector setSpec={this.setSpec.bind(this)}/>
             <div className="play-arena-component">
-                {playArena}
+                {this.playArena}
             </div>
         </div>
 
