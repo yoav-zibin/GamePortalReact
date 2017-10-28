@@ -9,7 +9,7 @@ export default class PlayArena extends Component {
           board: null,
           pieces: []
       };
-      this.loadSpec();
+      this.spec = null;
   }
 
   loadSpec(){
@@ -63,6 +63,10 @@ export default class PlayArena extends Component {
   }
 
   render() {
+      if(this.props.spec !== this.spec){
+          this.spec = this.props.spec;
+          this.loadSpec();
+      }
     return (
     <div>
       <Board board={this.state.board} pieces={this.state.pieces}/>
