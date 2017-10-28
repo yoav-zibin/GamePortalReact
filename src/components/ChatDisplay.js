@@ -6,10 +6,37 @@ export default class ChatWindow extends Component {
 
   constructor(){
       super();
-      this.state = {messages:[]};
+      this.state = {
+        messages:[],
+        participants: [],
+      };
       this.prevChatId = "";
   }
 
+  loadparticipants() {
+    var self = this;
+    var participantsRef = db.ref("gamePortal/groups/"+this.props.chatId+"/participants");
+    participantsRef.on('value', function(snapshot) {
+          var participants = snapshot.val();
+          var list = [];
+          var userName = "";
+
+          for(var index in participants){
+              if (index == auth.currentUser.uid) continue;
+              var usernameRef = db.ref('users/'+index+'/publicFields/displayName')
+              usernameRef.on("value",function(snapshot){
+                  userName = snapshot.val();
+                  list.push({
+                    uid: snapshot.ref.parent.parent.key,
+                    displayname: userName
+                });
+                console.log(list);
+                self.setState({participants:list});
+              })
+          }
+      });
+
+  }
   loadMessages(){
       var self = this;
       var messagesRef = db.ref("gamePortal/groups/"+this.props.chatId+"/messages");
@@ -49,8 +76,13 @@ export default class ChatWindow extends Component {
   render() {
     if(this.prevChatId!==this.props.chatId){
       this.prevChatId = this.props.chatId;
+      this.loadparticipants();
       this.loadMessages();
     }
+
+    var showparticipants = this.state.participants.map((participant) =>{
+      return (<span>{participant.displayname}<br/></span>);
+    });
     var prevChat = this.state.messages.map((message) =>{
         var applyClass = null;
       if(message.sentBySelf){
@@ -62,6 +94,10 @@ export default class ChatWindow extends Component {
     });
     return (
         <div>
+            <h4>Group Members</h4>
+            {showparticipants}
+            <p></p>
+            <h4>Messages</h4>            
             {prevChat}
         </div>
     );
