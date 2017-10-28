@@ -7,11 +7,7 @@ export default class PlayArena extends Component {
       super(props);
       this.state = {
           board: null,
-          pieces: [{
-              src:'https://www.shareicon.net/data/128x128/2016/07/20/799015_chess_512x512.png',
-              width:50,
-              height:50
-          }]
+          pieces: []
       };
       this.setBoardImage(this.props.spec.board.imageId);
       this.setPieces(this.props.spec.pieces);
@@ -23,28 +19,40 @@ export default class PlayArena extends Component {
       imageRef.once('value').then(function(snapshot) {
           let board = {
               src: snapshot.val().downloadURL,
-              height:400,
-              width:400
+              height:snapshot.val().height,
+              width:snapshot.val().width
           };
           self.setState({board:board});
       });
   }
 
   setPieces(pieces){
+      this.allPieces = [];
+      var self = this;
+      var numPieces = pieces.length;
       for(var i in pieces){
           var piece_info = pieces[i];
           var elemRef = db.ref('gameBuilder/elements/'+piece_info.pieceElementId);
-          elemRef.once('value').then(function(snapshot) {
-
-          });
-          var image_url = '';
           var piece = {
-              src: image_url,
               x:piece_info.initialState.x,
               y:piece_info.initialState.y,
-              height: 0,
-              width: 0
           };
+          elemRef.once('value').then(function(p, snapshot) {
+              var images = snapshot.val().images;
+              var imageId = images[0].imageId;
+              var imageRef = db.ref('gameBuilder/images/'+imageId);
+              imageRef.once('value').then(function(myPiece, snapshot) {
+                  myPiece.imageUrl = snapshot.val().downloadURL;
+                  myPiece.height = snapshot.val().height;
+                  myPiece.width = snapshot.val().width;
+                  self.allPieces.push(myPiece);
+                  if(self.allPieces.length == numPieces){
+                      self.setState({
+                          pieces:self.allPieces
+                      });
+                  }
+              }.bind(null, p));
+          }.bind(null, piece));
       }
   }
 

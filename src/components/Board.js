@@ -9,6 +9,7 @@ export default class Board extends Component {
       this.width = 500;
       this.board = null;
       this.boardCanvas = null;
+      this.pieces = null
   }
 
   render() {
@@ -19,13 +20,19 @@ export default class Board extends Component {
             this.board = this.props.board;
             this.boardCanvas = (<CanvasImage height={this.height} width={this.height} src={this.board.src} />);
         }
-        pieces = this.props.pieces.map(
+    }
+    if(this.props.pieces.length > 0 && this.pieces !== this.props.pieces){
+        this.pieces = this.props.pieces;
+        pieces = this.pieces.map(
             (piece, index) => {
                 return (
                     <CanvasImage ref='image'
+                    key={index}
                     draggable={true}
                     height={piece.height*self.height/this.board.height}
                     width={piece.width*self.width/this.board.width}
+                    x={piece.x}
+                    y={piece.y}
                     src={piece.src} />
                 );
             }
