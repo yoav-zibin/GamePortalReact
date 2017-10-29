@@ -4,3 +4,9 @@
 .chatWindowInvisible{
     visibility: hidden;
 }
+.online{
+    background-color: #008000;
+}
+.offline{
+	background-color: #FF4500;
+}

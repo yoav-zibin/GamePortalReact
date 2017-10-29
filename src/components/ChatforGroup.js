@@ -19,6 +19,7 @@ export default class ChatforGroup extends Component {
           onlineUsers: [{value: '', label: ''}]
       };
       this.chats = [];
+      this.prevChatId = "";
 
   }
 
@@ -46,12 +47,12 @@ export default class ChatforGroup extends Component {
             var myuid = auth.currentUser.uid;
             for (var key in current_users){
                 var uid = snapshot.child(key + '/userId').val();
-                if (uid == myuid) continue;
+                if (uid === myuid) continue;
 
                 var usernameRef = db.ref('users/'+uid+'/publicFields')
                 usernameRef.once('value').then(function(snapshot) {
                     var isConnected = snapshot.child('/isConnected').val();
-                    if(isConnected == true) {
+                    if(isConnected === true) {
                       var username = snapshot.child('/displayName').val();
                       if(username!=null){
                           list.push({
@@ -92,35 +93,15 @@ export default class ChatforGroup extends Component {
 
 
   componentDidUpdate() {
-    if (this.props.myprops.name === 'group') {
-      var id = this.props.myprops.id;
-/*      var groupref = db.ref('gamePortal/groups/' + id + '/participants');
-      groupref.once('value', function(snapshot) {
-        var list = [];
-        var participantslist = snapshot.val();
-        for (var key in participantslist){
-          if (key == auth.currentUser.uid) continue;
-          var userref = db.ref('users/' + key + '/publicFields/displayName');
-          userref.once('value').then(function(snapshot) {
-            var username = snapshot.val();
-            if(username!=null){
-                list.push({
-                    value: snapshot.ref.parent.parent.key,
-                    label: username.toString(),
-                });
-              this.setState({partnerList: list});
-            }
-          });
-        }
-      });*/
-      this.setState({
+    if (this.prevChatId!==this.props.myprops)
+      if (this.props.myprops.name === 'group') {
+        this.prevChatId = this.props.myprops;
+        var id = this.props.myprops.id;
+        this.setState({
           chatId: this.props.myprops.id,
           chatWindowVisible: "chatWindowVisible"      
-      });
-    }
-    else if (this.props.myprops.name === 'person') {
-
-    }
+        });
+      }
   }
 
   startChat(){
@@ -182,6 +163,7 @@ export default class ChatforGroup extends Component {
         createdOn: firebase.database.ServerValue.TIMESTAMP,
         groupName: this.state.chatName,
         matches: "",
+        messages: null,
         participants: me,
     }
 
@@ -231,6 +213,7 @@ export default class ChatforGroup extends Component {
     }
 
   render() {
+
     var partnerids = this.state.partnerList.map((user) =>
       <div>{user.label}</div>
     );

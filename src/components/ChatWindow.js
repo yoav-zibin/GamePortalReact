@@ -10,8 +10,36 @@ export default class ChatWindow extends Component {
   constructor(){
       super();
       this.state = {
-          textMessage: ""
+          textMessage: "",
+          participants: [],
       };
+      this.prevChatId = "";
+  }
+  
+  loadparticipants() {
+    var self = this;
+    var participantsRef = db.ref("gamePortal/groups/"+this.props.chatId+"/participants");
+    participantsRef.on('value', function(snapshot) {
+          var participants = snapshot.val();
+          var list = [];
+          var userName = "";
+
+          for(var index in participants){
+              if (index == auth.currentUser.uid) continue;
+              var usernameRef = db.ref('users/'+index+'/publicFields')
+              usernameRef.once("value",function(snapshot){
+                  userName = snapshot.child('/displayName').val();
+                  var isConnected = snapshot.child('/isConnected').val();
+                  list.push({
+                    uid: snapshot.ref.parent.parent.key,
+                    displayname: userName,
+                    isConnected : isConnected
+                });
+                self.setState({participants:list});
+              })
+          }
+      });
+
   }
 
   sendMessage(){
@@ -22,6 +50,7 @@ export default class ChatWindow extends Component {
       };
       let messagesRef = db.ref('gamePortal/groups/'+this.props.chatId+'/messages');
       messagesRef.push(message_info);
+      this.setState({textMessage : ""});
   }
 
   handleInputChange(e){
@@ -29,8 +58,26 @@ export default class ChatWindow extends Component {
   }
 
   render() {
+    if(this.prevChatId!==this.props.chatId){
+      this.prevChatId = this.props.chatId;
+      this.setState({participants: []});
+      this.loadparticipants();
+    }
+
+    var showparticipants = this.state.participants.map((participant) =>{
+      if(participant.isConnected)
+          return(<span className={'online'}>{participant.displayname}<br/></span>);
+     else
+        return(<span className={'offline'}>{participant.displayname}<br/></span>);
+      
+    });
+
     return (
         <div className={this.props.chatWindowVisible}>
+            <h4>Group Members</h4>
+            {showparticipants}
+            <p></p>
+            <h4>Messages</h4>    
             <ChatDisplay chatId={this.props.chatId}/>
             <textarea
                 className="message"
