@@ -24,11 +24,11 @@ export default class ChatforGroup extends Component {
   }
 
   getSelfParticipatedChatIds(){
-      var self = this;
-      var selfChatIdsRef = db.ref("users/"+auth.currentUser.uid+"/privateButAddable/groups");
+      let self = this;
+      let selfChatIdsRef = db.ref("users/"+auth.currentUser.uid+"/privateButAddable/groups");
       selfChatIdsRef.on('value', function(snapshot) {
         self.selfChatIds = [];
-        for (var key in snapshot.val()){
+        for (let key in snapshot.val()){
             self.selfChatIds.push(key);
         }
         if(self.selfChatIds.length > 0)
@@ -37,24 +37,24 @@ export default class ChatforGroup extends Component {
   }
 
   getOnlineUsers(){
-        var usereference = firebaseApp.database().ref('gamePortal/recentlyConnected');
-        var updateUsers = (users) =>{
+        let usereference = firebaseApp.database().ref('gamePortal/recentlyConnected');
+        let updateUsers = (users) =>{
             this.setState({onlineUsers : users});
         }
         usereference.on('value', function(snapshot) {
-            var current_users = snapshot.val();
-            var list = [];
-            var myuid = auth.currentUser.uid;
-            for (var key in current_users){
-                var uid = snapshot.child(key + '/userId').val();
+            let current_users = snapshot.val();
+            let list = [];
+            let myuid = auth.currentUser.uid;
+            for (let key in current_users){
+                let uid = snapshot.child(key + '/userId').val();
                 if (uid === myuid) continue;
 
-                var usernameRef = db.ref('users/'+uid+'/publicFields')
+                let usernameRef = db.ref('users/'+uid+'/publicFields')
                 usernameRef.once('value').then(function(snapshot) {
-                    var isConnected = snapshot.child('/isConnected').val();
+                    let isConnected = snapshot.child('/isConnected').val();
                     if(isConnected === true) {
-                      var username = snapshot.child('/displayName').val();
-                      if(username!=null){
+                      let username = snapshot.child('/displayName').val();
+                      if(username!==null){
                           list.push({
                             value: snapshot.ref.parent.key,
                             label: username.toString(),
@@ -72,12 +72,12 @@ export default class ChatforGroup extends Component {
       if (index === 0){
           this.chats = [];
       }
-      var self = this;
-      var chatId = self.selfChatIds[index];
-      var chatReference = db.ref("gamePortal/groups/"+chatId);
+      let self = this;
+      let chatId = self.selfChatIds[index];
+      let chatReference = db.ref("gamePortal/groups/"+chatId);
       index = index + 1;
       chatReference.once('value', function(snapshot) {
-        var chat = snapshot.val();
+        let chat = snapshot.val();
         chat.id = chatId;
         self.chats.push(chat);
         if(index < self.selfChatIds.length)
@@ -96,7 +96,7 @@ export default class ChatforGroup extends Component {
     if (this.prevChatId!==this.props.myprops)
       if (this.props.myprops.name === 'group') {
         this.prevChatId = this.props.myprops;
-        var id = this.props.myprops.id;
+        let id = this.props.myprops.id;
         this.setState({
           chatId: this.props.myprops.id,
           chatWindowVisible: "chatWindowVisible"      
@@ -107,7 +107,7 @@ export default class ChatforGroup extends Component {
   startChat(){
     if(this.state.partnerList.length !== 0)
     {
-      var chatId = this.getOldChatIdOrStartNewChat();
+      let chatId = this.getOldChatIdOrStartNewChat();
       this.setState({
           chatId: chatId,
           chatWindowVisible: "chatWindowVisible"
@@ -116,8 +116,8 @@ export default class ChatforGroup extends Component {
   }
 
   addUser(){
-    var isThere = false;
-    for(var partner in this.state.partnerList) {
+    let isThere = false;
+    for(let partner in this.state.partnerList) {
       if(this.state.partner.value === this.state.partnerList[partner].value) {
         isThere = true;
       }
@@ -130,16 +130,16 @@ export default class ChatforGroup extends Component {
   }
 
   getOldChatIdOrStartNewChat(){
-      for(var index in this.chats){
-          var chat = this.chats[index];
-          var exsistPartners = 0;
-          var nofparticipants = 0;
-          for(var partnerIndex in this.state.partnerList) {
+      for(let index in this.chats){
+          let chat = this.chats[index];
+          let exsistPartners = 0;
+          let nofparticipants = 0;
+          for(let partnerIndex in this.state.partnerList) {
             if (this.state.partnerList[partnerIndex].value in chat.participants) {
               exsistPartners ++;
             }
           }
-          for(var pt in this.chats[index].participants) {
+          for(let pt in this.chats[index].participants) {
             nofparticipants++;
           }
           if(nofparticipants === this.state.partnerList.length+1) {
@@ -155,7 +155,7 @@ export default class ChatforGroup extends Component {
 
     let chatRef = db.ref('gamePortal/groups');
 
-    var participantId = auth.currentUser.uid;
+    let participantId = auth.currentUser.uid;
 
     let me = {};
     me[participantId] = {participantIndex : 0};
@@ -171,9 +171,9 @@ export default class ChatforGroup extends Component {
 
     let newChatId = newChat.key;
 
-    var st = 'gamePortal/groups/' + newChatId + "/participants/";
-    var indexnum = 1;
-    for(var index in uidPartners) {
+    let st = 'gamePortal/groups/' + newChatId + "/participants/";
+    let indexnum = 1;
+    for(let index in uidPartners) {
       db.ref(st + uidPartners[index].value).set({participantIndex : indexnum});
       indexnum++;
     }
@@ -185,7 +185,7 @@ export default class ChatforGroup extends Component {
     let selfRef = db.ref('users/'+uidSelf+'/privateButAddable/groups/'+newChatId);
     selfRef.set(newChatInfo);
 
-    for(var index in uidPartners){
+    for(let index in uidPartners){
       let partnerRef = db.ref('users/'+uidPartners[index].value +'/privateButAddable/groups/'+newChatId);
       partnerRef.set(newChatInfo);
     }
@@ -214,11 +214,11 @@ export default class ChatforGroup extends Component {
 
   render() {
 
-    var partnerids = this.state.partnerList.map((user) =>
+    let partnerids = this.state.partnerList.map((user) =>
       <div>{user.label}</div>
     );
 
-    var options = [
+    let options = [
       { value: 'R8KuDqOLXzL92SmSmm31WaxF21U2', label: 'reactportal' },
       { value: 'Kb72AVDAJdZNbV3QB1HDG8ESzvM2', label: 'Xintong Wang' },
       { value: 'p0t6ex7Wgaf6jWdBd5lG8SfXxcU2', label: 'ssg441@nyu.edu' },
@@ -231,7 +231,7 @@ export default class ChatforGroup extends Component {
             Chat
             Partners: <br/>
             {partnerids}
-            <input type="text" value={this.state.chatName} onChange={this.handleCNameChange.bind(this)} placeholder="Enter group name"/><br/>
+            Group Name: <input type="text" value={this.state.chatName} onChange={this.handleCNameChange.bind(this)} placeholder="Enter group name"/><br/>
             <hr/>
             
             <Select

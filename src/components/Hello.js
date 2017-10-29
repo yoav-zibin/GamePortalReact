@@ -33,11 +33,11 @@ export default class Hello extends Component {
             var myuid = auth.currentUser.uid;
             for (var key in current_users){
                 var uid = snapshot.child(key + '/userId').val();
-                if (uid == myuid) continue;
+                if (uid === myuid) continue;
                 var usernameRef = db.ref('users/'+uid+'/publicFields/displayName')
                 usernameRef.once('value').then(function(snapshot) {
                     var username = snapshot.val();
-                    if(username!=null){
+                    if(username!==null){
                         list.push({
                           uid: snapshot.ref.parent.parent.key,
                           user: username.toString(),
@@ -77,9 +77,9 @@ export default class Hello extends Component {
   }
 
   handleclick(id, parent){
-    if (parent != null) {
+    if (parent !== null) {
         parent = parent.toString()
-        if (parent == 'recently-connected'){
+        if (parent === 'recently-connected'){
             id = id.substring(19);
             let list = {
                 name: 'person',

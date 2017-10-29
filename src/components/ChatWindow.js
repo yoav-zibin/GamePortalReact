@@ -17,19 +17,19 @@ export default class ChatWindow extends Component {
   }
   
   loadparticipants() {
-    var self = this;
-    var participantsRef = db.ref("gamePortal/groups/"+this.props.chatId+"/participants");
+    let self = this;
+    let participantsRef = db.ref("gamePortal/groups/"+this.props.chatId+"/participants");
     participantsRef.on('value', function(snapshot) {
-          var participants = snapshot.val();
-          var list = [];
-          var userName = "";
+          let participants = snapshot.val();
+          let list = [];
+          let userName = "";
 
-          for(var index in participants){
-              if (index == auth.currentUser.uid) continue;
-              var usernameRef = db.ref('users/'+index+'/publicFields')
+          for(let index in participants){
+              if (index === auth.currentUser.uid) continue;
+              let usernameRef = db.ref('users/'+index+'/publicFields')
               usernameRef.once("value",function(snapshot){
                   userName = snapshot.child('/displayName').val();
-                  var isConnected = snapshot.child('/isConnected').val();
+                  let isConnected = snapshot.child('/isConnected').val();
                   list.push({
                     uid: snapshot.ref.parent.parent.key,
                     displayname: userName,
@@ -64,7 +64,7 @@ export default class ChatWindow extends Component {
       this.loadparticipants();
     }
 
-    var showparticipants = this.state.participants.map((participant) =>{
+    let showparticipants = this.state.participants.map((participant) =>{
       if(participant.isConnected)
           return(<span className={'online'}>{participant.displayname}<br/></span>);
      else

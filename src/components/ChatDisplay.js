@@ -14,17 +14,17 @@ export default class ChatWindow extends Component {
   }
 
   loadMessages(){
-      var self = this;
-      var messagesRef = db.ref("gamePortal/groups/"+this.props.chatId+"/messages");
+      let self = this;
+      let messagesRef = db.ref("gamePortal/groups/"+this.props.chatId+"/messages");
 
       this.setState({messages:[]});
       messagesRef.on('value', function(snapshot) {
-          var messages = snapshot.val();
-          var list = [];
-          var userName = "";
+          let messages = snapshot.val();
+          let list = [];
+          let userName = "";
 
-          for(var index in messages){
-              var usernameRef = db.ref('users/'+messages[index].senderUid+'/publicFields/displayName');
+          for(let index in messages){
+              let usernameRef = db.ref('users/'+messages[index].senderUid+'/publicFields/displayName');
               usernameRef.on("value",function(snapshot){
                   userName = snapshot.val();
                   list.push({
@@ -45,8 +45,8 @@ export default class ChatWindow extends Component {
       this.loadMessages();
     }
 
-    var prevChat = this.state.messages.map((message) =>{
-        var applyClass = null;
+    let prevChat = this.state.messages.map((message) =>{
+        let applyClass = null;
       if(message.sentBySelf){
           applyClass = "sentBySelf";
       } else{
