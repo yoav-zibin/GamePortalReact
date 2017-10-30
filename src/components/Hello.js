@@ -23,20 +23,20 @@ export default class Hello extends Component {
     }
 
     componentDidMount(){
-        var usereference = firebaseApp.database().ref('gamePortal/recentlyConnected');
-        var updateUsers = (users) =>{
+        let usereference = firebaseApp.database().ref('gamePortal/recentlyConnected');
+        let updateUsers = (users) =>{
             this.setState({content : users});
         }
         usereference.on('value', function(snapshot) {
-            var current_users = snapshot.val();
-            var list = [];
-            var myuid = auth.currentUser.uid;
-            for (var key in current_users){
-                var uid = snapshot.child(key + '/userId').val();
+            let current_users = snapshot.val();
+            let list = [];
+            let myuid = auth.currentUser.uid;
+            for (let key in current_users){
+                let uid = snapshot.child(key + '/userId').val();
                 if (uid === myuid) continue;
-                var usernameRef = db.ref('users/'+uid+'/publicFields/displayName')
+                let usernameRef = db.ref('users/'+uid+'/publicFields/displayName')
                 usernameRef.once('value').then(function(snapshot) {
-                    var username = snapshot.val();
+                    let username = snapshot.val();
                     if(username!==null){
                         list.push({
                           uid: snapshot.ref.parent.parent.key,
@@ -48,18 +48,18 @@ export default class Hello extends Component {
               }
         });
 
-        var uid = auth.currentUser.uid;
-        var chatReference = firebaseApp.database().ref('users/'+uid+'/privateButAddable/groups');
-        var updatechats = (chats) =>{
+        let uid = auth.currentUser.uid;
+        let chatReference = firebaseApp.database().ref('users/'+uid+'/privateButAddable/groups');
+        let updatechats = (chats) =>{
             this.setState({chats : chats});
         }
         chatReference.on('value', function(snapshot) {
-            var chatIds = snapshot.val();
-            var list = [];
-            for (var key in chatIds){
-                var groupref = db.ref('gamePortal/groups/' + key + '/groupName');
+            let chatIds = snapshot.val();
+            let list = [];
+            for (let key in chatIds){
+                let groupref = db.ref('gamePortal/groups/' + key + '/groupName');
                 groupref.once('value').then(function(snapshot) {
-                    var groupname = snapshot.val();
+                    let groupname = snapshot.val();
                     list.push({
                         groupid: snapshot.ref.parent.key,
                         name : groupname
@@ -100,13 +100,13 @@ export default class Hello extends Component {
   }
 
   render() {
-    var content = this.state.content.map((users) =>
+    let content = this.state.content.map((users) =>
       <Nav id={users.uid}>
       <NavText>{users.user}</NavText>
       </Nav>
     );
 
-    var chats = this.state.chats.map((chats) =>
+    let chats = this.state.chats.map((chats) =>
       <Nav id={chats.groupid}>
       <NavText>{chats.name}</NavText>
       </Nav>

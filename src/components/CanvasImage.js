@@ -21,7 +21,7 @@ class CanvasImage extends React.Component {
   }
 
   render() {
-    if(this.src != this.props.src){
+    if(this.src !== this.props.src){
         this.src = this.props.src;
         this.loadImage();
     }

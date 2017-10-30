@@ -8,7 +8,7 @@ import {auth, signOut, db, isAuthenticated, firebaseApp, googleProvider} from '.
 import Register from './Register';
 import { storageKey, hidePresence } from '../firebase';
 
-var authenticated = true;
+let  authenticated = true;
 
 export default class Header extends React.Component {
     state = {
@@ -17,14 +17,14 @@ export default class Header extends React.Component {
     };
 
     componentDidMount() {
-      var self = this;
+      let  self = this;
       auth.onAuthStateChanged(user => {
         if (user) {
           window.localStorage.setItem(storageKey, user.uid);
           this.setState({uid: user.uid});
-          var usernameRef = db.ref('users/'+user.uid+'/publicFields/displayName');
+          let  usernameRef = db.ref('users/'+user.uid+'/publicFields/displayName');
           usernameRef.once('value').then(function(snapshot) {
-            var username = snapshot.val();
+            let  username = snapshot.val();
             self.setState({username: username});
           });
 

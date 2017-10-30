@@ -28,12 +28,12 @@ export default class GameSelector extends React.Component {
   }
 
   loadSpecs(){
-      var specRef = db.ref('gameBuilder/gameSpecs');
-      var self = this;
+      let specRef = db.ref('gameBuilder/gameSpecs');
+      let self = this;
       specRef.on("value",function(snapshot){
-          var specs = snapshot.val();
-          var list = [];
-          for(var specKey in specs){
+          let specs = snapshot.val();
+          let list = [];
+          for(let specKey in specs){
               list.push({
                 value: specs[specKey],
                 label: specs[specKey].gameName

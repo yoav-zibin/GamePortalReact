@@ -1,6 +1,6 @@
 import firebase from 'firebase'
 
-var config = {
+let config = {
   apiKey: "AIzaSyDA5tCzxNzykHgaSv1640GanShQze3UK-M",
   authDomain: "universalgamemaker.firebaseapp.com",
   databaseURL: "https://universalgamemaker.firebaseio.com",
@@ -8,7 +8,7 @@ var config = {
   storageBucket: "universalgamemaker.appspot.com",
   messagingSenderId: "144595629077"
 };
-var uiConfig = {
+let uiConfig = {
   signInSuccessUrl: '<url-to-redirect-to-on-success>',
   signInOptions: [
     firebase.auth.PhoneAuthProvider.PROVIDER_ID
@@ -27,14 +27,14 @@ export const storageKey = 'GAME_BUILDER_LOCAL_STORAGE_$UID';
 export const isAuthenticated = () => {
   return !!auth.currentUser;
 }
-var firebaseui = require('firebaseui');
-var ui = new firebaseui.auth.AuthUI(firebase.auth());
+let firebaseui = require('firebaseui');
+let ui = new firebaseui.auth.AuthUI(firebase.auth());
 //ui.start('#firebaseui-auth-container', uiConfig);
-var connectedRef = null;
-var myConnectionsRef = null;
-var lastOnlineRef = null;
-var connection = null;
-var hidePresenceIntentional = false;
+let connectedRef = null;
+let myConnectionsRef = null;
+let lastOnlineRef = null;
+let connection = null;
+let hidePresenceIntentional = false;
 
 ui.start('#firebaseui-auth-container', {
   signInSuccessUrl: 'http://localhost:3000/',
@@ -87,18 +87,18 @@ export const addPresenceListeners = () => {
 }
 
 export const addToRecentlyConnected = () => {
-    var recentlyConnectedRef = db.ref('gamePortal/recentlyConnected');
-    var uid = auth.currentUser.uid;
-    var userInfo = {
+    let recentlyConnectedRef = db.ref('gamePortal/recentlyConnected');
+    let uid = auth.currentUser.uid;
+    let userInfo = {
         userId: uid,
         timestamp: firebase.database.ServerValue.TIMESTAMP
     };
     
-    var myKeyRef = recentlyConnectedRef.orderByChild("userId").equalTo(uid);
+    let myKeyRef = recentlyConnectedRef.orderByChild("userId").equalTo(uid);
     myKeyRef.once("value",snapshot => {
         const userData = snapshot.val();
         if (userData){
-            for(var key in userData){
+            for(let key in userData){
                 db.ref('gamePortal/recentlyConnected/'+key).set(null);
             }
         }

@@ -18,8 +18,8 @@ export default class PlayArena extends Component {
   }
 
   setBoardImage(){
-      var imageId = this.props.spec.board.imageId;
-      var self = this;
+      let imageId = this.props.spec.board.imageId;
+      let self = this;
       let imageRef = db.ref('gameBuilder/images/'+imageId);
       imageRef.once('value').then(function(snapshot) {
           let board = {
@@ -32,21 +32,21 @@ export default class PlayArena extends Component {
   }
 
   setPieces(){
-      var pieces = this.props.spec.pieces;
+      let pieces = this.props.spec.pieces;
       this.allPieces = [];
-      var self = this;
-      var numPieces = pieces.length;
-      for(var i in pieces){
-          var piece_info = pieces[i];
-          var elemRef = db.ref('gameBuilder/elements/'+piece_info.pieceElementId);
-          var piece = {
+      let self = this;
+      let numPieces = pieces.length;
+      for(let i in pieces){
+          let piece_info = pieces[i];
+          let elemRef = db.ref('gameBuilder/elements/'+piece_info.pieceElementId);
+          let piece = {
               x:piece_info.initialState.x,
               y:piece_info.initialState.y,
           };
           elemRef.once('value').then(function(p, snapshot) {
-              var images = snapshot.val().images;
-              var imageId = images[0].imageId;
-              var imageRef = db.ref('gameBuilder/images/'+imageId);
+              let images = snapshot.val().images;
+              let imageId = images[0].imageId;
+              let imageRef = db.ref('gameBuilder/images/'+imageId);
               imageRef.once('value').then(function(myPiece, snapshot) {
                   myPiece.imageUrl = snapshot.val().downloadURL;
                   myPiece.height = snapshot.val().height;

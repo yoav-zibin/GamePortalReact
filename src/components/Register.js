@@ -48,8 +48,8 @@ export default class Register extends Component {
 
 
   handlesignup = () => {
-      var email = document.getElementById('inputEmail').value;
-      var password = document.getElementById('inputPassword').value;
+      let email = document.getElementById('inputEmail').value;
+      let password = document.getElementById('inputPassword').value;
       if (email.length < 4) {
         alert('Please enter an email address.');
         return;
@@ -62,8 +62,8 @@ export default class Register extends Component {
       // [START createwithemail]
       auth.createUserWithEmailAndPassword(email, password).catch(function(error) {
         // Handle Errors here.
-        var errorCode = error.code;
-        var errorMessage = error.message;
+        let errorCode = error.code;
+        let errorMessage = error.message;
         // [START_EXCLUDE]
         if (errorCode == 'auth/weak-password') {
           alert('The password is too weak.');

@@ -58,7 +58,7 @@ export default class ChatWindow extends Component {
   }
 
   render() {
-    if(this.prevChatId!==this.props.chatId){
+    if(this.prevChatId !== this.props.chatId){
       this.prevChatId = this.props.chatId;
       this.setState({participants: []});
       this.loadparticipants();
