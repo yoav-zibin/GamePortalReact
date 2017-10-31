@@ -12,7 +12,7 @@ export default class ChatforGroup extends Component {
       super();
       this.state = {
           chatId: "",
-          chatName: "GroupChat",
+          chatName: [],
           partner: [{value: '', label: ''}],
           partnerList: [],
           chatWindowVisible: "chatWindowInvisible",
@@ -123,7 +123,9 @@ export default class ChatforGroup extends Component {
       }
     }
     if(this.state.partnerList.length === 0 || isThere === false)
-    {this.state.partnerList.push(this.state.partner);}
+    {this.state.partnerList.push(this.state.partner);
+      this.state.chatName.push(this.state.partner.label);
+    }
     this.setState({
 
     });
@@ -159,9 +161,14 @@ export default class ChatforGroup extends Component {
 
     let me = {};
     me[participantId] = {participantIndex : 0};
+    let chatName = "";
+    if(this.state.chatName[0].length > 10)
+      {chatName = this.state.chatName[0].substring(0,9) + "... and " + (this.state.chatName.length).toString() + " others";}
+    else
+      {chatName = this.state.chatName[0] + " and " + (this.state.chatName.length).toString() + " others";}
     let newgroupinfo = {
         createdOn: firebase.database.ServerValue.TIMESTAMP,
-        groupName: this.state.chatName,
+        groupName: chatName,
         matches: "",
         messages: null,
         participants: me,
@@ -204,8 +211,8 @@ export default class ChatforGroup extends Component {
 
   handleCNameChange(e){
       this.setState({chatName: e.target.value});
-
   }
+
   logChange(val) {
       console.log('Selected: ', val);
       this.setState({partner: val})

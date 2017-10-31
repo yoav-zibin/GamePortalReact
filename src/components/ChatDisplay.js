@@ -52,6 +52,14 @@ export default class ChatWindow extends Component {
       } else{
           applyClass = "sentByPartner";
       }
+
+      let user = {name:"yoav"}
+var p = new Promise((resolve, reject) => resolve(user));  
+p.then((x)=>console.log(x));
+p.then((x)=>console.log(x));
+user.name = "foo";
+p.then((x)=>console.log(x));
+
       return (<span className={applyClass}>{message.sentdisplayname}:{message.message}<br/></span>);
     });
 
