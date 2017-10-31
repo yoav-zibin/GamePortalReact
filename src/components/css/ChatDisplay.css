@@ -1,9 +1,16 @@
 .sentBySelf{
-    background-color: #88DC99;
     position: relative;
     left: 50px;
+    color: #88DC99;
 }
 
 .sentByPartner{
-    background-color: #DD88CC;
+    color: #DD88CC;
+}
+
+.MessageDisplay{
+	flex: 2;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    border: 1px solid 000000; 
 }
