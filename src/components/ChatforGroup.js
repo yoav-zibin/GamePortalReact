@@ -5,6 +5,7 @@ import {db, auth, firebaseApp} from '../firebase';
 import firebase from 'firebase';
 import Select from 'react-select';
 import 'react-select/dist/react-select.css';
+import './css/ChatforGroup.css'
 
 export default class ChatforGroup extends Component {
 
@@ -16,7 +17,8 @@ export default class ChatforGroup extends Component {
           partner: [{value: '', label: ''}],
           partnerList: [],
           chatWindowVisible: "chatWindowInvisible",
-          onlineUsers: [{value: '', label: ''}]
+          onlineUsers: [{value: '', label: ''}],
+          chatInfoVisible: "chatInfoVisible",
       };
       this.chats = [];
       this.prevChatId = "";
@@ -102,6 +104,12 @@ export default class ChatforGroup extends Component {
           chatWindowVisible: "chatWindowVisible"      
         });
       }
+/*    if(this.props.chatInfoVisible === "chatInfoInvisible") {
+      this.setState({
+          chatInfoVisible:"chatInfoInvisible"
+      });
+    }*/
+
   }
 
   startChat(){
@@ -110,7 +118,8 @@ export default class ChatforGroup extends Component {
       let chatId = this.getOldChatIdOrStartNewChat();
       this.setState({
           chatId: chatId,
-          chatWindowVisible: "chatWindowVisible"
+          chatWindowVisible: "chatWindowVisible",
+          chatInfoVisible:"chatInfoInvisible"
       });
     }
   }
@@ -200,6 +209,17 @@ export default class ChatforGroup extends Component {
     return newChatId;
   }
 
+  newChat(){
+    this.setState({
+          chatWindowVisible: "chatWindowInvisible",
+          chatInfoVisible: "chatInfoVisible",
+          chatId: "",
+          chatName: [],
+          partner: [{value: '', label: ''}],
+          partnerList: []
+    })
+  }
+
   handleUidChange(e){
       this.setState({partner: e.target.value})
   }
@@ -233,8 +253,9 @@ export default class ChatforGroup extends Component {
     ];
 
     return (
-
-        <div>
+        <div ChatforGroup>
+          <Button className='Button1' onClick={this.newChat.bind(this)}>NewChat</Button>
+          <div className={this.state.chatInfoVisible}>
             Chat
             Partners: <br/>
             {partnerids}
@@ -250,8 +271,9 @@ export default class ChatforGroup extends Component {
 
             <Button color="success" onClick={this.addUser.bind(this)}>Add User</Button>
             <Button color="success" onClick={this.startChat.bind(this)}>Start Chat</Button>
+          </div>
             <ChatWindow chatId={this.state.chatId} chatWindowVisible={this.state.chatWindowVisible}/>
-
+            
         </div>
 
     );
