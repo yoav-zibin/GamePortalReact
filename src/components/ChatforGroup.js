@@ -90,7 +90,6 @@ export default class ChatforGroup extends Component {
   componentWillMount(){
       this.getSelfParticipatedChatIds();
       this.getOnlineUsers();
-
   }
 
 
@@ -101,7 +100,8 @@ export default class ChatforGroup extends Component {
         let id = this.props.myprops.id;
         this.setState({
           chatId: this.props.myprops.id,
-          chatWindowVisible: "chatWindowVisible"      
+          chatInfoVisible: this.props.chatInfoVisible,
+          chatWindowVisible: this.props.chatWindowVisible
         });
       }
 /*    if(this.props.chatInfoVisible === "chatInfoInvisible") {

@@ -18,6 +18,7 @@ export default class Hello extends Component {
             chats: [],
             props: {name: "hello", id: null, displayName:null},
             chatInfoVisible: "chatInfoVisible",
+            chatWindowVisible: "chatWindowInvisible",
             spec: null
         };
         this.playArena = null;
@@ -97,7 +98,8 @@ export default class Hello extends Component {
             }
             this.setState({
                 props: list,
-                chatInfoVisible:"chatInfoInvisible"
+                chatInfoVisible:"chatInfoInvisible",
+                chatWindowVisible:"chatWindowVisible"
             });
         }
     }
@@ -146,7 +148,7 @@ export default class Hello extends Component {
         </div>
 
         <div className="side-chat">
-            <ChatforGroup myprops={this.state.props} chatInfoVisible={this.state.chatInfoVisible} />
+            <ChatforGroup myprops={this.state.props} chatInfoVisible={this.state.chatInfoVisible} chatWindowVisible={this.state.chatWindowVisible}/>
         </div>
     </div>
     );
