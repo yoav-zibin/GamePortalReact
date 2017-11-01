@@ -132,8 +132,12 @@ export default class ChatforGroup extends Component {
       }
     }
     if(this.state.partnerList.length === 0 || isThere === false)
-    {this.state.partnerList.push(this.state.partner);
+    {
+      if(this.state.partner.value !== undefined) {
+      this.state.partnerList.push(this.state.partner);
       this.state.chatName.push(this.state.partner.label);
+      console.log(this.state.partner)
+      }
     }
     this.setState({
 
@@ -234,9 +238,7 @@ export default class ChatforGroup extends Component {
   }
 
   logChange(val) {
-      console.log('Selected: ', val);
       this.setState({partner: val})
-      console.log(this.state.partner);
     }
 
   render() {
