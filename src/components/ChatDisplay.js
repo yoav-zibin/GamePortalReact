@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import {db, auth} from '../firebase';
 import './css/ChatDisplay.css';
-
 export default class ChatWindow extends Component {
 
   constructor(){
@@ -21,8 +20,38 @@ export default class ChatWindow extends Component {
       messagesRef.on('value', function(snapshot) {
           let messages = snapshot.val();
           let list = [];
+          let keys =Object.keys(messages);
+          keys.sort((key1, key2) => messages[key1].timestamp - messages[key2].timestamp);
+          for (let index of keys) {
+                list.push({
+                    message: messages[index].message,
+                    sentBySelf: messages[index].senderUid === auth.currentUser.uid,
+                    sentUid: messages[index].senderUid,
+                    //sentdisplayname: userName
+                });
+              self.setState({messages:list});
+          }
+          /*
           let userName = "";
+          let Promises = Object.keys(messages).map((message) => {
+            return db.ref(`users/${message.senderUid}/publicFields/displayName`).once('value');
+          });
 
+          Promises.all((snapshots) => {
+          let list = snapshots.map((snapshot, index) => {
+            // Add code to check for failure also here, if it rejects
+            userName = snapshot.val()
+            return {
+              message: messages[index].message,
+              sentBySelf: messages[index].senderUid === auth.currentUser.uid,
+              sentUid: messages[index].senderUid,
+              sentdisplayname: userName
+            }
+          });
+          */
+          //self.setState({messages: list});
+      //});
+          /*
           for(let index in messages){
               let usernameRef = db.ref('users/'+messages[index].senderUid+'/publicFields/displayName');
               usernameRef.on("value",function(snapshot){
@@ -36,6 +65,7 @@ export default class ChatWindow extends Component {
                 self.setState({messages:list});
               })
           }
+          */
       });
   }
 
@@ -53,7 +83,7 @@ export default class ChatWindow extends Component {
           applyClass = "sentByPartner";
       }
 
-      return (<span className={applyClass}>{message.sentdisplayname}:{message.message}<br/></span>);
+      return (<div className = {applyClass}><p>{message.sentUid}:</p><span className = 'send'>    {message.message}     <br/></span></div>);
     });
 
     return (

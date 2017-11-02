@@ -14,3 +14,12 @@
     background-color: rgba(0, 0, 0, 0.5);
     border: 1px solid 000000; 
 }
+
+
+
+
+.send { 
+	position:relative; 
+	padding:1px; 
+	background-color: rgba(0, 0, 0, 1); 
+} 
