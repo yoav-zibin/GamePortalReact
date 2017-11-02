@@ -98,7 +98,7 @@ export default class Hello extends Component {
           lastUpdatedOn: firebase.database.ServerValue.TIMESTAMP,
           pieces: ''
       };
-      this.matchRef.push(match);
+      this.matchRef = this.matchRef.push(match);
       this.setState({
           spec: spec
       });
