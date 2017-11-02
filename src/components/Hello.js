@@ -91,14 +91,14 @@ export default class Hello extends Component {
           groupName: 'ReactPortal'
       };
       let ref = groupRef.push(group);
-      let matchRef = db.ref('gamePortal/groups/'+ref.key+'/matches');
+      this.matchRef = db.ref('gamePortal/groups/'+ref.key+'/matches');
       let match = {
           createdOn: firebase.database.ServerValue.TIMESTAMP,
           gameSpecId: this.specId,
           lastUpdatedOn: firebase.database.ServerValue.TIMESTAMP,
           pieces: ''
       };
-      matchRef.push(match);
+      this.matchRef.push(match);
       this.setState({
           spec: spec
       });
@@ -161,7 +161,7 @@ export default class Hello extends Component {
     );
 
     if(this.state.spec){
-        this.playArena = (<PlayArena spec={this.state.spec}/>);
+        this.playArena = (<PlayArena spec={this.state.spec} matchRef={this.matchRef}/>);
     }
 
     return (

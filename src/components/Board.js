@@ -39,6 +39,7 @@ export default class Board extends Component {
         );
     }
 
+    console.log(this.props);
     return (
     <div>
       <Stage width={this.width} height={this.height}>

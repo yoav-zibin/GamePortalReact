@@ -69,7 +69,7 @@ export default class PlayArena extends Component {
       }
     return (
     <div>
-      <Board board={this.state.board} pieces={this.state.pieces}/>
+      <Board board={this.state.board} pieces={this.state.pieces} matchRef={this.props.matchRef}/>
     </div>
     );
   }
