@@ -24,6 +24,7 @@ export default class Hello extends Component {
         };
         this.playArena = null;
         this.participants = [];
+        this.specId = null;
     }
 
     componentDidMount(){
@@ -89,7 +90,15 @@ export default class Hello extends Component {
           createdOn: firebase.database.ServerValue.TIMESTAMP,
           groupName: 'ReactPortal'
       };
-      groupRef.push(group);
+      let ref = groupRef.push(group);
+      let matchRef = db.ref('gamePortal/groups/'+ref.key+'/matches');
+      let match = {
+          createdOn: firebase.database.ServerValue.TIMESTAMP,
+          gameSpecId: this.specId,
+          lastUpdatedOn: firebase.database.ServerValue.TIMESTAMP,
+          pieces: ''
+      };
+      matchRef.push(match);
       this.setState({
           spec: spec
       });
@@ -134,6 +143,10 @@ export default class Hello extends Component {
     }
   }
 
+  setSpecId(id){
+      this.specId = id;
+  }
+
   render() {
     let content = this.state.content.map((users) =>
       <Nav id={users.uid}>
@@ -170,7 +183,7 @@ export default class Hello extends Component {
             </SideNav>
         </div>
         <div className="play-arena-container">
-            <GameSelector setSpec={this.setSpec.bind(this)}/>
+            <GameSelector setSpec={this.setSpec.bind(this)} setSpecId={this.setSpecId.bind(this)}/>
         <AddParticipants addParticipant={this.addParticipant.bind(this)} clearParticipants={this.clearParticipants.bind(this)}/>
             <div className="play-arena-component">
                 {this.playArena}
