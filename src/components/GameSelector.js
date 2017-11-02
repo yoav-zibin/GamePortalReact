@@ -16,6 +16,7 @@ export default class GameSelector extends React.Component {
 
   loadGame(event){
       if(this.state.selectedSpec){
+          this.props.setSpecId(this.state.selectedSpec.id);
           this.props.setSpec(this.state.selectedSpec.value);
       }else{
           // TODO:
@@ -36,7 +37,8 @@ export default class GameSelector extends React.Component {
           for(let specKey in specs){
               list.push({
                 value: specs[specKey],
-                label: specs[specKey].gameName
+                label: specs[specKey].gameName,
+                id: specKey
             });
           }
         self.setState({specs:list});

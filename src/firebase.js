@@ -93,17 +93,18 @@ export const addToRecentlyConnected = () => {
         userId: uid,
         timestamp: firebase.database.ServerValue.TIMESTAMP
     };
-    
-    let myKeyRef = recentlyConnectedRef.orderByChild("userId").equalTo(uid);
-    myKeyRef.once("value",snapshot => {
-        const userData = snapshot.val();
-        if (userData){
-            for(let key in userData){
-                db.ref('gamePortal/recentlyConnected/'+key).set(null);
-            }
-        }
-        recentlyConnectedRef.push(userInfo);
-    });
+    recentlyConnectedRef.push(userInfo);
+
+    // let myKeyRef = recentlyConnectedRef.orderByChild("userId").equalTo(uid);
+    // myKeyRef.once("value",snapshot => {
+    //     const userData = snapshot.val();
+    //     if (userData){
+    //         for(let key in userData){
+    //             db.ref('gamePortal/recentlyConnected/'+key).set(null);
+    //         }
+    //     }
+    //     recentlyConnectedRef.push(userInfo);
+    // });
 
 
 }
