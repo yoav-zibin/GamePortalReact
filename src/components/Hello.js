@@ -7,6 +7,7 @@ import SideNav, { Nav, NavIcon, NavText} from 'react-sidenav';
 import ChatforGroup from './ChatforGroup';
 import PlayArena from './PlayArena';
 import GameSelector from './GameSelector';
+import AddParticipants from './AddParticipants';
 
 
 export default class Hello extends Component {
@@ -22,9 +23,11 @@ export default class Hello extends Component {
             spec: null
         };
         this.playArena = null;
+        this.participants = [];
     }
 
     componentDidMount(){
+        let self = this;
         let usereference = firebaseApp.database().ref('gamePortal/recentlyConnected');
         let updateUsers = (users) =>{
             this.setState({content : users});
@@ -46,7 +49,7 @@ export default class Hello extends Component {
                         });
                         updateUsers(list);
                     }
-                });
+                }).catch(self.handleFirebaseException);
               }
         });
 
@@ -56,6 +59,9 @@ export default class Hello extends Component {
             this.setState({chats : chats});
         }
         chatReference.on('value', function(snapshot) {
+            if (!snapshot.exists()){
+                return;
+            }
             let chatIds = snapshot.val();
             let list = [];
             for (let key in chatIds){
@@ -67,15 +73,38 @@ export default class Hello extends Component {
                         name : groupname
                     })
                     updatechats(list);
-                });
+                }).catch(self.handleFirebaseException);
             }
         });
     }
 
   setSpec(spec){
+      let groupRef = db.ref('gamePortal/groups');
+      let participants = {[auth.currentUser.uid]:{participantIndex:1} ,
+          [this.participants[0]] :{participantIndex:0}};
+      let group = {
+          participants: participants,
+          messages: '',
+          matches: '',
+          createdOn: firebase.database.ServerValue.TIMESTAMP,
+          groupName: 'ReactPortal'
+      };
+      groupRef.push(group);
       this.setState({
           spec: spec
       });
+  }
+
+  handleFirebaseException(exception){
+      console.log(exception);
+  }
+
+  addParticipant(id){
+      this.participants.push(id);
+  }
+
+  clearParticipants(){
+      this.participants = [];
   }
 
   handleclick(id, parent){
@@ -142,6 +171,7 @@ export default class Hello extends Component {
         </div>
         <div className="play-arena-container">
             <GameSelector setSpec={this.setSpec.bind(this)}/>
+        <AddParticipants addParticipant={this.addParticipant.bind(this)} clearParticipants={this.clearParticipants.bind(this)}/>
             <div className="play-arena-component">
                 {this.playArena}
             </div>
