@@ -18,6 +18,7 @@ export default class ChatWindow extends Component {
 
       this.setState({messages:[]});
       messagesRef.on('value', function(snapshot) {
+          if (snapshot.exists()) {
           let messages = snapshot.val();
           let list = [];
           let keys =Object.keys(messages);
@@ -31,6 +32,7 @@ export default class ChatWindow extends Component {
                 });
               self.setState({messages:list});
           }
+        }
           /*
           let userName = "";
           let Promises = Object.keys(messages).map((message) => {
