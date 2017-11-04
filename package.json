@@ -2,6 +2,7 @@
   "name": "game-portal",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://yoav-zibin.github.io/GamePortalReact",
   "dependencies": {
     "bootstrap": "^4.0.0-alpha.6",
     "create-react-app": "^1.4.1",
