@@ -1,3 +1,7 @@
+.recently-connected-inner-container{
+    padding: 10px 0 0 0;
+}
+
 .isOnline{
     background: #00ff00;
 }
@@ -6,9 +10,9 @@
     background: #ff0000;
 }
 
-li{
+.user-name-item{
     list-style: none;
-    margin: 2px auto;
+    margin: 3px auto;
     padding: 0px;
     font-family: 'Ubuntu', sans-serif;
 }
@@ -23,4 +27,6 @@ li{
     width: 10px;
     height: 10px;
     border-radius: 5px;
+    margin-top: auto;
+    margin-bottom: auto;
 }
