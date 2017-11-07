@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
 import './css/ChooseGroup.css';
+import RecentlyConnected from './RecentlyConnected';
+import CreateGroup from './CreateGroup';
+import MyGroups from './MyGroups';
 
 export default class ChooseGroup extends Component {
 
@@ -8,13 +11,13 @@ export default class ChooseGroup extends Component {
     return (
     <div className='choose-group-container'>
         <div className="recently-connected-container">
-            recently connected
+            <RecentlyConnected />
         </div>
         <div className="welcome-container">
-            welcome
+            <CreateGroup />
         </div>
         <div className="my-groups-container">
-            my Groups
+            <MyGroups />
         </div>
     </div>
     );
