@@ -33,10 +33,17 @@ class App extends Component {
   render() {
         if (this.state.uid != -1) {
 
-            return (<div className='root'>
-                <Header/>
+            return (
+            <div className='root'>
+                <div className="header-container">
+                    <Header />
+                </div>
+                <div className="super-parent-container">
                 {this.state.uid ? (<ChooseGroup />) : (<Main />)}
-                <Footer/>
+                </div>
+                <div className="footer-container">
+                    <Footer />
+                </div>
             </div>)
         } else {
             return (<div></div>)

@@ -160,23 +160,25 @@ export default class Login extends Component {
 
   render() {
     return (
-        <div className="container col-md-6 col-xs-12 signin-root">
-            <h2 className="form-signin-heading">
-                Sign In
-            </h2>
-            <div className="login-container">
-                <div className="signin-container col-md-6 col-xs-12">
-                    <label htmlFor="inputEmail" className="sr-only">Email address</label>
-                    <input type="email" id="inputEmail" className="form-control" placeholder="Email address" required autoFocus/>
-                    <label htmlFor="inputPassword" className="sr-only">Password</label>
-                    <input type="password" id="inputPassword" className="form-control" placeholder="Password" required/>
-                    <br />
-                    <button id = "signin" className="btn btn-md btn-primary btn-block" onClick={this.handleSubmit} >Log In</button>
-                </div>
-                <div className="login-options-container col-md-6 col-xs-12">
-                    <button className="btn btn-md btn-primary btn-block" onClick={this.loginWithGoogle} >Google Signin</button>
-                    <button className="btn btn-md btn-primary btn-block" onClick={this.loginWithPhone} > {<Link to='/PhoneAuth' style={{decoration: 'none', color: 'white'}}>Signin with Phone</Link>}</button>
-                    <button className="btn btn-md btn-primary btn-block" onClick={this.loginAnonymous.bind(this)}> Anonymous Signin</button>
+        <div className="signin-super-container">
+            <div className="container col-md-6 col-xs-12 signin-root">
+                <h2 className="form-signin-heading">
+                    Sign In
+                </h2>
+                <div className="login-container">
+                    <div className="signin-container col-md-6 col-xs-12">
+                        <label htmlFor="inputEmail" className="sr-only">Email address</label>
+                        <input type="email" id="inputEmail" className="form-control" placeholder="Email address" required autoFocus/>
+                        <label htmlFor="inputPassword" className="sr-only">Password</label>
+                        <input type="password" id="inputPassword" className="form-control" placeholder="Password" required/>
+                        <br />
+                        <button id = "signin" className="btn btn-md btn-primary btn-block" onClick={this.handleSubmit} >Log In</button>
+                    </div>
+                    <div className="login-options-container col-md-6 col-xs-12">
+                        <button className="btn btn-md btn-primary btn-block" onClick={this.loginWithGoogle} >Google Signin</button>
+                        <button className="btn btn-md btn-primary btn-block" onClick={this.loginWithPhone} > {<Link to='/PhoneAuth' style={{decoration: 'none', color: 'white'}}>Signin with Phone</Link>}</button>
+                        <button className="btn btn-md btn-primary btn-block" onClick={this.loginAnonymous.bind(this)}> Anonymous Signin</button>
+                    </div>
                 </div>
             </div>
         </div>

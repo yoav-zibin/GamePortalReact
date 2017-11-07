@@ -60,9 +60,12 @@ export default class Header extends React.Component {
       authenticated = true;
   }
 
-  render() {
+  render(){
+    var myStyle = {
+        height: '100%'
+    };
     return (
-      <div>
+      <div style={myStyle}>
         <Navbar color="faded" light toggleable>
           <NavbarToggler right onClick={this.toggle} />
           <NavbarBrand href="/">GamePortal</NavbarBrand>

@@ -10,15 +10,20 @@ import Register from "./Register";
 // and /schedule routes will match any pathname that starts
 // with /roster or /schedule. The / route will only match
 // when the pathname is exactly the string "/"
-const Main = () => (
-  <div>
-    <Switch>
-      <Route exact path="/Hello" component={Hello} />
-      <Route path="/PhoneAuth" component={PhoneAuth} />
-      <Route exact path="/" component={Login} />
-      <Route path="/Register" component={Register} />
-    </Switch>
-</div>
-);
+const Main = () => {
+    var myStyle = {
+        height: '100%'
+    };
+    return (
+      <div style={myStyle}>
+        <Switch>
+          <Route exact path="/Hello" component={Hello} />
+          <Route path="/PhoneAuth" component={PhoneAuth} />
+          <Route exact path="/" component={Login} />
+          <Route path="/Register" component={Register} />
+        </Switch>
+    </div>
+    );
+}
 
 export default Main;
