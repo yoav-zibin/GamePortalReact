@@ -8,8 +8,8 @@
     position: absolute;
     top: 25%;
     left: 25%;
-    background-color: #ffffff;
-    border-radius: 2px;
+    background-color: rgba(255,255,255,0.7);
+    border-radius: 5px;
 }
 .signin-container{
     border-right: 1px solid black;
@@ -20,6 +20,7 @@
 }
 .form-signin-heading{
     text-align: center;
+    font-family: 'Ubuntu', sans-serif;
     padding: 5px 0;
 }
 .login-container{
