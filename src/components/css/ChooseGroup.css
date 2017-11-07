@@ -1,0 +1,16 @@
+.choose-group-container{
+    display: flex;
+    justify-content: space-between;
+}
+
+.recently-connected-container{
+    flex: 1;
+}
+
+.welcome-container{
+    flex: 2;
+}
+
+.my-groups-container{
+    flex: 1;
+}

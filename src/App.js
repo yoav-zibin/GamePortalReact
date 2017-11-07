@@ -5,7 +5,7 @@ import Login from './components/Login';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import Register from './components/Register';
-import Hello from './components/Hello';
+import ChooseGroup from './components/ChooseGroup';
 import Main from './components/Main';
 
 class App extends Component {
@@ -35,7 +35,7 @@ class App extends Component {
 
             return (<div className='root'>
                 <Header/>
-                {this.state.uid ? (<Hello />) : (<Main />)}
+                {this.state.uid ? (<ChooseGroup />) : (<Main />)}
                 <Footer/>
             </div>)
         } else {
