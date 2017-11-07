@@ -1,6 +1,7 @@
 .signin-super-container{
     height: 100%;
     background: url('../res/pexels-photo-51055.jpg');
+    background-position: center;
     background-size: cover;
 }
 .signin-root{
@@ -8,6 +9,7 @@
     top: 25%;
     left: 25%;
     background-color: #ffffff;
+    border-radius: 2px;
 }
 .signin-container{
     border-right: 1px solid black;

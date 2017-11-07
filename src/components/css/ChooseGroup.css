@@ -1,16 +1,26 @@
 .choose-group-container{
     display: flex;
+    height: 100%;
     justify-content: space-between;
+    background: url('../res/welcome.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
 }
 
 .recently-connected-container{
     flex: 1;
+    color: #ffffff;
+    background-color: rgba(44,63,79,0.7);
 }
 
 .welcome-container{
-    flex: 2;
+    flex: 3;
+    color: #ffffff;
 }
 
 .my-groups-container{
     flex: 1;
+    color: #ffffff;
+    background-color: rgba(44,63,79,0.7);
 }
