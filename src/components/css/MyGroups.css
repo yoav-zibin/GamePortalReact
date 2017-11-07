@@ -1,0 +1,33 @@
+.mygroups-inner-container{
+    padding: 10px 0 0 0;
+}
+
+.groups-item{
+    list-style: none;
+    padding: 5px 15px;
+    font-family: 'Ubuntu', sans-serif;
+    cursor: default;
+}
+
+.groups-item-container{
+    padding: 0px;
+}
+
+.groups-item:hover{
+    background: rgba(44,63,79,1);
+}
+
+.participants-list{
+    margin: 0px;
+    padding: 0px;
+    text-align: left;
+}
+
+.participant-list-item{
+    list-style: none;
+}
+
+#group-participants-tooltip{
+    text-decoration: none;
+    color: inherit;
+}

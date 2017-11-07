@@ -15,6 +15,7 @@
     margin: 3px auto;
     padding: 0px;
     font-family: 'Ubuntu', sans-serif;
+    cursor: default;
 }
 
 .userNameContainer{
