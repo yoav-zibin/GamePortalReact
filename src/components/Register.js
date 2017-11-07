@@ -84,9 +84,9 @@ export default class Register extends Component {
           <h2 className="form-signin-heading">
             Please sign up
           </h2>
-          <label for="inputEmail" className="sr-only">Email address</label>
-          <input type="email" id="inputEmail" className="form-control" placeholder="Email address" required autofocus/>
-          <label for="inputPassword" className="sr-only">Password</label>
+          <label htmlFor="inputEmail" className="sr-only">Email address</label>
+          <input type="email" id="inputEmail" className="form-control" placeholder="Email address" required autoFocus/>
+          <label htmlFor="inputPassword" className="sr-only">Password</label>
           <input type="password" id="inputPassword" className="form-control" placeholder="Password" required/>
           <br />
           <button className="btn btn-md btn-primary btn-block" onClick={this.handlesignup}>Sign up</button>

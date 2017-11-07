@@ -77,7 +77,7 @@ export default class Header extends React.Component {
               </NavItem>
               ) : (
               <NavItem>
-                <NavLink tag={Link} onClick={this.handleSignUpClick.bind(this)} to="Register" activeClassName="active">Sign up</NavLink>
+                <NavLink tag={Link} onClick={this.handleSignUpClick.bind(this)} to="Register">Sign up</NavLink>
               </NavItem>
               )}
             </Nav>
