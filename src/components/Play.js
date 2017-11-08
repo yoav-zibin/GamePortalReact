@@ -4,13 +4,17 @@ import './css/Play.css';
 import {auth, db} from '../firebase';
 import PlayArena from './PlayArena';
 import GameSelector from './GameSelector';
+import Chat from './Chat';
 
 export default class Play extends Component {
 
-    constructor(){
-        super();
+    constructor(props){
+        super(props);
+        let groupId = props.location.pathname.split('/');
+        groupId = groupId[groupId.length - 1];
         this.state = {
-            spec: null
+            spec: null,
+            groupId: groupId
         };
         this.playArena = null;
         this.participants = [];
@@ -62,7 +66,7 @@ export default class Play extends Component {
         </div>
 
         <div className="side-chat">
-            chat
+            <Chat groupId={this.state.groupId}/>
         </div>
     </div>
     );

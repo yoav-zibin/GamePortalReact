@@ -1,6 +1,7 @@
 import React from 'react';
 import { Button } from 'reactstrap';
 import Select from 'react-select';
+import 'react-select/dist/react-select.css';
 import './css/GameSelector.css';
 import {db} from '../firebase';
 

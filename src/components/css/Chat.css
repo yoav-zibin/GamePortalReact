@@ -1,0 +1,11 @@
+.self{
+    background: #f00;
+}
+
+.friend{
+    background: #0f0;
+}
+
+.message-item{
+    list-style: none;
+}
