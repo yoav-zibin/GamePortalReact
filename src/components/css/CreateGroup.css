@@ -13,8 +13,10 @@
 }
 
 .title-h1{
-    font-family: 'Ubuntu', sans-serif;
-    color: #000000;
+    font-family: 'Audiowide', sans-serif;
+    text-transform: uppercase;
+    color: #0077D1;
+    text-shadow: 2px 2px #0077D1;
 }
 .welcome-h1{
     font-family: 'Audiowide', sans-serif;
