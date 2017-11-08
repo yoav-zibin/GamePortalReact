@@ -13,7 +13,7 @@ export default class ChooseGroup extends Component {
         <div className="recently-connected-container">
             <RecentlyConnected />
         </div>
-        <div className="welcome-container">
+        <div className="create-group-container">
             <CreateGroup />
         </div>
         <div className="my-groups-container">

@@ -14,9 +14,10 @@
     background-color: rgba(44,63,79,0.7);
 }
 
-.welcome-container{
+.create-group-container{
     flex: 3;
     color: #ffffff;
+    position: relative;
 }
 
 .my-groups-container{

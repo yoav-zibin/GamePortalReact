@@ -1,0 +1,36 @@
+.create-group-inner-container{
+    height: 100%;
+    position: relative;
+}
+.welcome-container{
+    margin: 0;
+    padding: 5% 0;
+    height: 50%;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.title-h1{
+    font-family: 'Ubuntu', sans-serif;
+    color: #000000;
+}
+.welcome-h1{
+    font-family: 'Audiowide', sans-serif;
+    color: #000000;
+    text-transform: uppercase;
+}
+.add-members-container{
+    height:50%;
+    display: flex;
+    justify-content: space-around;
+}
+.create-group-button-container{
+    width: 70%;
+    text-align: center;
+}
+.create-group-button{
+    text-transform: uppercase;
+    font-family: 'Audiowide', sans-serif;
+}
