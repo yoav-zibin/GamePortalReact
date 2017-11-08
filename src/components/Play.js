@@ -1,14 +1,9 @@
 import React, { Component } from 'react';
-import '../App.css';
 import firebase from 'firebase';
 import './css/Play.css';
-import {firebaseApp, auth, googleProvider, isAuthenticated, db} from '../firebase';
-import SideNav, { Nav, NavIcon, NavText} from 'react-sidenav';
-import ChatforGroup from './ChatforGroup';
+import {auth, db} from '../firebase';
 import PlayArena from './PlayArena';
 import GameSelector from './GameSelector';
-import AddParticipants from './AddParticipants';
-
 
 export default class Play extends Component {
 
@@ -45,18 +40,6 @@ export default class Play extends Component {
       this.setState({
           spec: spec
       });
-  }
-
-  handleFirebaseException(exception){
-      console.log(exception);
-  }
-
-  addParticipant(id){
-      this.participants.push(id);
-  }
-
-  clearParticipants(){
-      this.participants = [];
   }
 
   setSpecId(id){
