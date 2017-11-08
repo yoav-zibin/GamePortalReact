@@ -1,6 +1,5 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import Hello from './Hello';
 
 // The Header creates links that can be used to navigate
 // between routes.

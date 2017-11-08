@@ -4,7 +4,6 @@ import '../App.css';
 import './css/Login.css';
 import {firebaseApp, auth, googleProvider, isAuthenticated, db} from '../firebase';
 import firebase from 'firebase';
-import Hello from './Hello';
 import PhoneAuth from './PhoneAuth';
 import {getName} from '../pokemon';
 import Main from './Main';

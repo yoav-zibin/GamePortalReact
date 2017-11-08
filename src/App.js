@@ -5,7 +5,7 @@ import Login from './components/Login';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import Register from './components/Register';
-import ChooseGroup from './components/ChooseGroup';
+import RouteManager from './components/RouteManager';
 import Main from './components/Main';
 
 class App extends Component {
@@ -39,7 +39,7 @@ class App extends Component {
                     <Header />
                 </div>
                 <div className="super-parent-container">
-                {this.state.uid ? (<ChooseGroup />) : (<Main />)}
+                {this.state.uid ? (<RouteManager />) : (<Main />)}
                 </div>
                 <div className="footer-container">
                     <Footer />

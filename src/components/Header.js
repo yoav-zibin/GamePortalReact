@@ -1,6 +1,5 @@
 import React from 'react';
 import { Collapse, Navbar, NavbarToggler, NavbarBrand, Nav, NavItem, NavLink } from 'reactstrap';
-import Hello from './Hello';
 import { NavLink as RRNavLink } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import Login from './Login';

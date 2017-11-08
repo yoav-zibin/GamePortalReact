@@ -2,6 +2,7 @@ import React from 'react';
 import './css/MyGroups.css';
 import {db, auth} from '../firebase';
 import { Tooltip } from 'reactstrap';
+import { Link } from 'react-router-dom';
 
 export default class MyGroups extends React.Component {
     constructor(props){
@@ -57,10 +58,6 @@ export default class MyGroups extends React.Component {
         });
     }
 
-    handleClick(groupId){
-        console.log('handleClick', groupId);
-    }
-
     handleMouseEnter(participants){
         this.setState({
             participants: participants
@@ -79,9 +76,10 @@ export default class MyGroups extends React.Component {
                 <li
                     className="groups-item"
                     key={group.id}
-                    onClick={this.handleClick.bind(this, group.id)}
                     onMouseEnter={this.handleMouseEnter.bind(this, group.participants)}>
+                    <Link to={'/play/'+group.id} className='item-link'>
                         {group.name}
+                    </Link>
                 </li>
             );
         });

@@ -1,6 +1,5 @@
 import React from "react";
 import { Switch, Route } from "react-router-dom";
-import Hello from "./Hello";
 import PhoneAuth from "./PhoneAuth";
 import Login from "./Login";
 import Register from "./Register";
@@ -17,7 +16,6 @@ const Main = () => {
     return (
       <div style={myStyle}>
         <Switch>
-          <Route exact path="/Hello" component={Hello} />
           <Route path="/PhoneAuth" component={PhoneAuth} />
           <Route exact path="/" component={Login} />
           <Route path="/Register" component={Register} />
