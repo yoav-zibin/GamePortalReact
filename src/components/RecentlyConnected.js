@@ -143,6 +143,9 @@ export default class RecentlyConnected extends React.Component {
     }
 
     render(){
+        if(!this.props.createGroup && this.state.participants.length > 0){
+            this.state.participants = [];
+        }
         let content = this.state.content.map((user) => {
             let listItemClass = 'user-name-item ';//space in the end is intentional
             if(this.props.createGroup){
