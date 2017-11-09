@@ -1,12 +1,15 @@
 import React from 'react';
 import './css/RecentlyConnected.css';
 import {db, auth} from '../firebase';
+import { Button } from 'reactstrap';
+import firebase from 'firebase';
 
 export default class RecentlyConnected extends React.Component {
     constructor(){
         super();
         this.state = {
-            content : []
+            content : [],
+            participants: []
         };
         this.isConnectedRefs = [];
     }
@@ -83,6 +86,38 @@ export default class RecentlyConnected extends React.Component {
         });
     }
 
+    handleCreateGroup(){
+        let participantIndex = 0;
+        let participants = {
+            [auth.currentUser.uid]: {
+                participantIndex: participantIndex
+            }
+        };
+        this.state.participants.forEach((participant)=>{
+            participantIndex += 1;
+            participants[participant] = {
+                participantIndex: participantIndex
+            };
+        });
+        let newGroup = {
+            createdOn: firebase.database.ServerValue.TIMESTAMP,
+            groupName: this.props.groupName,
+            matches: '',
+            messages: '',
+            participants: participants
+        };
+        let groupsRef = db.ref('gamePortal/groups');
+        let key = groupsRef.push(newGroup).key;
+        Object.keys(participants).forEach((participant)=>{
+            let userRef = db.ref('users/'+participant+'/privateButAddable/groups/'+key);
+            userRef.set({
+                addedByUid: auth.currentUser.uid,
+                timestamp: firebase.database.ServerValue.TIMESTAMP
+            });
+        });
+        this.props.doneCreating();
+    }
+
     render(){
         let content = this.state.content.map((users, index) => {
             return(<li key={index} className="user-name-item">
@@ -98,6 +133,14 @@ export default class RecentlyConnected extends React.Component {
                 <ul>
                     {content}
                 </ul>
+                {this.props.createGroup ?
+                    <Button
+                        className='create-group-final-button'
+                        color='success'
+                        onClick={this.handleCreateGroup.bind(this)}>
+                        Create Group
+                    </Button>
+                    : null}
             </div>
         );
     }

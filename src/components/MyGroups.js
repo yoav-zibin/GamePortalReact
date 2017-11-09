@@ -19,10 +19,9 @@ export default class MyGroups extends React.Component {
         let groupsRef = db.ref('users/'+auth.currentUser.uid+'/privateButAddable/groups');
         let self = this;
         groupsRef.on('value', function(snapshot){
-            self.setState({
-                content: []
-            });
             if(snapshot.exists()){
+                let numGroups = Object.keys(snapshot.val()).length;
+                let myGroupList = [];
                 Object.keys(snapshot.val()).forEach((groupId)=>{
                     let groupRef = db.ref('gamePortal/groups/'+groupId);
                     groupRef.once('value').then(function(snapshot){
@@ -43,11 +42,12 @@ export default class MyGroups extends React.Component {
                                     participants.push(userName);
                                     if(participants.length === numParticipants){
                                         groupVal.participants = participants;
-                                        let prevContent = self.state.content;
-                                        prevContent.push(groupVal);
-                                        self.setState({
-                                            content: prevContent
-                                        });
+                                        myGroupList.push(groupVal);
+                                        if(myGroupList.length === numGroups){
+                                            self.setState({
+                                                content: myGroupList
+                                            });
+                                        }
                                     }
                                 }).catch(self.handleFirebaseException);
                             });
@@ -65,9 +65,9 @@ export default class MyGroups extends React.Component {
     }
 
     toggle() {
-    this.setState({
-      tooltipOpen: !this.state.tooltipOpen
-    });
+        this.setState({
+          tooltipOpen: !this.state.tooltipOpen
+        });
   }
 
     render(){

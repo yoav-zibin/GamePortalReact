@@ -3,6 +3,18 @@ import './css/CreateGroup.css';
 import { Button } from 'reactstrap';
 
 export default class CreateGroup extends React.Component {
+    constructor(props){
+        super(props);
+    }
+
+    handleCreateGroupButton(){
+        if(this.props.createGroup){
+            this.props.cancelCreateGroup();
+        }else{
+            this.props.create();
+        }
+    }
+
     render(){
         return(
             <div className="create-group-inner-container">
@@ -15,8 +27,21 @@ export default class CreateGroup extends React.Component {
                         <h1 className="welcome-h1">
                             Join A Group <br/> Or
                         </h1>
-                        <Button className='create-group-button' color='primary' size='lg' block>
-                            Create New Group
+                        {this.props.createGroup ?
+                            <input
+                                className='group-name-input'
+                                type='text'
+                                value={this.props.groupName}
+                                onChange={this.props.updateGroupName}
+                            />
+                            :null}
+                        <Button
+                            className='create-group-button'
+                            onClick={this.handleCreateGroupButton.bind(this)}
+                            color='primary'
+                            size='lg'
+                            block>
+                            {this.props.createGroup ? 'Cancel' : 'Create New Group'}
                         </Button>
                     </div>
                 </div>

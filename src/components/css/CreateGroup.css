@@ -36,3 +36,10 @@
     text-transform: uppercase;
     font-family: 'Audiowide', sans-serif;
 }
+.group-name-input{
+    font-family: 'Audiowide', sans-serif;
+    margin: 10px auto;
+    width: 100%;
+    height: auto;
+    font-size: 30px;
+}
