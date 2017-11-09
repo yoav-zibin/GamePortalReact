@@ -29,6 +29,14 @@ export default class RecentlyConnected extends React.Component {
         });
     }
 
+    clearParticipants(){
+        if(!this.props.createGroup && this.state.participants.length > 0){
+            this.setState({
+                participants:[]
+            });
+        }
+    }
+
     // quiet complicated function
     // Do not modify if don't completely understand
     componentWillMount(){
@@ -118,19 +126,48 @@ export default class RecentlyConnected extends React.Component {
         this.props.doneCreating();
     }
 
+    handleUserClick(uid, event){
+        if(!this.props.createGroup){
+            return;
+        }
+        let participants = this.state.participants;
+        let indexOfUid = participants.indexOf(uid);
+        if(indexOfUid === -1){
+            participants.push(uid);
+        } else{
+            participants.splice(indexOfUid, 1);
+        }
+        this.setState({
+            participants:participants
+        });
+    }
+
     render(){
-        let content = this.state.content.map((users, index) => {
-            return(<li key={index} className="user-name-item">
+        let content = this.state.content.map((user) => {
+            let listItemClass = 'user-name-item ';//space in the end is intentional
+            if(this.props.createGroup){
+                let indexOfUid = this.state.participants.indexOf(user.uid);
+                if(indexOfUid !== -1){
+                    listItemClass += 'selected';
+                } else{
+                    listItemClass += 'hoverable';
+                }
+            }
+            return(
+                <li
+                key={user.uid}
+                className={listItemClass}
+                onClick={this.handleUserClick.bind(this, user.uid)}>
                     <div className="userNameContainer">
-                        <span>{users.user}</span>
-                        <div className={users.online}></div>
+                        <span>{user.user}</span>
+                        <div className={user.online}></div>
                     </div>
                 </li>
             );
         });
         return(
             <div className="recently-connected-inner-container">
-                <ul>
+                <ul className='recently-connected-list-container'>
                     {content}
                 </ul>
                 {this.props.createGroup ?
