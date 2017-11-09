@@ -82,7 +82,7 @@ export default class Login extends Component {
             };
         }
 
-        usersRef.child(user.uid).transaction(function(currentUserData) {
+        usersRef.child(user.uid).child('privateFields').transaction(function(currentUserData) {
           if (currentUserData === null || !currentUserData.email) {
             return userData;
           }
