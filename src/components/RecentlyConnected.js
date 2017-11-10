@@ -58,6 +58,9 @@ export default class RecentlyConnected extends React.Component {
                 if (uid === myuid) continue;
                 let usernameRef = db.ref('users/'+uid+'/publicFields')
                 usernameRef.once('value').then(function(snapshot) {
+                    if(!snapshot.exists()){
+                        return;
+                    }
                     let username = snapshot.val().displayName;
                     let isConnected = snapshot.val().isConnected ? 'isOnline' : 'isOffline';
                     isConnected += ' status-circle';

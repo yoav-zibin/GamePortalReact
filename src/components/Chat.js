@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import './css/Chat.css';
 import {db, auth} from '../firebase';
+import firebase from 'firebase';
 
 export default class Chat extends Component {
 
@@ -8,8 +9,10 @@ export default class Chat extends Component {
         super(props);
         this.state = {
             content: [],
-            members: {}
+            members: {},
+            message: ''
         };
+        this.RETURN_KEYCODE = 13;
     }
 
     componentDidMount(){
@@ -70,6 +73,36 @@ export default class Chat extends Component {
         });
     }
 
+    sendMessage(message){
+        let chatRef = db.ref('gamePortal/groups/'+this.props.groupId+'/messages');
+        let messageInfo = {
+            message: message,
+            timestamp: firebase.database.ServerValue.TIMESTAMP,
+            senderUid: auth.currentUser.uid
+        };
+        chatRef.push(messageInfo);
+    }
+
+    handleReturnPress(event){
+        let keycode = event.keyCode;
+        if(keycode===this.RETURN_KEYCODE){
+            if(this.state.message.length > 0){
+                let message = this.state.message;
+                this.setState({
+                    message: ''
+                });
+                this.sendMessage(message);
+            }
+        }
+    }
+
+    handleOnChange(event){
+        let message = event.target.value;
+        this.setState({
+            message: message
+        });
+    }
+
     render(){
         if(this.initMembersFinish){
             this.initChat();
@@ -82,12 +115,18 @@ export default class Chat extends Component {
                 </li>
             );
         });
-        console.log(this.state.content);
         return(
             <div className='chat-inner-container'>
                 <ul>
                     {chats}
                 </ul>
+                <input
+                    className='message-input-field'
+                    type="text"
+                    value={this.state.message}
+                    onKeyDown={this.handleReturnPress.bind(this)}
+                    onChange={this.handleOnChange.bind(this)}
+                />
             </div>
         );
     }

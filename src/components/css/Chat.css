@@ -2,10 +2,24 @@
     background: #f00;
 }
 
+.chat-inner-container{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 100%;
+    position: relative;
+}
+
 .friend{
     background: #0f0;
 }
 
 .message-item{
     list-style: none;
+}
+
+.message-input-field{
+    border: 1px solid black;
+    margin: 5px 1%;
+    width: 98%;
 }
