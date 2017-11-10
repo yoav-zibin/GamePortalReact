@@ -46,6 +46,33 @@ export default class Chat extends Component {
         });
     }
 
+    timeago(timeStamp) {
+        let now = new Date();
+        timeStamp = new Date(timeStamp);
+        let secondsPast = (now.getTime() - timeStamp.getTime()) / 1000;
+        if(secondsPast < 60){
+          return parseInt(secondsPast) + 's';
+        }
+        if(secondsPast < 3600){
+          return parseInt(secondsPast/60) + 'm';
+        }
+        if(secondsPast <= 86400){
+          return parseInt(secondsPast/3600) + 'h';
+        }
+        if(secondsPast <= 604800){
+          return parseInt(secondsPast/86400) + 'd';
+        }
+        if(secondsPast <= 18144000){
+          return parseInt(secondsPast/604800) + 'w';
+        }
+        if(secondsPast > 18144000){
+            let day = timeStamp.getDate();
+            let month = timeStamp.toDateString().match(/ [a-zA-Z]*/)[0].replace(" ","");
+            let year = timeStamp.getFullYear() == now.getFullYear() ? "" :  " "+timeStamp.getFullYear();
+            return day + " " + month + year;
+        }
+    }
+
     initChat(){
         let self = this;
         let chatRef = db.ref('gamePortal/groups/'+self.props.groupId+'/messages');
@@ -56,7 +83,6 @@ export default class Chat extends Component {
                 Object.keys(messages).forEach((messageKey)=>{
                     let message = messages[messageKey];
                     let cssClass = auth.currentUser.uid===message.senderUid ? 'self' : 'friend';
-                    cssClass += ' message-item';
                     let val = {
                         timestamp: message.timestamp,
                         sender: self.state.members[message.senderUid],
@@ -110,16 +136,24 @@ export default class Chat extends Component {
         }
         let chats = this.state.content.map((chat, index)=>{
             return(
-                <li key={index} className={chat.cssClass}>
-                    {chat.message}
-                </li>
+                <div key={'outer'+index} className={chat.cssClass}>
+                    <div key={'inner'+index} className='chat-list-item'>
+                        <span className='chat-sender'>
+                            {chat.sender}
+                        </span><br/>
+                        {chat.message}<br/>
+                        <div className='chat-timestamp'>
+                            {this.timeago(chat.timestamp)}
+                        </div>
+                    </div>
+                </div>
             );
         });
         return(
             <div className='chat-inner-container'>
-                <ul>
+                <div className='chat-list-container'>
                     {chats}
-                </ul>
+                </div>
                 <input
                     className='message-input-field'
                     type="text"

@@ -1,25 +1,48 @@
-.self{
-    background: #f00;
+.self, .friend{
+    border: 1px;
+    width: 100%;
+    margin: 0;
+    display: flex;
 }
-
+.self{
+    justify-content: flex-end;
+    text-align: right;
+}
+.friend{
+    justify-content: flex-start;
+    text-align: left;
+}
+.chat-list-container{
+    margin: 10px 10px;
+    padding: 0;
+    height: 90%;
+    display: flex;
+    flex-direction: column;
+}
 .chat-inner-container{
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     width: 100%;
     position: relative;
+    color: #000;
+    background: rgba(44,63,79,0.7);
 }
-
-.friend{
-    background: #0f0;
+.chat-list-item{
+    width: 80%;
+    border: 1px solid black;
+    margin: 1px 0;
+    background: rgba(255, 255, 255, 1);
 }
-
-.message-item{
-    list-style: none;
-}
-
 .message-input-field{
     border: 1px solid black;
     margin: 5px 1%;
     width: 98%;
+}
+.chat-sender{
+    background: rgba(255,255,0,0.5);
+}
+.chat-timestamp{
+    width: 100%;
+    text-align: right;
 }
