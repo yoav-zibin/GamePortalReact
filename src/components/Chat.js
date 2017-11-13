@@ -29,7 +29,7 @@ export default class Chat extends Component {
                 let memberIds = snapshot.val();
                 let numMembers = Object.keys(snapshot.val()).length;
                 Object.keys(memberIds).forEach((memberId)=>{
-                    let userRef = db.ref('users/'+memberId+'/publicFields/displayName');
+                    let userRef = db.ref('users/'+memberId+'/publicFields/avatarImageUrl');
                     userRef.once('value').then((snapshot)=>{
                         let name = snapshot.val();
                         let id = snapshot.ref.parent.parent.key;
@@ -137,15 +137,12 @@ export default class Chat extends Component {
         let chats = this.state.content.map((chat, index)=>{
             return(
                 <div key={'outer'+index} className={chat.cssClass}>
-                    <div key={'inner'+index} className='chat-list-item'>
-                        <span className='chat-sender'>
-                            {chat.sender}
-                        </span><br/>
-                        {chat.message}<br/>
-                        <div className='chat-timestamp'>
+                        <img src={chat.sender} />
+                        <span> {chat.message}<br/> </span>
+                        
+                        <chat-timestamp>
                             {this.timeago(chat.timestamp)}
-                        </div>
-                    </div>
+                        </chat-timestamp>
                 </div>
             );
         });

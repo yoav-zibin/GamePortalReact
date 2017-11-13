@@ -11,8 +11,9 @@
     justify-content: center;
 }
 .side-chat{
-    flex: 1;
-    display: flex;
+    flex: 1.5;
     height: 100%;
     position: relative;
+    overflow-y: scroll;
+    scroll-behavior: auto;
 }
