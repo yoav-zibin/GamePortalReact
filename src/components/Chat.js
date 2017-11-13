@@ -10,6 +10,7 @@ export default class Chat extends Component {
         this.state = {
             content: [],
             members: {},
+            imgs: {},
             message: ''
         };
         this.RETURN_KEYCODE = 13;
@@ -26,18 +27,23 @@ export default class Chat extends Component {
         membersRef.on('value', function(snapshot){
             if(snapshot.exists()){
                 let members = {};
+                let imgs = {};
                 let memberIds = snapshot.val();
                 let numMembers = Object.keys(snapshot.val()).length;
                 Object.keys(memberIds).forEach((memberId)=>{
-                    let userRef = db.ref('users/'+memberId+'/publicFields/avatarImageUrl');
+                    let userRef = db.ref('users/'+memberId+'/publicFields');
                     userRef.once('value').then((snapshot)=>{
-                        let name = snapshot.val();
-                        let id = snapshot.ref.parent.parent.key;
+                        let name = snapshot.child('/displayName').val();
+                        let img = snapshot.child('/avatarImageUrl').val();
+
+                        let id = snapshot.ref.parent.key;
                         members[id] = name;
+                        imgs[id] = img;
                         if(Object.keys(members).length === numMembers){
                             self.initMembersFinish = true;
                             self.setState({
-                                members: members
+                                members: members,
+                                imgs: imgs
                             });
                         }
                     });
@@ -86,6 +92,7 @@ export default class Chat extends Component {
                     let val = {
                         timestamp: message.timestamp,
                         sender: self.state.members[message.senderUid],
+                        senderImg: self.state.imgs[message.senderUid],
                         senderUid: message.senderUid,
                         message: message.message,
                         cssClass: cssClass
@@ -137,12 +144,13 @@ export default class Chat extends Component {
         let chats = this.state.content.map((chat, index)=>{
             return(
                 <div key={'outer'+index} className={chat.cssClass}>
-                        <img src={chat.sender} />
-                        <span> {chat.message}<br/> </span>
-                        
-                        <chat-timestamp>
-                            {this.timeago(chat.timestamp)}
-                        </chat-timestamp>
+                    <span1>  {chat.sender}<br/> </span1>
+                    <img src={chat.senderImg} />
+                    <span>  {chat.message}<br/> </span>
+
+                    <chat-timestamp>
+                        {this.timeago(chat.timestamp)}
+                    </chat-timestamp>
                 </div>
             );
         });

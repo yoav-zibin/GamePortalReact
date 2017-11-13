@@ -1,20 +1,25 @@
 .self{
     border: 2px solid #dedede;
-    background-color: #f1f1f1;
+    background-color: #D9F8CB;
     border-radius: 5px;
     padding: 10px;
     margin: 10px 0;
+    width: 100%;
+    float: right;
+    margin-left:auto;
+    margin-right:2px;
+
 }
 
 .friend{
     border: 2px solid #dedede;
-    background-color: #f1f1f1;
     border-radius: 5px;
     padding: 10px;
     margin: 10px 0;
+    width: 100%;
 
     border-color: #ccc;
-    background-color: #ddd;
+    background-color: #FEFEFE;
 }
 
 .friend img {
@@ -41,7 +46,7 @@
     flex-direction: column;
     height: 538px;
     overflow-y: scroll;
-    scroll-behavior: smooth;
+    scroll-behavior: auto;
 }
 .chat-inner-container{
     display: flex;
@@ -65,9 +70,23 @@
 .friend chat-timestamp{
     float: right;
     color: #aaa;
+    font-size: 13px;
 }
 
 .self chat-timestamp{
     float: left;
     color: #999;
+    font-size: 13px;
+}
+
+.self span1{
+    font-size: 0px;
+    float: left;
+    visibility: hidden;
+}
+
+.friend span1{
+    font-size: 13px;
+    float: right;
+    color: #aaa;
 }
