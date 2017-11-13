@@ -62,10 +62,10 @@ export default class Chat extends Component {
         if(secondsPast <= 604800){
           return parseInt(secondsPast/86400) + 'd';
         }
-        if(secondsPast <= 18144000){
-          return parseInt(secondsPast/604800) + 'w';
-        }
-        if(secondsPast > 18144000){
+        // if(secondsPast <= 18144000){
+        //   return parseInt(secondsPast/604800) + 'w';
+        // }
+        if(secondsPast > 604800){
             let day = timeStamp.getDate();
             let month = timeStamp.toDateString().match(/ [a-zA-Z]*/)[0].replace(" ","");
             let year = timeStamp.getFullYear() == now.getFullYear() ? "" :  " "+timeStamp.getFullYear();
