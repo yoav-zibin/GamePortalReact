@@ -5,6 +5,7 @@ import {auth, db} from '../firebase';
 import PlayArena from './PlayArena';
 import GameSelector from './GameSelector';
 import Chat from './Chat';
+import RecentlyConnected from './RecentlyConnected';
 
 export default class Play extends Component {
 
@@ -14,7 +15,8 @@ export default class Play extends Component {
         groupId = groupId[groupId.length - 1];
         this.state = {
             spec: null,
-            groupId: groupId
+            groupId: groupId,
+            addMember: false
         };
         this.playArena = null;
         this.participants = [];
@@ -50,6 +52,18 @@ export default class Play extends Component {
       this.specId = id;
   }
 
+  addMember(){
+      this.setState({
+          addMember: !this.state.addMember
+      });
+  }
+
+  doneAddingMember(){
+      this.setState({
+          addMember: false
+      });
+  }
+
   render() {
 
     if(this.state.spec){
@@ -59,14 +73,24 @@ export default class Play extends Component {
     return (
     <div className="root-container">
         <div className="play-arena-container">
-            <GameSelector setSpec={this.setSpec.bind(this)} setSpecId={this.setSpecId.bind(this)}/>
+            <GameSelector
+                setSpec={this.setSpec.bind(this)}
+                setSpecId={this.setSpecId.bind(this)}
+                addingMember={this.state.addMember}
+                addMember={this.addMember.bind(this)}/>
             <div className="play-arena-component">
                 {this.playArena}
             </div>
         </div>
 
         <div className="side-chat">
-            <Chat groupId={this.state.groupId}/>
+            {
+                this.state.addMember ?
+                <RecentlyConnected
+                    updateGroup={this.state.addMember}
+                    groupId={this.state.groupId}
+                    doneCreating={this.doneAddingMember.bind(this)}/>
+                : <Chat groupId={this.state.groupId}/>}
         </div>
     </div>
     );

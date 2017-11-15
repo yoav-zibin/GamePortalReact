@@ -8,7 +8,6 @@
     float: right;
     margin-left:auto;
     margin-right:2px;
-
 }
 
 .friend{
@@ -57,7 +56,6 @@
     height: 100%;
     position: relative;
     color: #000;
-    background: rgba(44,63,79,0.7);
 }
 
 .message-input-field{

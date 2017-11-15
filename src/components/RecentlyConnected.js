@@ -30,7 +30,7 @@ export default class RecentlyConnected extends React.Component {
     }
 
     clearParticipants(){
-        if(!this.props.createGroup && this.state.participants.length > 0){
+        if((!this.props.createGroup && !this.props.updateGroup) && this.state.participants.length > 0){
             this.setState({
                 participants:[]
             });
@@ -129,8 +129,33 @@ export default class RecentlyConnected extends React.Component {
         this.props.doneCreating();
     }
 
+    handleUpdateGroup(){
+        let self = this;
+        let groupRef = db.ref('gamePortal/groups/'+self.props.groupId);
+        groupRef.once('value').then((snapshot)=>{
+            let participantIndex = Object.keys(snapshot.val().participants).length;
+            let groupMembers = snapshot.val().participants;
+            self.state.participants.forEach((participant)=>{
+                if(participant in groupMembers){
+                    return;
+                }
+                let participantRef = db.ref('gamePortal/groups/'+self.props.groupId+'/participants/'+participant);
+                participantRef.set({
+                        participantIndex: participantIndex
+                });
+                let userRef = db.ref('users/'+participant+'/privateButAddable/groups/'+self.props.groupId);
+                userRef.set({
+                    addedByUid: auth.currentUser.uid,
+                    timestamp: firebase.database.ServerValue.TIMESTAMP
+                });
+                participantIndex += 1;
+            });
+        });
+        self.props.doneCreating();
+    }
+
     handleUserClick(uid, event){
-        if(!this.props.createGroup){
+        if(!this.props.createGroup && !this.props.updateGroup){
             return;
         }
         let participants = this.state.participants;
@@ -146,12 +171,12 @@ export default class RecentlyConnected extends React.Component {
     }
 
     render(){
-        if(!this.props.createGroup && this.state.participants.length > 0){
+        if((!this.props.createGroup && !this.props.updateGroup) && this.state.participants.length > 0){
             this.state.participants = [];
         }
         let content = this.state.content.map((user) => {
             let listItemClass = 'user-name-item ';//space in the end is intentional
-            if(this.props.createGroup){
+            if(this.props.createGroup || this.props.updateGroup){
                 let indexOfUid = this.state.participants.indexOf(user.uid);
                 if(indexOfUid !== -1){
                     listItemClass += 'selected';
@@ -183,7 +208,15 @@ export default class RecentlyConnected extends React.Component {
                         onClick={this.handleCreateGroup.bind(this)}>
                         Create Group
                     </Button>
-                    : null}
+                : null}
+                {this.props.updateGroup ?
+                    <Button
+                        className='create-group-final-button'
+                        color='success'
+                        onClick={this.handleUpdateGroup.bind(this)}>
+                        Add Members
+                    </Button>
+                : null}
             </div>
         );
     }
