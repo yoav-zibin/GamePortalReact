@@ -6,6 +6,7 @@ import PlayArena from './PlayArena';
 import GameSelector from './GameSelector';
 import Chat from './Chat';
 import RecentlyConnected from './RecentlyConnected';
+import DeleteMember from './DeleteMember';
 
 export default class Play extends Component {
 
@@ -16,7 +17,8 @@ export default class Play extends Component {
         this.state = {
             spec: null,
             groupId: groupId,
-            addMember: false
+            addMember: false,
+            deleteMember: false
         };
         this.playArena = null;
         this.participants = [];
@@ -53,6 +55,7 @@ export default class Play extends Component {
   }
 
   addMember(){
+      this.doneDeletingMember();
       this.setState({
           addMember: !this.state.addMember
       });
@@ -64,10 +67,39 @@ export default class Play extends Component {
       });
   }
 
+  deleteMember(){
+      this.doneAddingMember();
+      this.setState({
+          deleteMember: !this.state.deleteMember
+      });
+  }
+
+  doneDeletingMember(){
+      this.setState({
+          deleteMember: false
+      });
+  }
+
   render() {
 
     if(this.state.spec){
         this.playArena = (<PlayArena spec={this.state.spec} matchRef={this.matchRef}/>);
+    }
+
+    let updateGroupComponent = null;
+    if(this.state.addMember){
+        updateGroupComponent = (
+            <RecentlyConnected
+            updateGroup={this.state.addMember}
+            groupId={this.state.groupId}
+            doneCreating={this.doneAddingMember.bind(this)}/>
+        );
+    } else{
+        updateGroupComponent = (
+            <DeleteMember
+            groupId={this.state.groupId}
+            doneDeleting={this.doneDeletingMember.bind(this)}/>
+        );
     }
 
     return (
@@ -77,7 +109,9 @@ export default class Play extends Component {
                 setSpec={this.setSpec.bind(this)}
                 setSpecId={this.setSpecId.bind(this)}
                 addingMember={this.state.addMember}
-                addMember={this.addMember.bind(this)}/>
+                addMember={this.addMember.bind(this)}
+                deletingMember={this.state.deleteMember}
+                deleteMember={this.deleteMember.bind(this)}/>
             <div className="play-arena-component">
                 {this.playArena}
             </div>
@@ -85,12 +119,9 @@ export default class Play extends Component {
 
         <div className="side-chat">
             {
-                this.state.addMember ?
-                <RecentlyConnected
-                    updateGroup={this.state.addMember}
-                    groupId={this.state.groupId}
-                    doneCreating={this.doneAddingMember.bind(this)}/>
-                : <Chat groupId={this.state.groupId}/>}
+                this.state.addMember || this.state.deleteMember ?
+                updateGroupComponent :
+                <Chat groupId={this.state.groupId}/>}
         </div>
     </div>
     );
