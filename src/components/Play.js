@@ -98,6 +98,7 @@ export default class Play extends Component {
         updateGroupComponent = (
             <DeleteMember
             groupId={this.state.groupId}
+            updateGroup={this.state.deleteMember}
             doneDeleting={this.doneDeletingMember.bind(this)}/>
         );
     }
@@ -122,7 +123,6 @@ export default class Play extends Component {
                 addMember={this.addMember.bind(this)}
                 deletingMember={this.state.deleteMember}
                 deleteMember={this.deleteMember.bind(this)}
-
                 />}
         </div>
     </div>
