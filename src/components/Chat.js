@@ -46,7 +46,6 @@ export default class Chat extends Component {
                             self.setState({
                                 members: members,
                                 imgs: imgs,
-                                nOfMembers:numMembers
                             });
                         }
                     });
@@ -90,7 +89,11 @@ export default class Chat extends Component {
                 let chat = [];
                 let messages = snapshot.child('/messages').val();
                 let groupName = snapshot.child('/groupName').val();
-                self.setState({groupName: groupName});
+                let nOfMembers = Object.keys(snapshot.child('/participants').val()).length;
+                self.setState({
+                    groupName: groupName,
+                    nOfMembers: nOfMembers
+                });
                 if(!(messages === null)){
                     Object.keys(messages).forEach((messageKey)=>{
                         let message = messages[messageKey];
