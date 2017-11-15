@@ -5,7 +5,6 @@ import './css/Login.css';
 import {firebaseApp, auth, googleProvider, isAuthenticated, db} from '../firebase';
 import firebase from 'firebase';
 import PhoneAuth from './PhoneAuth';
-import {getName} from '../pokemon';
 import Main from './Main';
 import {
   BrowserRouter as Router,
@@ -35,61 +34,6 @@ const fakeAuth = {
 }
 
 export default class Login extends Component {
-
-    createUserIfNotExists = () => {
-      if (isAuthenticated()) {
-        let user = auth.currentUser;
-        // console.log(user);
-        let usersRef = db.ref("users");
-        let userData = null;
-        if(user.isAnonymous){
-            userData = {
-              'privateFields': {
-                  'email': "anonymous.user@gmail.com",
-                  'createdOn': firebase.database.ServerValue.TIMESTAMP,
-                  facebookId: "",
-                  githubId: "",
-                  googleId: "",
-                  phoneNumber: "",
-                  pushNotificationsToken: "",
-                  twitterId: "",
-              },
-              'publicFields': {
-                'avatarImageUrl': 'https://ssl.gstatic.com/images/branding/product/1x/avatar_circle_blue_512dp.png',
-                'displayName': getName(),
-                'isConnected': true,
-                'lastSeen':firebase.database.ServerValue.TIMESTAMP
-              }
-            };
-        }else{
-            userData = {
-              'privateFields': {
-                  'email': user.email,
-                  'createdOn': firebase.database.ServerValue.TIMESTAMP,
-                  facebookId: "",
-                  githubId: "",
-                  googleId: "",
-                  phoneNumber: "",
-                  pushNotificationsToken: "",
-                  twitterId: "",
-              },
-              'publicFields': {
-                'avatarImageUrl': user.photoURL || 'https://ssl.gstatic.com/images/branding/product/1x/avatar_circle_blue_512dp.png',
-                'displayName': user.displayName || user.email,
-                'isConnected': true,
-                'lastSeen':firebase.database.ServerValue.TIMESTAMP
-              }
-            };
-        }
-
-        usersRef.child(user.uid).child('privateFields').transaction(function(currentUserData) {
-          if (currentUserData === null || !currentUserData.email) {
-            return userData;
-          }
-        });
-      }
-    }
-
 
   handleSubmit = () => {
       if (auth.currentUser) {
@@ -124,7 +68,6 @@ export default class Login extends Component {
           // [END_EXCLUDE]
       });
         // [END authwithemail]
-        loginPromise.then(this.createUserIfNotExists);
       }
   }
 
@@ -132,7 +75,6 @@ export default class Login extends Component {
   loginWithGoogle = ()=>{
     // console.log('signin with google');
     auth.signInWithPopup(googleProvider).then(function (result) {
-    this.createUserIfNotExists();
     //   this.setState({redirectToReferrer: true});
     }.bind(this));
   }
@@ -146,7 +88,6 @@ export default class Login extends Component {
           var errorMessage = error.message;
           console.error(errorCode, errorMessage);
       });
-      loginPromise.then(this.createUserIfNotExists);
   }
 
   state = {
