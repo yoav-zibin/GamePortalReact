@@ -3,8 +3,9 @@ import './css/DeleteMember.css';
 import { Button } from 'reactstrap';
 import firebase from 'firebase';
 import {db, auth} from '../firebase';
+import { Link } from 'react-router-dom';
 
-export default class DeleteMember extends Component {
+export default class ShowGroupMembers extends Component {
     constructor(props){
         super(props);
         this.state = {
@@ -114,24 +115,17 @@ export default class DeleteMember extends Component {
         });
     }
 
-    deleteMembers(){
+    deleteAndLeave(){
         // implement logic here
         let self = this;
         let groupRef = db.ref('gamePortal/groups/'+self.props.groupId);
         groupRef.once('value').then((snapshot)=>{
-            let participantIndex = Object.keys(snapshot.val().participants).length;
             let groupMembers = snapshot.val().participants;
-
-            self.state.participants.forEach((participant)=>{
-                if(!(participant in groupMembers)){
-                    return;
-                }
-                let participantRef = db.ref('gamePortal/groups/'+self.props.groupId+'/participants/'+participant);
+            let myUid = auth.currentUser.uid;
+                let participantRef = db.ref('gamePortal/groups/' + self.props.groupId + '/participants/'+ myUid);
                 participantRef.remove();
-                let userRef = db.ref('users/'+participant+'/privateButAddable/groups/'+self.props.groupId);
+                let userRef = db.ref('users/' + myUid + '/privateButAddable/groups/' + self.props.groupId);
                 userRef.remove();
-                participantIndex -= 1;
-            });
         });
 
         this.props.doneDeleting();
@@ -169,8 +163,8 @@ export default class DeleteMember extends Component {
             <ul className='recently-connected-list-container'>
                  {content}
             </ul>
-            <Button color="success del-btn" onClick={this.deleteMembers.bind(this)}>
-                Delete
+            <Button tag={Link} to="/" color="success del-btn" onClick={this.deleteAndLeave.bind(this)} >
+                Delete and Leave
             </Button>
         </div>
     );

@@ -17,14 +17,18 @@
     background-color: #A9A9A9;
 }
 
+.chat-inner-container ul{
+    cursor: pointer;
+}
+
 .chat-inner-container button {
     position: relative;
     background-color: #A9A9A9;
     border: 10px;
     border-color: #ccc;
-    font-size: 15px;
+    font-size: 18px;
     color: #FFFFFF;
-    padding: 10px;
+
     width: 40px;
     text-align: center;
     -webkit-transition-duration: 0.4s; /* Safari */

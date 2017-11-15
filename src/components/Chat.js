@@ -91,19 +91,21 @@ export default class Chat extends Component {
                 let messages = snapshot.child('/messages').val();
                 let groupName = snapshot.child('/groupName').val();
                 self.setState({groupName: groupName});
-                Object.keys(messages).forEach((messageKey)=>{
-                    let message = messages[messageKey];
-                    let cssClass = auth.currentUser.uid===message.senderUid ? 'self' : 'friend';
-                    let val = {
-                        timestamp: message.timestamp,
-                        sender: self.state.members[message.senderUid],
-                        senderImg: self.state.imgs[message.senderUid],
-                        senderUid: message.senderUid,
-                        message: message.message,
-                        cssClass: cssClass
-                    };
-                    chat.push(val);
-                });
+                if(!(messages === null)){
+                    Object.keys(messages).forEach((messageKey)=>{
+                        let message = messages[messageKey];
+                        let cssClass = auth.currentUser.uid===message.senderUid ? 'self' : 'friend';
+                        let val = {
+                            timestamp: message.timestamp,
+                            sender: self.state.members[message.senderUid],
+                            senderImg: self.state.imgs[message.senderUid],
+                            senderUid: message.senderUid,
+                            message: message.message,
+                            cssClass: cssClass
+                        };
+                        chat.push(val);
+                    });
+                 }
                 self.setState({
                     content: chat,
                 });
@@ -172,9 +174,9 @@ export default class Chat extends Component {
 
             <div className='chat-inner-container'>
                 <div className='group-title-container'>
+                    
+                    <ul onClick={this.deleteMember.bind(this)}>{this.state.groupName} ({this.state.nOfMembers})</ul>
                     <button onClick={this.addMember.bind(this)}>+</button>
-                    <ul>{this.state.groupName} ({this.state.nOfMembers})</ul>
-                    <button onClick={this.deleteMember.bind(this)}>-</button>
                  </div>
                 <div className='chat-list-container'>
                     {chats}

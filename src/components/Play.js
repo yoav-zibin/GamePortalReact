@@ -6,7 +6,7 @@ import PlayArena from './PlayArena';
 import GameSelector from './GameSelector';
 import Chat from './Chat';
 import RecentlyConnected from './RecentlyConnected';
-import DeleteMember from './DeleteMember';
+import ShowGroupMembers from './ShowGroupMembers';
 
 export default class Play extends Component {
 
@@ -96,7 +96,7 @@ export default class Play extends Component {
         );
     } else{
         updateGroupComponent = (
-            <DeleteMember
+            <ShowGroupMembers
             groupId={this.state.groupId}
             updateGroup={this.state.deleteMember}
             doneDeleting={this.doneDeletingMember.bind(this)}/>
