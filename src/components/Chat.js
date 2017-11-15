@@ -12,7 +12,8 @@ export default class Chat extends Component {
             members: {},
             imgs: {},
             message: '',
-            groupName: ''
+            groupName: '',
+            nOfMembers: null
         };
         this.RETURN_KEYCODE = 13;
     }
@@ -44,7 +45,8 @@ export default class Chat extends Component {
                             self.initMembersFinish = true;
                             self.setState({
                                 members: members,
-                                imgs: imgs
+                                imgs: imgs,
+                                nOfMembers:numMembers
                             });
                         }
                     });
@@ -141,6 +143,7 @@ export default class Chat extends Component {
 
   addMember(){
       this.props.addMember();
+      console.log(this.state.members);
   }
 
   deleteMember(){
@@ -170,11 +173,10 @@ export default class Chat extends Component {
             <div className='chat-inner-container'>
                 <div className='group-title-container'>
                     <button onClick={this.addMember.bind(this)}>+</button>
-                    <ul>{this.state.groupName}</ul>
+                    <ul>{this.state.groupName} ({this.state.nOfMembers})</ul>
                     <button onClick={this.deleteMember.bind(this)}>-</button>
                  </div>
                 <div className='chat-list-container'>
-                
                     {chats}
                 </div>
                 <input
