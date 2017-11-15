@@ -1,4 +1,5 @@
-import firebase from 'firebase'
+import firebase from 'firebase';
+import {getName} from './pokemon';
 
 let config = {
   apiKey: "AIzaSyDA5tCzxNzykHgaSv1640GanShQze3UK-M",
@@ -107,6 +108,62 @@ export const addToRecentlyConnected = () => {
     // });
 
 
+}
+
+export const createUserIfNotExists = () => {
+  if (isAuthenticated()) {
+    let user = auth.currentUser;
+    // console.log(user);
+    let usersRef = db.ref("users");
+    let userData = null;
+    if(user.isAnonymous){
+        userData = {
+          'privateFields': {
+              'email': "anonymous.user@gmail.com",
+              'createdOn': firebase.database.ServerValue.TIMESTAMP,
+              facebookId: "",
+              githubId: "",
+              googleId: "",
+              phoneNumber: "",
+              pushNotificationsToken: "",
+              twitterId: "",
+          },
+          'publicFields': {
+            'avatarImageUrl': 'https://ssl.gstatic.com/images/branding/product/1x/avatar_circle_blue_512dp.png',
+            'displayName': getName(),
+            'isConnected': true,
+            'lastSeen':firebase.database.ServerValue.TIMESTAMP
+          }
+        };
+    }else{
+        userData = {
+          'privateFields': {
+              'email': user.email,
+              'createdOn': firebase.database.ServerValue.TIMESTAMP,
+              facebookId: "",
+              githubId: "",
+              googleId: "",
+              phoneNumber: "",
+              pushNotificationsToken: "",
+              twitterId: "",
+          },
+          'publicFields': {
+            'avatarImageUrl': user.photoURL || 'https://ssl.gstatic.com/images/branding/product/1x/avatar_circle_blue_512dp.png',
+            'displayName': user.displayName || getName(),
+            'isConnected': true,
+            'lastSeen':firebase.database.ServerValue.TIMESTAMP
+          }
+        };
+    }
+
+    usersRef.child(user.uid).once('value').then((snapshot)=>{
+        if(!snapshot.exists()){
+            usersRef.child(user.uid).set(userData);
+        }
+        addPresenceListeners();
+        addToRecentlyConnected();
+    });
+  }
 }
 
 export const hidePresence = () => {
