@@ -107,11 +107,7 @@ export default class Play extends Component {
         <div className="play-arena-container">
             <GameSelector
                 setSpec={this.setSpec.bind(this)}
-                setSpecId={this.setSpecId.bind(this)}
-                addingMember={this.state.addMember}
-                addMember={this.addMember.bind(this)}
-                deletingMember={this.state.deleteMember}
-                deleteMember={this.deleteMember.bind(this)}/>
+                setSpecId={this.setSpecId.bind(this)}/>
             <div className="play-arena-component">
                 {this.playArena}
             </div>
@@ -121,7 +117,13 @@ export default class Play extends Component {
             {
                 this.state.addMember || this.state.deleteMember ?
                 updateGroupComponent :
-                <Chat groupId={this.state.groupId}/>}
+                <Chat groupId={this.state.groupId}
+                addingMember={this.state.addMember}
+                addMember={this.addMember.bind(this)}
+                deletingMember={this.state.deleteMember}
+                deleteMember={this.deleteMember.bind(this)}
+
+                />}
         </div>
     </div>
     );

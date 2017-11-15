@@ -11,7 +11,8 @@ export default class Chat extends Component {
             content: [],
             members: {},
             imgs: {},
-            message: ''
+            message: '',
+            groupName: ''
         };
         this.RETURN_KEYCODE = 13;
     }
@@ -81,11 +82,13 @@ export default class Chat extends Component {
 
     initChat(){
         let self = this;
-        let chatRef = db.ref('gamePortal/groups/'+self.props.groupId+'/messages');
+        let chatRef = db.ref('gamePortal/groups/'+self.props.groupId);
         chatRef.on('value', function(snapshot){
             if(snapshot.exists()){
                 let chat = [];
-                let messages = snapshot.val();
+                let messages = snapshot.child('/messages').val();
+                let groupName = snapshot.child('/groupName').val();
+                self.setState({groupName: groupName});
                 Object.keys(messages).forEach((messageKey)=>{
                     let message = messages[messageKey];
                     let cssClass = auth.currentUser.uid===message.senderUid ? 'self' : 'friend';
@@ -100,7 +103,7 @@ export default class Chat extends Component {
                     chat.push(val);
                 });
                 self.setState({
-                    content: chat
+                    content: chat,
                 });
             }
         });
@@ -136,6 +139,14 @@ export default class Chat extends Component {
         });
     }
 
+  addMember(){
+      this.props.addMember();
+  }
+
+  deleteMember(){
+      this.props.deleteMember();
+  }
+
     render(){
         if(this.initMembersFinish){
             this.initChat();
@@ -155,8 +166,15 @@ export default class Chat extends Component {
             );
         });
         return(
+
             <div className='chat-inner-container'>
+                <div className='group-title-container'>
+                    <button onClick={this.addMember.bind(this)}>+</button>
+                    <ul>{this.state.groupName}</ul>
+                    <button onClick={this.deleteMember.bind(this)}>-</button>
+                 </div>
                 <div className='chat-list-container'>
+                
                     {chats}
                 </div>
                 <input

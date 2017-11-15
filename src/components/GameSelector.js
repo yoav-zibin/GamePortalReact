@@ -52,14 +52,6 @@ export default class GameSelector extends React.Component {
       });
   }
 
-  addMember(){
-      this.props.addMember();
-  }
-
-  deleteMember(){
-      this.props.deleteMember();
-  }
-
   render() {
     return (
         <div className='game-selector-container'>
@@ -71,16 +63,6 @@ export default class GameSelector extends React.Component {
               onChange={this.changeSelectedSpec.bind(this)}
             />
             <Button color="success load-game-btn" onClick={this.loadGame.bind(this)}>Load Game</Button>
-            <Button color="success add-delete-btn" onClick={this.addMember.bind(this)}>
-                {this.props.addingMember ?
-                    "Cancel" :
-                    "Add Member"}
-            </Button>
-            <Button color="success add-delete-btn" onClick={this.deleteMember.bind(this)}>
-                {this.props.deletingMember ?
-                    "Cancel" :
-                    "Delete Member"}
-            </Button>
         </div>
     );
   }

@@ -10,6 +10,60 @@
     margin-right:2px;
 }
 
+
+.group-title-container{
+    display: flex;
+    width: 100%;
+    background-color: #A9A9A9;
+}
+
+.chat-inner-container button {
+    position: relative;
+    background-color: #A9A9A9;
+    border: 10px;
+    border-color: #ccc;
+    font-size: 15px;
+    color: #FFFFFF;
+    padding: 10px;
+    width: 40px;
+    text-align: center;
+    -webkit-transition-duration: 0.4s; /* Safari */
+    transition-duration: 0.4s;
+    text-decoration: none;
+    overflow: hidden;
+    cursor: pointer;
+}
+
+.chat-inner-container button:after {
+    content: "";
+    background: #ccc;
+    display: block;
+    position: absolute;
+    padding-top: 300%;
+    padding-left: 350%;
+    margin-left: -20px!important;
+    margin-top: -120%;
+    opacity: 0;
+    transition: all 0.8s
+}
+
+.chat-inner-container button:active:after {
+    padding: 0;
+    margin: 0;
+    opacity: 1;
+    transition: 0s
+}
+
+.chat-inner-container ul {
+    flex:2;
+    margin: 0px;
+    background-color: #A9A9A9;
+    color: white;
+    text-align: center;
+    padding: 8px 10px;
+    font-size: 18px;
+}
+
 .friend{
     border: 2px solid #dedede;
     border-radius: 5px;
