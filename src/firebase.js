@@ -22,6 +22,9 @@ let uiConfig = {
 };
 export const firebaseApp = firebase.initializeApp(config);
 export const googleProvider = new firebase.auth.GoogleAuthProvider();
+export const facebookProvider = new firebase.auth.FacebookAuthProvider();
+export const twitterProvider = new firebase.auth.TwitterAuthProvider();
+export const githubProvider = new firebase.auth.GithubAuthProvider();
 export const auth = firebaseApp.auth();
 export const db = firebaseApp.database();
 export const storageKey = 'GAME_BUILDER_LOCAL_STORAGE_$UID';

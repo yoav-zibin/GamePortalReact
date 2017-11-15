@@ -43,3 +43,9 @@
     height: auto;
     font-size: 30px;
 }
+.login-alert{
+    position: absolute;
+    left: auto;
+    top: 50%;
+    width: 100%;
+}
