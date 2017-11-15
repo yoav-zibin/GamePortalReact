@@ -1,6 +1,7 @@
 import React from 'react';
 import './css/CreateGroup.css';
 import { Button } from 'reactstrap';
+import Social from './Social';
 
 export default class CreateGroup extends React.Component {
     constructor(props){
@@ -20,6 +21,7 @@ export default class CreateGroup extends React.Component {
             <div className="create-group-inner-container">
                 <div className="welcome-container">
                         <h1 className="title-h1">Board Games <br/> Heaven</h1>
+                        <Social/>
                         <h1 className="welcome-h1">Welcome</h1>
                 </div>
                 <div className="add-members-container">

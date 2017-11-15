@@ -1,0 +1,7 @@
+.social-inner-container{
+    display: flex;
+    justify-content:center;
+}
+.social-icon{
+    margin: 0 15px;
+}
