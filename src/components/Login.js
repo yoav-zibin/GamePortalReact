@@ -76,25 +76,37 @@ export default class Login extends Component {
     // console.log('signin with google');
     auth.signInWithPopup(googleProvider).then(function (result) {
     //   this.setState({redirectToReferrer: true});
-    }.bind(this));
+    }.bind(this)).catch(function(error){
+        let errorCode = error.code;
+        alert(error.message);
+    });
   }
 
   loginWithFacebook(){
       auth.signInWithPopup(facebookProvider).then(function (result) {
       //   this.setState({redirectToReferrer: true});
-      }.bind(this));
+      }.bind(this)).catch(function(error){
+          let errorCode = error.code;
+          alert(error.message);
+      });
   }
 
   loginWithTwitter(){
       auth.signInWithPopup(twitterProvider).then(function (result) {
       //   this.setState({redirectToReferrer: true});
-      }.bind(this));
+      }.bind(this)).catch(function(error){
+          let errorCode = error.code;
+          alert(error.message);
+      });
   }
 
   loginWithGithub(){
       auth.signInWithPopup(githubProvider).then(function (result) {
       //   this.setState({redirectToReferrer: true});
-      }.bind(this));
+      }.bind(this)).catch(function(error){
+          let errorCode = error.code;
+          alert(error.message);
+      });
   }
 
   // If the user logs in successfully using this API,
