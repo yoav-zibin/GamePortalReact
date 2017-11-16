@@ -156,11 +156,11 @@ export default class Login extends Component {
                             <button className="btn btn-md btn-primary login-button" onClick={this.loginWithFacebook} >Facebook</button>
                         </div>
                         <div className='login-button-container middle-button-container'>
-                            <button className="btn btn-md btn-primary login-button" onClick={this.loginWithPhone} > {<Link to='/PhoneAuth' style={{decoration: 'none', color: 'white'}}>With Phone</Link>}</button>
+                            <button className="btn btn-md btn-primary login-button" onClick={this.loginWithGithub} >Github</button>
                             <button className="btn btn-md btn-primary login-button" onClick={this.loginWithTwitter} >Twitter</button>
                         </div>
                         <div className='login-button-container'>
-                            <button className="btn btn-md btn-primary login-button" onClick={this.loginWithGithub} >Github</button>
+                            <button className="btn btn-md btn-primary login-button" onClick={this.loginWithPhone} > {<Link to='/PhoneAuth' style={{decoration: 'none', color: 'white'}}>With Phone</Link>}</button>
                             <button className="btn btn-md btn-primary login-button" onClick={this.loginAnonymous.bind(this)}>Anonymous</button>
                         </div>
                     </div>
