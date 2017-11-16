@@ -10,6 +10,7 @@
     "firebaseui": "^2.3.0",
     "gh-pages": "^1.0.0",
     "konva": "^1.7.5",
+    "material-ui": "^0.19.4",
     "react": "^15.6.2",
     "react-addons-css-transition-group": "^15.6.0",
     "react-addons-transition-group": "^15.6.0",

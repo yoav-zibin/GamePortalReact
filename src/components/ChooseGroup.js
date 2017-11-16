@@ -3,13 +3,16 @@ import './css/ChooseGroup.css';
 import RecentlyConnected from './RecentlyConnected';
 import CreateGroup from './CreateGroup';
 import MyGroups from './MyGroups';
+import SocialFriends from './SocialFriends';
+import {Tabs, Tab} from 'material-ui/Tabs';
 
 export default class ChooseGroup extends Component {
     constructor(props){
         super(props);
         this.state = {
             createGroup: false,
-            groupName: 'Suicide Squad'
+            groupName: 'Suicide Squad',
+            tab: 'my_groups'
         };
     }
 
@@ -30,6 +33,12 @@ export default class ChooseGroup extends Component {
             groupName: event.target.value
         });
     }
+
+    handleTabChange = (value) => {
+        this.setState({
+          tab: value,
+        });
+    };
 
   render() {
 
@@ -52,7 +61,17 @@ export default class ChooseGroup extends Component {
             />
         </div>
         <div className="my-groups-container">
-            <MyGroups />
+                <Tabs
+                    color='primary'
+                    value={this.state.tab}
+                    onChange={this.handleTabChange.bind(this)}>
+                    <Tab label="My Groups" value="my_groups">
+                        <MyGroups />
+                    </Tab>
+                    <Tab label="Friends" value="friends">
+                        <SocialFriends />
+                    </Tab>
+                </Tabs>
         </div>
     </div>
     );

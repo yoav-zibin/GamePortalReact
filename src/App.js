@@ -7,11 +7,29 @@ import Footer from './components/Footer';
 import Register from './components/Register';
 import RouteManager from './components/RouteManager';
 import Main from './components/Main';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import getMuiTheme from 'material-ui/styles/getMuiTheme';
 
 class App extends Component {
     state = {
       uid: -1
     };
+
+    constructor(){
+        super();
+
+        this.muiTheme = getMuiTheme({
+            palette: {
+                textColor: '#FFF',
+                primary1Color: '#0077D1',
+                primary2Color: '#0077D1',
+                accent1Color: '#FFF',
+            },
+            appBar: {
+                height: 50,
+            },
+        });
+    }
 
     componentDidMount() {
       auth.onAuthStateChanged(user => {
@@ -33,19 +51,22 @@ class App extends Component {
         if (this.state.uid != -1) {
 
             return (
-            <div className='root'>
-                <div className="header-container">
-                    <Header />
+            <MuiThemeProvider muiTheme={this.muiTheme}>
+                <div className='root'>
+                    <div className="header-container">
+                        <Header />
+                    </div>
+                    <div className="super-parent-container">
+                    {this.state.uid ? (<RouteManager />) : (<Main />)}
+                    </div>
+                    <div className="footer-container">
+                        <Footer />
+                    </div>
                 </div>
-                <div className="super-parent-container">
-                {this.state.uid ? (<RouteManager />) : (<Main />)}
-                </div>
-                <div className="footer-container">
-                    <Footer />
-                </div>
-            </div>)
+            </MuiThemeProvider>
+            );
         } else {
-            return (<div></div>)
+            return (<div></div>);
         }
   }
 }
