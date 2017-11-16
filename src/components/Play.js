@@ -98,7 +98,6 @@ export default class Play extends Component {
         updateGroupComponent = (
             <ShowGroupMembers
             groupId={this.state.groupId}
-            updateGroup={this.state.deleteMember}
             doneDeleting={this.doneDeletingMember.bind(this)}/>
         );
     }

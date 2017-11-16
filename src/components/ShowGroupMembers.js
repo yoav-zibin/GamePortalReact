@@ -131,6 +131,10 @@ export default class ShowGroupMembers extends Component {
         this.props.doneDeleting();
     }
 
+    backToPrev(){
+        this.props.doneDeleting();
+    }
+
   render() {
         if((!this.props.createGroup && !this.props.updateGroup) && this.state.participants.length > 0){
             this.state.participants = [];
@@ -160,7 +164,7 @@ export default class ShowGroupMembers extends Component {
         });
     return (
         <div className="delete-member-container">
-        <returnButton class="previous"> &#8249; </returnButton>
+        <returnButton value="Back" tag={Link} to="/" onClick={this.backToPrev.bind(this)}> &#8249; </returnButton>
             <ul className='recently-connected-list-container'>
                  {content}
             </ul>

@@ -25,6 +25,7 @@
     font-size: 20px;
     width: 25px;
     border-radius: 70%;
+    cursor:pointer;
 }
 
 .delete-member-container returnButton:hover {
@@ -71,6 +72,7 @@
     margin: 10px 0 0 0;
     width: 70%;
     align-self: center;
+    cursor:pointer;
 }
 
 .hoverable:hover{
