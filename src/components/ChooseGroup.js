@@ -12,7 +12,7 @@ export default class ChooseGroup extends Component {
         this.state = {
             createGroup: false,
             groupName: 'Suicide Squad',
-            tab: 'my_groups'
+            tab: 'recently_connected'
         };
     }
 
@@ -45,11 +45,20 @@ export default class ChooseGroup extends Component {
     return (
     <div className='choose-group-container'>
         <div className="recently-connected-container">
-            <RecentlyConnected
-                createGroup={this.state.createGroup}
-                doneCreating={this.cancelCreateGroup.bind(this)}
-                groupName={this.state.groupName}
-            />
+            <Tabs
+                color='primary'
+                value={this.state.tab}
+                onChange={this.handleTabChange.bind(this)}>
+                    <Tab label="Users" value="recently_connected">
+                        <RecentlyConnected
+                            createGroup={this.state.createGroup}
+                            doneCreating={this.cancelCreateGroup.bind(this)}
+                            groupName={this.state.groupName}/>
+                    </Tab>
+                    <Tab label="Friends" value="friends">
+                        <SocialFriends />
+                    </Tab>
+            </Tabs>
         </div>
         <div className="create-group-container">
             <CreateGroup
@@ -57,21 +66,10 @@ export default class ChooseGroup extends Component {
                 create={this.createGroup.bind(this)}
                 cancelCreateGroup={this.cancelCreateGroup.bind(this)}
                 groupName={this.state.groupName}
-                updateGroupName={this.updateGroupName.bind(this)}
-            />
+                updateGroupName={this.updateGroupName.bind(this)}/>
         </div>
         <div className="my-groups-container">
-                <Tabs
-                    color='primary'
-                    value={this.state.tab}
-                    onChange={this.handleTabChange.bind(this)}>
-                    <Tab label="My Groups" value="my_groups">
-                        <MyGroups />
-                    </Tab>
-                    <Tab label="Friends" value="friends">
-                        <SocialFriends />
-                    </Tab>
-                </Tabs>
+            <MyGroups />
         </div>
     </div>
     );

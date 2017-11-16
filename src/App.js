@@ -22,7 +22,7 @@ class App extends Component {
             palette: {
                 textColor: '#FFF',
                 primary1Color: '#0077D1',
-                primary2Color: '#0077D1',
+                primary2Color: '#4a9ad6',
                 accent1Color: '#FFF',
             },
             appBar: {
