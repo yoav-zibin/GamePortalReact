@@ -4,9 +4,8 @@ import { SocialIcon } from 'react-social-icons';
 import {auth, facebookProvider, githubProvider, googleProvider, twitterProvider} from '../firebase';
 
 export default class Social extends React.Component{
-    handleFacebookConnect(){
+    handleSocialConnect(provider){
         let self = this;
-        console.log('handleFacebookConnect');
         auth.currentUser.linkWithPopup(facebookProvider).then(function(result) {
             // Accounts successfully linked.
             var credential = result.credential;
@@ -22,10 +21,22 @@ export default class Social extends React.Component{
     render(){
         return(
             <div className="social-inner-container">
-                <SocialIcon className='social-icon' network="twitter"/>
-                <SocialIcon onClick={this.handleFacebookConnect.bind(this)} className='social-icon' network="facebook"/>
-                <SocialIcon className='social-icon' network="google"/>
-                <SocialIcon className='social-icon' network="github"/>
+                <SocialIcon
+                    onClick={this.handleSocialConnect.bind(this, twitterProvider)}
+                    className='social-icon'
+                    network="twitter"/>
+                <SocialIcon
+                    onClick={this.handleSocialConnect.bind(this, facebookProvider)}
+                    className='social-icon'
+                    network="facebook"/>
+                <SocialIcon
+                    onClick={this.handleSocialConnect.bind(this, googleProvider)}
+                    className='social-icon'
+                    network="google"/>
+                <SocialIcon
+                    onClick={this.handleSocialConnect.bind(this, githubProvider)}
+                    className='social-icon'
+                    network="github"/>
             </div>
         );
     }
