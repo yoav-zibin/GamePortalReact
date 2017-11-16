@@ -128,6 +128,12 @@ export default class Login extends Component {
       window.location.reload();
   }
 
+  handleKeyDown(event){
+      if(event.keyCode === 13){
+         this.handleSubmit();
+      }
+  }
+
   render() {
     return (
         <div className="signin-super-container">
@@ -140,9 +146,9 @@ export default class Login extends Component {
                         <label htmlFor="inputEmail" className="sr-only">Email address</label>
                         <input type="email" id="inputEmail" className="form-control" placeholder="Email address" required autoFocus/>
                         <label htmlFor="inputPassword" className="sr-only">Password</label>
-                        <input type="password" id="inputPassword" className="form-control" placeholder="Password" required/>
+                        <input onKeyDown={this.handleKeyDown.bind(this)} type="password" id="inputPassword" className="form-control" placeholder="Password" required/>
                         <br />
-                        <button id = "signin" className="btn btn-md btn-primary btn-block" onClick={this.handleSubmit} >Log In</button>
+                        <button id = "signin" className="btn btn-md btn-primary btn-block" onClick={this.handleSubmit.bind(this)} >Log In</button>
                     </div>
                     <div className="login-options-container col-md-6 col-xs-12">
                         <div className='login-button-container'>
