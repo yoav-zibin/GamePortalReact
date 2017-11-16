@@ -20,7 +20,7 @@ export default class Header extends React.Component {
           window.localStorage.setItem(storageKey, user.uid);
           this.setState({uid: user.uid});
           let  usernameRef = db.ref('users/'+user.uid+'/publicFields/displayName');
-          usernameRef.once('value').then(function(snapshot) {
+          usernameRef.on('value', function(snapshot) {
             let  username = snapshot.val();
             self.setState({username: username});
           });
