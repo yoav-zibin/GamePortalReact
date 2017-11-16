@@ -1,11 +1,9 @@
 import React from 'react';
-import { Collapse, Navbar, NavbarToggler, NavbarBrand, Nav, NavItem, NavLink } from 'reactstrap';
-import { NavLink as RRNavLink } from 'react-router-dom';
 import { Link } from 'react-router-dom';
-import Login from './Login';
 import {auth, signOut, db, isAuthenticated, firebaseApp, googleProvider} from '../firebase';
-import Register from './Register';
 import { storageKey, hidePresence } from '../firebase';
+import './css/Header.css';
+import createHistory from 'history/createBrowserHistory';
 
 let  authenticated = true;
 
@@ -53,6 +51,8 @@ export default class Header extends React.Component {
       // hidePresence has to be called before auth.signOut()
       hidePresence();
       signOut();
+      let history = createHistory();
+      history.push('/', {});
   }
 
   handleSignUpClick() {
@@ -60,28 +60,17 @@ export default class Header extends React.Component {
   }
 
   render(){
-    var myStyle = {
-        height: '100%'
-    };
     return (
-      <div style={myStyle}>
-        <Navbar color="faded" light toggleable>
-          <NavbarToggler right onClick={this.toggle} />
-          <NavbarBrand href="/">GamePortal</NavbarBrand>
-          <Collapse isOpen={this.state.isOpen} navbar>
-            <Nav className="ml-auto" navbar>
-              {this.state.uid ? (
-              <NavItem>
-                <NavLink tag={Link} onClick={this.handleLogoutClick.bind(this)} to="/"> {this.state.username}  Log Out</NavLink>
-              </NavItem>
-              ) : (
-              <NavItem>
-                <NavLink tag={Link} onClick={this.handleSignUpClick.bind(this)} to="Register">Sign up</NavLink>
-              </NavItem>
-              )}
-            </Nav>
-          </Collapse>
-        </Navbar>
+      <div className='header-inner-container'>
+          <Link className='app-title' to="/"><h4 style={{margin:'0'}}>GamePortal</h4></Link>
+          {this.state.uid ?
+                <div className='signup-logout' onClick={this.handleLogoutClick.bind(this)}>
+                    <h5 style={{margin:'0'}}>{this.state.username}  Log Out</h5>
+                </div> :
+                <Link className='signup-logout' onClick={this.handleSignUpClick.bind(this)} to="Register">
+                    <h5 style={{margin:'0'}}>Sign up</h5>
+                </Link>
+          }
       </div>
     );
   }

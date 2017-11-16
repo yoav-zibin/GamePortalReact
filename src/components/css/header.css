@@ -1,11 +1,14 @@
-.header-container{
-    height:10%;
+.header-inner-container{
+    height: 100%;
+    background: #F7F7F7;
+    display: flex;
+    justify-content: space-between;
 }
-
-.super-parent-container{
-    height: 80%;
-}
-
-.footer-container{
-    height:10%;
+.app-title, .app-title:hover, .signup-logout, .signup-logout:hover{
+    text-decoration: none;
+    color: black;
+    padding: 0 15px;
+    margin: auto 0;
+    font-family: 'Ubuntu', sans-serif;
+    cursor: pointer;
 }
