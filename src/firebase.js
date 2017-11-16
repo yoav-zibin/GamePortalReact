@@ -139,7 +139,7 @@ export const createUserIfNotExists = () => {
         };
     }else{
         userData = {
-          'privateFields': {
+          privateFields: {
               'email': user.email || "anonymous.user@gmail.com",
               'createdOn': firebase.database.ServerValue.TIMESTAMP,
               facebookId: "",
@@ -149,7 +149,7 @@ export const createUserIfNotExists = () => {
               pushNotificationsToken: "",
               twitterId: "",
           },
-          'publicFields': {
+          publicFields: {
             'avatarImageUrl': user.photoURL || 'https://ssl.gstatic.com/images/branding/product/1x/avatar_circle_blue_512dp.png',
             'displayName': user.displayName || getName(),
             'isConnected': true,
@@ -157,6 +157,12 @@ export const createUserIfNotExists = () => {
           }
         };
     }
+
+    user.providerData.forEach((provider)=>{
+        let providerId = provider.providerId;
+        let providerUid = provider.uid;
+        userData.privateFields[providerId.split('.')[0]+'Id'] = providerUid;
+    });
 
     usersRef.child(user.uid).once('value').then((snapshot)=>{
         if(!snapshot.exists()){

@@ -27,7 +27,7 @@ export default class Social extends React.Component{
                 if(provider.providerId===providerId){
                     let providerUid = provider.uid;
                     let uid = user.uid;
-                    let userRef = db.ref('users/'+uid+'/privateFields/'+providerId.split('.')[0]+'Id')
+                    let userRef = db.ref('users/'+uid+'/privateFields/'+providerId.split('.')[0]+'Id');
                     userRef.set(providerUid);
                 }
             });
