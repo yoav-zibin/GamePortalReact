@@ -116,7 +116,6 @@ export const addToRecentlyConnected = () => {
 export const createUserIfNotExists = () => {
   if (isAuthenticated()) {
     let user = auth.currentUser;
-    // console.log(user);
     let usersRef = db.ref("users");
     let userData = null;
     if(user.isAnonymous){
@@ -141,7 +140,7 @@ export const createUserIfNotExists = () => {
     }else{
         userData = {
           'privateFields': {
-              'email': user.email,
+              'email': user.email || "anonymous.user@gmail.com",
               'createdOn': firebase.database.ServerValue.TIMESTAMP,
               facebookId: "",
               githubId: "",
