@@ -1,7 +1,7 @@
 import React from 'react';
 import './css/Social.css';
 import { SocialIcon } from 'react-social-icons';
-import {auth, facebookProvider, githubProvider, googleProvider, twitterProvider} from '../firebase';
+import {auth, facebookProvider, githubProvider, googleProvider, twitterProvider, db} from '../firebase';
 
 export default class Social extends React.Component{
 
@@ -22,8 +22,15 @@ export default class Social extends React.Component{
         auth.currentUser.linkWithPopup(provider).then(function(result) {
             // Accounts successfully linked.
             var credential = result.credential;
-            var user = result.user;
-
+            let user = result.user;
+            user.providerData.forEach((provider)=>{
+                if(provider.providerId===providerId){
+                    let providerUid = provider.uid;
+                    let uid = user.uid;
+                    let userRef = db.ref('users/'+uid+'/privateFields/'+providerId.split('.')[0]+'Id')
+                    userRef.set(providerUid);
+                }
+            });
             self.props.success();
         }).catch(function(error) {
             console.log('error linking account:'+error.message);
