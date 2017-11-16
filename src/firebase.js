@@ -161,7 +161,10 @@ export const createUserIfNotExists = () => {
     user.providerData.forEach((provider)=>{
         let providerId = provider.providerId;
         let providerUid = provider.uid;
-        userData.privateFields[providerId.split('.')[0]+'Id'] = providerUid;
+        let key = providerId.split('.')[0]+'Id';
+        if(userData.privateFields[key]===""){
+            userData.privateFields[key] = providerUid;
+        }
     });
 
     usersRef.child(user.uid).once('value').then((snapshot)=>{
