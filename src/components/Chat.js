@@ -89,7 +89,7 @@ export default class Chat extends Component {
                 let chat = [];
                 let messages = snapshot.child('/messages').val();
                 let groupName = snapshot.child('/groupName').val();
-                let nOfMembers = Object.keys(snapshot.child('/participants').val()).length;
+                let nOfMembers = "("+Object.keys(snapshot.child('/participants').val()).length+")";
                 self.setState({
                     groupName: groupName,
                     nOfMembers: nOfMembers
@@ -177,8 +177,8 @@ export default class Chat extends Component {
 
             <div className='chat-inner-container'>
                 <div className='group-title-container'>
-                    
-                    <ul onClick={this.deleteMember.bind(this)}>{this.state.groupName} ({this.state.nOfMembers})</ul>
+
+                    <ul onClick={this.deleteMember.bind(this)}>{this.state.groupName} {this.state.nOfMembers}</ul>
                     <button onClick={this.addMember.bind(this)}>+</button>
                  </div>
                 <div className='chat-list-container'>
