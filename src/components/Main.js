@@ -17,8 +17,8 @@ const Main = () => {
       <div style={myStyle}>
         <Switch>
           <Route path="/PhoneAuth" component={PhoneAuth} />
-          <Route exact path="/" component={Login} />
           <Route path="/Register" component={Register} />
+          <Route path="/" component={Login} />
         </Switch>
     </div>
     );
