@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import logo from '../logo.svg';
 import '../App.css';
 import './css/Login.css';
-import {firebaseApp, auth, googleProvider, isAuthenticated, db} from '../firebase';
+import {firebaseApp, auth, googleProvider, facebookProvider, twitterProvider, githubProvider, isAuthenticated, db} from '../firebase';
 import firebase from 'firebase';
 import PhoneAuth from './PhoneAuth';
 import Main from './Main';
@@ -79,6 +79,24 @@ export default class Login extends Component {
     }.bind(this));
   }
 
+  loginWithFacebook(){
+      auth.signInWithPopup(facebookProvider).then(function (result) {
+      //   this.setState({redirectToReferrer: true});
+      }.bind(this));
+  }
+
+  loginWithTwitter(){
+      auth.signInWithPopup(twitterProvider).then(function (result) {
+      //   this.setState({redirectToReferrer: true});
+      }.bind(this));
+  }
+
+  loginWithGithub(){
+      auth.signInWithPopup(githubProvider).then(function (result) {
+      //   this.setState({redirectToReferrer: true});
+      }.bind(this));
+  }
+
   // If the user logs in successfully using this API,
   // onAuthStateChanged will be called which is registered in App.js
   // User_id for anonymous user will be received there.
@@ -115,9 +133,18 @@ export default class Login extends Component {
                         <button id = "signin" className="btn btn-md btn-primary btn-block" onClick={this.handleSubmit} >Log In</button>
                     </div>
                     <div className="login-options-container col-md-6 col-xs-12">
-                        <button className="btn btn-md btn-primary btn-block" onClick={this.loginWithGoogle} >Google Signin</button>
-                        <button className="btn btn-md btn-primary btn-block" onClick={this.loginWithPhone} > {<Link to='/PhoneAuth' style={{decoration: 'none', color: 'white'}}>Signin with Phone</Link>}</button>
-                        <button className="btn btn-md btn-primary btn-block" onClick={this.loginAnonymous.bind(this)}> Anonymous Signin</button>
+                        <div className='login-button-container'>
+                            <button className="btn btn-md btn-primary login-button" onClick={this.loginWithGoogle} >Google</button>
+                            <button className="btn btn-md btn-primary login-button" onClick={this.loginWithFacebook} >Facebook</button>
+                        </div>
+                        <div className='login-button-container middle-button-container'>
+                            <button className="btn btn-md btn-primary login-button" onClick={this.loginWithPhone} > {<Link to='/PhoneAuth' style={{decoration: 'none', color: 'white'}}>With Phone</Link>}</button>
+                            <button className="btn btn-md btn-primary login-button" onClick={this.loginWithTwitter} >Twitter</button>
+                        </div>
+                        <div className='login-button-container'>
+                            <button className="btn btn-md btn-primary login-button" onClick={this.loginWithGithub} >Github</button>
+                            <button className="btn btn-md btn-primary login-button" onClick={this.loginAnonymous.bind(this)}>Anonymous</button>
+                        </div>
                     </div>
                 </div>
             </div>
