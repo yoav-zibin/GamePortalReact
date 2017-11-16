@@ -217,7 +217,7 @@ export default class RecentlyConnected extends React.Component {
                         Add Members
                     </Button>
                 : null}
-            </div>
+            </div> 
         );
     }
 }

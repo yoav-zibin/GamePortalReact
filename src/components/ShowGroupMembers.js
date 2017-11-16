@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import './css/DeleteMember.css';
+import './css/ShowGroupMembers.css';
 import { Button } from 'reactstrap';
 import firebase from 'firebase';
 import {db, auth} from '../firebase';
@@ -160,10 +160,11 @@ export default class ShowGroupMembers extends Component {
         });
     return (
         <div className="delete-member-container">
+        <returnButton class="previous"> &#8249; </returnButton>
             <ul className='recently-connected-list-container'>
                  {content}
             </ul>
-            <Button tag={Link} to="/" color="success del-btn" onClick={this.deleteAndLeave.bind(this)} >
+            <Button className="delete" tag={Link} to="/" color="success del-btn" onClick={this.deleteAndLeave.bind(this)} >
                 Delete and Leave
             </Button>
         </div>
