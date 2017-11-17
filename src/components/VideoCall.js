@@ -68,7 +68,7 @@ export default class VideoCall extends Component {
         self.pc.onicecandidate = function (evt) {
             console.log("onicecandidate: ", evt);
             if (evt.candidate) {
-                self.sendMessage(JSON.stringify({ "candidate": evt.candidate }));
+                self.sendMessage("candidate", evt.candidate);
             }
         };
 
@@ -105,14 +105,15 @@ export default class VideoCall extends Component {
             }, (err: any) => { console.error("Error in getUserMedia: ", err); });
     }
 
-    sendMessage(msg){
+    sendMessage(signalType, signalData){
         let ref = db.ref(`users/${this.targetUserId}/privateButAddable/signal`).push();
-        let signalData: SignalData = {
+        let signalMsg = {
           addedByUid: auth.currentUser.uid,
           timestamp: firebase.database.ServerValue.TIMESTAMP,
-          signalData: msg,
+          signalData: JSON.stringify(signalData),
+          signalType: signalType,
         };
-        this.dbSet(ref, signalData);
+        this.dbSet(ref, signalMsg);
     }
 
     setVideoStream(isLocal, stream){
@@ -150,7 +151,7 @@ export default class VideoCall extends Component {
     gotDescription(desc) {
         console.log("gotDescription.bind(self): ", desc);
         this.pc.setLocalDescription(desc);
-        this.sendMessage(JSON.stringify({ "sdp": desc }));
+        this.sendMessage("sdp", desc);
     }
 
     listenToMessages() {
@@ -172,30 +173,31 @@ export default class VideoCall extends Component {
         });
     }
 
-    receivedMessage(signalData) {
+    receivedMessage(signalMsg) {
         const CALL_RECEIVE_WINDOW = 15 * 1000;
-        console.log("receivedMessage signalData=", signalData);
+        console.log("receivedMessage signalMsg=", signalMsg);
         const now = new Date().getTime();
-        if (now - CALL_RECEIVE_WINDOW > signalData.timestamp) {
+        if (now - CALL_RECEIVE_WINDOW > signalMsg.timestamp) {
           console.warn("Ignoring signal because it's more than a minute old");
           return;
         }
         if (!this.pc) {
-          this.targetUserId = signalData.addedByUid;
+          this.targetUserId = signalMsg.addedByUid;
           this.setState({
               callOngoing: true
           });
           this.start(false);
         }
 
-        var signal = JSON.parse(signalData.signalData);
-        if (signal.sdp) {
-          this.pc.setRemoteDescription(new RTCSessionDescription(signal.sdp)).then(
+        let signalType = signalMsg.signalType
+        let signalData = JSON.parse(signalMsg.signalData);
+        if (signalType == "sdp") {
+          this.pc.setRemoteDescription(new RTCSessionDescription(signalData)).then(
             () => { console.log("setRemoteDescription success"); },
             (err: any) => { console.error("Error in setRemoteDescription: ", err); }
           );
-        } else {
-          this.pc.addIceCandidate(new RTCIceCandidate(signal.candidate)).then(
+        } else if (signalType == "candidate")  {
+          this.pc.addIceCandidate(new RTCIceCandidate(signalData)).then(
             () => { console.log("addIceCandidate success"); },
             (err: any) => { console.error("Error in addIceCandidate: ", err); }
           );
