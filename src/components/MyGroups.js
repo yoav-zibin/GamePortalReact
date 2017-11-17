@@ -78,7 +78,7 @@ export default class MyGroups extends React.Component {
                     key={group.id}
                     onMouseEnter={this.handleMouseEnter.bind(this, group.participants)}>
                     <Link to={'/play/'+group.id} className='item-link'>
-                        {group.name}
+                        <div className='item-span-div'>{group.name}</div>
                     </Link>
                 </li>
             );

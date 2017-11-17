@@ -4,8 +4,8 @@
 
 .groups-item{
     list-style: none;
-    padding: 5px 5px;
     font-family: 'Ubuntu', sans-serif;
+    position: relative;
 }
 
 .groups-item-container{
@@ -19,6 +19,12 @@
 .item-link{
     text-decoration: none;
     color: inherit;
+}
+
+.item-span-div{
+    width: 100%;
+    height: 100%;
+    padding: 5px 5px;
 }
 
 .item-link:hover{
