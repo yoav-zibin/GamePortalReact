@@ -7,6 +7,7 @@ import GameSelector from './GameSelector';
 import Chat from './Chat';
 import RecentlyConnected from './RecentlyConnected';
 import ShowGroupMembers from './ShowGroupMembers';
+import VideoCall from './VideoCall';
 
 export default class Play extends Component {
 
@@ -18,7 +19,8 @@ export default class Play extends Component {
             spec: null,
             groupId: groupId,
             addMember: false,
-            deleteMember: false
+            deleteMember: false,
+            videoCall: false
         };
         this.playArena = null;
         this.participants = [];
@@ -80,26 +82,50 @@ export default class Play extends Component {
       });
   }
 
+  videoCall(){
+      this.setState({
+          videoCall: true
+      });
+  }
+
+  doneVideoCall(){
+      this.setState({
+          videoCall: false
+      });
+  }
+
   render() {
 
     if(this.state.spec){
         this.playArena = (<PlayArena spec={this.state.spec} matchRef={this.matchRef}/>);
     }
 
-    let updateGroupComponent = null;
+    let sideBarComponent = null;
     if(this.state.addMember){
-        updateGroupComponent = (
+        sideBarComponent = (
             <RecentlyConnected
             updateGroup={this.state.addMember}
             groupId={this.state.groupId}
             doneCreating={this.doneAddingMember.bind(this)}
             path='recentlyConnected'/>
         );
-    } else{
-        updateGroupComponent = (
+    } else if(this.state.deleteMember){
+        sideBarComponent = (
             <ShowGroupMembers
             groupId={this.state.groupId}
             doneDeleting={this.doneDeletingMember.bind(this)}/>
+        );
+    } else if(this.state.videoCall){
+        sideBarComponent = (
+            <VideoCall
+            doneVideoCall={this.doneVideoCall.bind(this)}/>
+        );
+    } else{
+        sideBarComponent = (
+            <Chat groupId={this.state.groupId}
+            videoCall={this.videoCall.bind(this)}
+            addMember={this.addMember.bind(this)}
+            deleteMember={this.deleteMember.bind(this)}/>
         );
     }
 
@@ -115,15 +141,7 @@ export default class Play extends Component {
         </div>
 
         <div className="side-chat">
-            {
-                this.state.addMember || this.state.deleteMember ?
-                updateGroupComponent :
-                <Chat groupId={this.state.groupId}
-                addingMember={this.state.addMember}
-                addMember={this.addMember.bind(this)}
-                deletingMember={this.state.deleteMember}
-                deleteMember={this.deleteMember.bind(this)}
-                />}
+            {sideBarComponent}
         </div>
     </div>
     );

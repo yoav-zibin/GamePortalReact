@@ -155,6 +155,10 @@ export default class Chat extends Component {
       this.props.deleteMember();
   }
 
+  videoCall(){
+      this.props.videoCall();
+  }
+
     render(){
         if(this.initMembersFinish){
             this.initChat();
@@ -179,6 +183,7 @@ export default class Chat extends Component {
                 <div className='group-title-container'>
 
                     <ul onClick={this.deleteMember.bind(this)}>{this.state.groupName} {this.state.nOfMembers}</ul>
+                    <button onClick={this.videoCall.bind(this)}>&#128222;</button>
                     <button onClick={this.addMember.bind(this)}>+</button>
                  </div>
                 <div className='chat-list-container'>
@@ -189,8 +194,7 @@ export default class Chat extends Component {
                     type="text"
                     value={this.state.message}
                     onKeyDown={this.handleReturnPress.bind(this)}
-                    onChange={this.handleOnChange.bind(this)}
-                />
+                    onChange={this.handleOnChange.bind(this)}/>
             </div>
         );
     }
