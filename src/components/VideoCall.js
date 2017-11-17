@@ -15,6 +15,7 @@ export default class VideoCall extends Component {
         this.targetUserId = null;
         this.initGroupMembers(props.groupId)
         this.listenToMessages();
+        this.localStream = null;
     }
 
     initGroupMembers(groupId){
@@ -77,6 +78,10 @@ export default class VideoCall extends Component {
             self.setVideoStream(false, evt.stream);
         };
 
+        self.pc.onremovestream = ()=>{
+            self.endVideoCall();
+        }
+
         // get the local stream, show it in the local video element and send it
         console.log('Requesting getUserMedia...');
         navigator.mediaDevices.getUserMedia({ "audio": true, "video": true })
@@ -112,9 +117,33 @@ export default class VideoCall extends Component {
 
     setVideoStream(isLocal, stream){
         if(isLocal){
+            this.localStream = stream;
             this.localVid.srcObject = stream;
         }else{
             this.remoteVid.srcObject = stream;
+        }
+    }
+
+    hideVideoStream(){
+        if(this.localVid)
+            this.localVid.srcObject = null;
+        if(this.remoteVid)
+            this.remoteVid.srcObject = null;
+    }
+
+    stopLocalStream(){
+        if(this.localStream !== null){
+            for (let track of this.localStream.getTracks()) {
+                track.stop()
+            }
+            this.localStream = null;
+        }
+    }
+
+    disconnect(){
+        if(this.pc){
+            this.pc.close();
+            this.pc = null;
         }
     }
 
@@ -144,10 +173,10 @@ export default class VideoCall extends Component {
     }
 
     receivedMessage(signalData) {
-        const ONE_MINUTE_MILLIS = 60 * 1000;
+        const CALL_RECEIVE_WINDOW = 15 * 1000;
         console.log("receivedMessage signalData=", signalData);
         const now = new Date().getTime();
-        if (now - ONE_MINUTE_MILLIS > signalData.timestamp) {
+        if (now - CALL_RECEIVE_WINDOW > signalData.timestamp) {
           console.warn("Ignoring signal because it's more than a minute old");
           return;
         }
@@ -181,6 +210,13 @@ export default class VideoCall extends Component {
         this.start(true);
     }
 
+    endVideoCall(){
+        this.hideVideoStream();
+        this.stopLocalStream()
+        this.disconnect();
+        this.props.doneVideoCall();
+    }
+
     render(){
         let myComponent = this.state.callOngoing || this.props.inComingCall ?
             (
@@ -190,7 +226,7 @@ export default class VideoCall extends Component {
                     <Button
                         className='back-button'
                         color='primary'
-                        onClick={()=>{this.props.doneVideoCall()}}>
+                        onClick={this.endVideoCall.bind(this)}>
                         Hang Up!
                     </Button>
                 </div>
