@@ -1,0 +1,19 @@
+.web-rtc-inner-container{
+    height: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+#remotevideo{
+    border: 1px solid black;
+    height: 100%;
+    width: 100%;
+}
+#localvideo{
+    border: 1px solid blue;
+    height: 100%;
+    width: 100%;
+}
+.call-button{
+    width: 100%;
+    height: 15%;
+}
