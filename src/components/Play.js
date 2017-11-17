@@ -118,6 +118,7 @@ export default class Play extends Component {
     } else if(this.state.videoCall){
         sideBarComponent = (
             <VideoCall
+            groupId={this.state.groupId}
             doneVideoCall={this.doneVideoCall.bind(this)}/>
         );
     } else{

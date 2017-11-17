@@ -6,9 +6,38 @@ import firebase from 'firebase';
 
 export default class VideoCall extends Component {
 
-    constructor(){
-        super();
+    constructor(props){
+        super(props);
+        this.state = {
+            callOngoing: false,
+            groupMembers: {}
+        };
+        this.targetUserId = null;
+        this.initGroupMembers(props.groupId)
         this.listenToMessages();
+    }
+
+    initGroupMembers(groupId){
+        let self = this;
+        let groupRef = db.ref(`gamePortal/groups/${groupId}/participants`);
+        groupRef.on('value', (snap)=>{
+            let content = {};
+            console.log('dafq', snap.val());
+            Object.keys(snap.val()).forEach((uid)=>{
+                if(auth.currentUser.uid === uid){
+                    return;
+                }
+                let userRef = db.ref(`users/${uid}/publicFields/displayName`);
+                userRef.once('value').then((snap)=>{
+                    if(snap.exists){
+                        content[snap.val()] = uid;
+                        self.setState({
+                            groupMembers: content
+                        });
+                    }
+                });
+            });
+        });
     }
 
     prettyJson(obj) {
@@ -147,13 +176,54 @@ export default class VideoCall extends Component {
         }
       }
 
+    initCall(targetUserId){
+        this.setState({
+            callOngoing: true
+        });
+        this.targetUserId = targetUserId;
+    }
 
     render(){
+        let myComponent = this.state.callOngoing ?
+            (
+                <div>
+                    <video ref={(elem)=> {this.remoteVid = elem;}} id="remotevideo" autoPlay/>
+                    <video ref={(elem)=> {this.localVid = elem;}} id="localvideo" autoPlay/>
+                    <Button
+                        className='back-button'
+                        color='primary'
+                        onClick={()=>{this.props.doneVideoCall()}}>
+                        Hang Up!
+                    </Button>
+                </div>
+            ) :
+            (
+                <div>
+                    <ul className='group-members'>
+                        {Object.keys(this.state.groupMembers).map((member)=>{
+                            return(
+                                <li
+                                    className='group-members-item'
+                                    onClick={this.initCall.bind(this, this.state.groupMembers[member])}
+                                    key={this.state.groupMembers[member]}>
+                                    {member}
+                                </li>
+                            );
+                        })}
+                    </ul>
+                    <Button
+                        className='back-button'
+                        color='primary'
+                        onClick={()=>{this.props.doneVideoCall()}}>
+                        Back
+                    </Button>
+                </div>
+            );
+
+        console.log(this.state.groupMembers);
         return(
             <div className='web-rtc-inner-container'>
-                <video ref={(elem)=> {this.remoteVid = elem;}} id="remotevideo" autoPlay/>
-                <video ref={(elem)=> {this.localVid = elem;}} id="localvideo" autoPlay/>
-                <Button className='call-button' color='primary' onClick={this.start.bind(this, true)}>Call!</Button>
+                {myComponent}
             </div>
         );
     }

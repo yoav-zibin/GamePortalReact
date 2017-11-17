@@ -1,19 +1,38 @@
 .web-rtc-inner-container{
     height: 100%;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
+    position: relative;
 }
 #remotevideo{
     border: 1px solid black;
-    height: 100%;
     width: 100%;
+    height: auto;
 }
 #localvideo{
-    border: 1px solid blue;
-    height: 100%;
-    width: 100%;
+    border: 1px solid black;
+    width: 75%;
+    display: block;
+    height: auto;
+    margin: auto;
 }
 .call-button{
-    width: 100%;
-    height: 15%;
+    width: 50%;
+    display: block;
+    margin: 5px auto;
+}
+.back-button{
+    width: 50%;
+    margin: 5px auto;
+    display: block;
+}
+.group-members{
+    margin: 0;
+    padding: 0;
+}
+.group-members-item{
+    list-style: none;
+    cursor: pointer;
+    padding: 5px;
+}
+.group-members-item:hover{
+    background: #000;
 }
