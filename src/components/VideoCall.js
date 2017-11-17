@@ -103,11 +103,7 @@ export default class VideoCall extends Component {
     }
 
     sendMessage(msg){
-        let targetUserId = 'Xy7ny1ohUUdYKA9khSc7nmo2afl2';
-        if(auth.currentUser.uid === targetUserId){
-            targetUserId = 'R8KuDqOLXzL92SmSmm31WaxF21U2';
-        }
-        let ref = db.ref(`users/${targetUserId}/privateButAddable/signal`).push();
+        let ref = db.ref(`users/${this.targetUserId}/privateButAddable/signal`).push();
         let signalData: SignalData = {
           addedByUid: auth.currentUser.uid,
           timestamp: firebase.database.ServerValue.TIMESTAMP,
@@ -158,7 +154,10 @@ export default class VideoCall extends Component {
           return;
         }
         if (!this.pc) {
-          let targetUserId = signalData.addedByUid;
+          this.targetUserId = signalData.addedByUid;
+          this.setState({
+              callOngoing: true
+          });
           this.start(false);
         }
 
@@ -181,6 +180,7 @@ export default class VideoCall extends Component {
             callOngoing: true
         });
         this.targetUserId = targetUserId;
+        this.start(true);
     }
 
     render(){
