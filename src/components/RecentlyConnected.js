@@ -41,7 +41,9 @@ export default class RecentlyConnected extends React.Component {
     // Do not modify if don't completely understand
     componentWillMount(){
         let self = this;
-        let userReference = db.ref('gamePortal/recentlyConnected');
+        let userReference = this.props.path === 'recentlyConnected' ?
+                            db.ref('gamePortal/recentlyConnected') :
+                            db.ref('users/'+auth.currentUser.uid+'/privateFields/friends');
         let updateUsers = (users) =>{
             this.setState({content : users});
         }
@@ -53,8 +55,10 @@ export default class RecentlyConnected extends React.Component {
             let current_users = snapshot.val();
             let list = [];
             let myuid = auth.currentUser.uid;
-            for (let key in current_users){
-                let uid = snapshot.child(key + '/userId').val();
+            for (let uid in current_users){
+                if(self.props.path === 'recentlyConnected'){
+                    uid = snapshot.child(uid + '/userId').val();
+                }
                 if (uid === myuid) continue;
                 let usernameRef = db.ref('users/'+uid+'/publicFields')
                 usernameRef.once('value').then(function(snapshot) {

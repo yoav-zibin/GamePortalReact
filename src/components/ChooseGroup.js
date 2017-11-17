@@ -3,7 +3,6 @@ import './css/ChooseGroup.css';
 import RecentlyConnected from './RecentlyConnected';
 import CreateGroup from './CreateGroup';
 import MyGroups from './MyGroups';
-import SocialFriends from './SocialFriends';
 import {Tabs, Tab} from 'material-ui/Tabs';
 
 export default class ChooseGroup extends Component {
@@ -65,15 +64,17 @@ export default class ChooseGroup extends Component {
                             doneCreating={this.cancelCreateGroup.bind(this)}
                             groupName={this.state.groupName}
                             deSelectAll={this.state.deSelectAll}
-                            doneDeSelecting={this.doneDeSelecting.bind(this)}/>
+                            doneDeSelecting={this.doneDeSelecting.bind(this)}
+                            path='recentlyConnected'/>
                     </Tab>
                     <Tab label="Friends" value="friends">
-                        <SocialFriends
+                        <RecentlyConnected
                             createGroup={this.state.createGroup}
                             doneCreating={this.cancelCreateGroup.bind(this)}
                             groupName={this.state.groupName}
                             deSelectAll={this.state.deSelectAll}
-                            doneDeSelecting={this.doneDeSelecting.bind(this)}/>
+                            doneDeSelecting={this.doneDeSelecting.bind(this)}
+                            path='friends'/>
                     </Tab>
             </Tabs>
         </div>
