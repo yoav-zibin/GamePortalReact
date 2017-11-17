@@ -16,22 +16,35 @@ export default class Chat extends Component {
             nOfMembers: null
         };
         this.RETURN_KEYCODE = 13;
+        this.videoRef = null;
     }
 
     componentDidMount(){
         this.initMembersFinish = false;
         this.initMembers();
-        this.listenToVideoCall();
+        this.listenToVideoCall(true);
     }
 
-    listenToVideoCall(){
-        let self = this;
-        let path = `users/${auth.currentUser.uid}/privateButAddable/signal`;
-        db.ref(path).on('value',(snap) => {
-            if(snap.exists()){
-                self.videoCall('inComingCall');
+    componentWillUnmount(){
+        this.listenToVideoCall(false);
+    }
+
+    listenToVideoCall(isListening){
+        if(isListening){
+            let self = this;
+            if(self.videoRef === null)
+                self.videoRef = db.ref(`users/${auth.currentUser.uid}/privateButAddable/signal`);
+            self.videoRef.on('value',(snap) => {
+                if(snap.exists()){
+                    self.videoCall('inComingCall');
+                }
+            });
+        }else{
+            if(this.videoRef !== null){
+                this.videoRef.off();
+                this.videoRef = null;
             }
-        });
+        }
     }
 
     initMembers(){
