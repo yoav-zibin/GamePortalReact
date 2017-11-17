@@ -55,7 +55,6 @@ export default class ChooseGroup extends Component {
     <div className='choose-group-container'>
         <div className="recently-connected-container">
             <Tabs
-                color='primary'
                 value={this.state.tab}
                 onChange={this.handleTabChange.bind(this)}>
                     <Tab label="Users" value="recently_connected">

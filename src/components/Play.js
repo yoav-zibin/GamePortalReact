@@ -92,7 +92,8 @@ export default class Play extends Component {
             <RecentlyConnected
             updateGroup={this.state.addMember}
             groupId={this.state.groupId}
-            doneCreating={this.doneAddingMember.bind(this)}/>
+            doneCreating={this.doneAddingMember.bind(this)}
+            path='recentlyConnected'/>
         );
     } else{
         updateGroupComponent = (
