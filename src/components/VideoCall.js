@@ -78,8 +78,10 @@ export default class VideoCall extends Component {
             self.setVideoStream(false, evt.stream);
         };
 
-        self.pc.onremovestream = ()=>{
-            self.endVideoCall();
+        self.pc.oniceconnectionstatechange = function(event) {
+            if(self.pc && self.pc.iceConnectionState === "disconnected"){
+                self.endVideoCall();
+            }
         }
 
         // get the local stream, show it in the local video element and send it
