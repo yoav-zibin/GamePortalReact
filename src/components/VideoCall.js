@@ -182,7 +182,7 @@ export default class VideoCall extends Component {
     }
 
     render(){
-        let myComponent = this.state.callOngoing ?
+        let myComponent = this.state.callOngoing || this.props.inComingCall ?
             (
                 <div>
                     <video ref={(elem)=> {this.remoteVid = elem;}} id="remotevideo" autoPlay/>

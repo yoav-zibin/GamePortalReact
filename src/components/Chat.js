@@ -21,6 +21,17 @@ export default class Chat extends Component {
     componentDidMount(){
         this.initMembersFinish = false;
         this.initMembers();
+        this.listenToVideoCall();
+    }
+
+    listenToVideoCall(){
+        let self = this;
+        let path = `users/${auth.currentUser.uid}/privateButAddable/signal`;
+        db.ref(path).on('value',(snap) => {
+            if(snap.exists()){
+                self.videoCall('inComingCall');
+            }
+        });
     }
 
     initMembers(){
@@ -155,8 +166,11 @@ export default class Chat extends Component {
       this.props.deleteMember();
   }
 
-  videoCall(){
-      this.props.videoCall();
+  videoCall(callType){
+      if(callType==='inComingCall')
+        this.props.videoCall(true);
+      else
+        this.props.videoCall(false);
   }
 
     render(){

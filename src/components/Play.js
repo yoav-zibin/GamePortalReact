@@ -20,7 +20,8 @@ export default class Play extends Component {
             groupId: groupId,
             addMember: false,
             deleteMember: false,
-            videoCall: false
+            videoCall: false,
+            inComingCall: false
         };
         this.playArena = null;
         this.participants = [];
@@ -82,15 +83,17 @@ export default class Play extends Component {
       });
   }
 
-  videoCall(){
+  videoCall(inComingCall){
       this.setState({
-          videoCall: true
+          videoCall: true,
+          inComingCall: inComingCall
       });
   }
 
   doneVideoCall(){
       this.setState({
-          videoCall: false
+          videoCall: false,
+          inComingCall: false
       });
   }
 
@@ -119,6 +122,7 @@ export default class Play extends Component {
         sideBarComponent = (
             <VideoCall
             groupId={this.state.groupId}
+            inComingCall={this.state.inComingCall}
             doneVideoCall={this.doneVideoCall.bind(this)}/>
         );
     } else{
