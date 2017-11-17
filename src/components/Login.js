@@ -82,9 +82,45 @@ export default class Login extends Component {
     });
   }
 
+  addFriends(friends, provider){
+      friends.forEach((friend)=>{
+          let fbRef = db.ref('gamePortal/userIdIndices/'+provider+'Id/'+friend);
+          fbRef.once('value').then((snapshot)=>{
+              if(snapshot.exists()){
+                  Object.keys(snapshot.val()).forEach((friendUserId)=>{
+                      let userRef = db.ref('users/'+auth.currentUser.uid+'/privateFields/friends/'+friendUserId);
+                      userRef.once('value').then((snapshot)=>{
+                          if(!snapshot.exists()){
+                              userRef.set(true);
+                          }
+                      });
+                  });
+              }
+          });
+      });
+  }
+
   loginWithFacebook(){
+      let self = this;
       auth.signInWithPopup(facebookProvider).then(function (result) {
-      //   this.setState({redirectToReferrer: true});
+          let accessToken = result.credential.accessToken;
+          let url = 'https://graph.facebook.com/v2.5/me/friends?limit=50&access_token=' + accessToken;
+          fetch(url, {method:'GET'}).then((response)=>{
+              if (response.status !== 200) {
+                console.log('Looks like there was a problem. Status Code: ' +
+                  response.status);
+                return;
+              }
+              response.json().then(function(result) {
+                let friendsFbIds = [];
+                result.data.forEach((friend)=>{
+                    friendsFbIds.push(friend.id);
+                });
+                self.addFriends(friendsFbIds, 'facebook');
+              });
+          }).catch((error)=>{
+              console.log(error);
+          });
       }.bind(this)).catch(function(error){
           let errorCode = error.code;
           alert(error.message);
@@ -152,15 +188,15 @@ export default class Login extends Component {
                     </div>
                     <div className="login-options-container col-md-6 col-xs-12">
                         <div className='login-button-container'>
-                            <button className="btn btn-md btn-primary login-button" onClick={this.loginWithGoogle} >Google</button>
-                            <button className="btn btn-md btn-primary login-button" onClick={this.loginWithFacebook} >Facebook</button>
+                            <button className="btn btn-md btn-primary login-button" onClick={this.loginWithGoogle.bind(this)} >Google</button>
+                            <button className="btn btn-md btn-primary login-button" onClick={this.loginWithFacebook.bind(this)} >Facebook</button>
                         </div>
                         <div className='login-button-container middle-button-container'>
-                            <button className="btn btn-md btn-primary login-button" onClick={this.loginWithGithub} >Github</button>
-                            <button className="btn btn-md btn-primary login-button" onClick={this.loginWithTwitter} >Twitter</button>
+                            <button className="btn btn-md btn-primary login-button" onClick={this.loginWithGithub.bind(this)} >Github</button>
+                            <button className="btn btn-md btn-primary login-button" onClick={this.loginWithTwitter.bind(this)} >Twitter</button>
                         </div>
                         <div className='login-button-container'>
-                            <button className="btn btn-md btn-primary login-button" onClick={this.loginWithPhone} > {<Link to='/PhoneAuth' style={{decoration: 'none', color: 'white'}}>With Phone</Link>}</button>
+                            <button className="btn btn-md btn-primary login-button" onClick={this.loginWithPhone.bind(this)} > {<Link to='/PhoneAuth' style={{decoration: 'none', color: 'white'}}>With Phone</Link>}</button>
                             <button className="btn btn-md btn-primary login-button" onClick={this.loginAnonymous.bind(this)}>Anonymous</button>
                         </div>
                     </div>
