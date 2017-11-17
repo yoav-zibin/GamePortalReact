@@ -5,6 +5,20 @@ import {auth, facebookProvider, githubProvider, googleProvider, twitterProvider,
 
 export default class Social extends React.Component{
 
+    constructor(){
+        super();
+        let providerExists = {};
+        auth.currentUser.providerData.forEach((provider)=>{
+            providerExists[provider.providerId.split('.')[0]] = true;
+        });
+        this.state = {
+            google: !!providerExists.google,
+            facebook: !!providerExists.facebook,
+            twitter: !!providerExists.twitter,
+            github: !!providerExists.github
+        };
+    }
+
     handleSocialConnect(provider){
         let self = this;
         let providerId = provider.providerId;
@@ -31,6 +45,9 @@ export default class Social extends React.Component{
                     userRef.set(providerUid);
                 }
             });
+            self.setState({
+                [providerId.split('.')[0]]: true
+            });
             self.props.success();
         }).catch(function(error) {
             console.log('error linking account:'+error.message);
@@ -41,22 +58,34 @@ export default class Social extends React.Component{
     render(){
         return(
             <div className="social-inner-container">
-                <SocialIcon
-                    onClick={()=>{this.handleSocialConnect(twitterProvider)}}
-                    className='social-icon'
-                    network="twitter"/>
-                <SocialIcon
-                    onClick={()=>{this.handleSocialConnect(facebookProvider)}}
-                    className='social-icon'
-                    network="facebook"/>
-                <SocialIcon
-                    onClick={()=>{this.handleSocialConnect(googleProvider)}}
-                    className='social-icon'
-                    network="google"/>
-                <SocialIcon
-                    onClick={()=>{this.handleSocialConnect(githubProvider)}}
-                    className='social-icon'
-                    network="github"/>
+                {!this.state.twitter ?
+                    <SocialIcon
+                        onClick={()=>{this.handleSocialConnect(twitterProvider)}}
+                        className='social-icon'
+                        network="twitter"/> :
+                    null
+                }
+                {!this.state.facebook ?
+                    <SocialIcon
+                        onClick={()=>{this.handleSocialConnect(facebookProvider)}}
+                        className='social-icon'
+                        network="facebook"/> :
+                    null
+                }
+                {!this.state.google ?
+                    <SocialIcon
+                        onClick={()=>{this.handleSocialConnect(googleProvider)}}
+                        className='social-icon'
+                        network="google"/> :
+                    null
+                }
+                {!this.state.github ?
+                    <SocialIcon
+                        onClick={()=>{this.handleSocialConnect(githubProvider)}}
+                        className='social-icon'
+                        network="github"/> :
+                    null
+                }
             </div>
         );
     }
