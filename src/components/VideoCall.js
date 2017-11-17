@@ -22,7 +22,6 @@ export default class VideoCall extends Component {
         let groupRef = db.ref(`gamePortal/groups/${groupId}/participants`);
         groupRef.on('value', (snap)=>{
             let content = {};
-            console.log('dafq', snap.val());
             Object.keys(snap.val()).forEach((uid)=>{
                 if(auth.currentUser.uid === uid){
                     return;
@@ -81,8 +80,7 @@ export default class VideoCall extends Component {
         // get the local stream, show it in the local video element and send it
         console.log('Requesting getUserMedia...');
         navigator.mediaDevices.getUserMedia({ "audio": true, "video": true })
-        .then(
-            function (stream: any) {
+        .then(function (stream) {
                 console.log("getUserMedia response: ", stream);
                 self.setVideoStream(true, stream);
                 self.pc.addStream(stream);
@@ -220,7 +218,6 @@ export default class VideoCall extends Component {
                 </div>
             );
 
-        console.log(this.state.groupMembers);
         return(
             <div className='web-rtc-inner-container'>
                 {myComponent}
