@@ -174,6 +174,10 @@ export default class RecentlyConnected extends React.Component {
         if((!this.props.createGroup && !this.props.updateGroup) && this.state.participants.length > 0){
             this.state.participants = [];
         }
+        if(this.props.deSelectAll){
+            this.state.participants = [];
+            this.props.doneDeSelecting();
+        }
         let content = this.state.content.map((user) => {
             let listItemClass = 'user-name-item ';//space in the end is intentional
             if(this.props.createGroup || this.props.updateGroup){
@@ -217,7 +221,7 @@ export default class RecentlyConnected extends React.Component {
                         Add Members
                     </Button>
                 : null}
-            </div> 
+            </div>
         );
     }
 }

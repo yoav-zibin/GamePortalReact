@@ -12,7 +12,8 @@ export default class ChooseGroup extends Component {
         this.state = {
             createGroup: false,
             groupName: 'Suicide Squad',
-            tab: 'recently_connected'
+            tab: 'recently_connected',
+            deSelectAll: false
         };
     }
 
@@ -35,10 +36,19 @@ export default class ChooseGroup extends Component {
     }
 
     handleTabChange = (value) => {
+        if(value!==this.state.tab){
+            this.setState({
+              tab: value,
+              deSelectAll: true
+            });
+        }
+    }
+
+    doneDeSelecting(){
         this.setState({
-          tab: value,
+            deSelectAll: false
         });
-    };
+    }
 
   render() {
 
@@ -53,10 +63,17 @@ export default class ChooseGroup extends Component {
                         <RecentlyConnected
                             createGroup={this.state.createGroup}
                             doneCreating={this.cancelCreateGroup.bind(this)}
-                            groupName={this.state.groupName}/>
+                            groupName={this.state.groupName}
+                            deSelectAll={this.state.deSelectAll}
+                            doneDeSelecting={this.doneDeSelecting.bind(this)}/>
                     </Tab>
                     <Tab label="Friends" value="friends">
-                        <SocialFriends />
+                        <SocialFriends
+                            createGroup={this.state.createGroup}
+                            doneCreating={this.cancelCreateGroup.bind(this)}
+                            groupName={this.state.groupName}
+                            deSelectAll={this.state.deSelectAll}
+                            doneDeSelecting={this.doneDeSelecting.bind(this)}/>
                     </Tab>
             </Tabs>
         </div>
