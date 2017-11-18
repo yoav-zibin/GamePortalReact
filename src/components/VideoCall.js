@@ -215,6 +215,7 @@ export default class VideoCall extends Component {
         });
         this.targetUserId = targetUserId;
         this.start(true);
+        this.startTimer()
     }
 
     endVideoCall(){
@@ -222,6 +223,16 @@ export default class VideoCall extends Component {
         this.hideVideoStream();
         this.disconnect();
         this.props.doneVideoCall();
+    }
+
+    startTimer(){
+        let FIVE_SECOND_MILLIS = 1000*5;
+        let thiz = this;
+        setTimeout(function () {
+            if(!(thiz.state.localStream && thiz.state.remoteStream)){
+                thiz.endVideoCall();
+            }
+        }, FIVE_SECOND_MILLIS);
     }
 
     render(){
