@@ -212,6 +212,9 @@ export const initPushNotification = ()=>{
             console.log('Unable to retrieve refreshed token ', err);
         });
     });
+    messaging().onMessage(function(payload) {
+        console.log("In app notification:", payload);
+    });
 }
 
 function sendTokenToServer(token){
