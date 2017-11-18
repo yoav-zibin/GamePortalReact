@@ -73,18 +73,24 @@ export default class RecentlyConnected extends React.Component {
                     // Need to add this listener to update the status real-time
                     if(snapshot.val().isConnected){
                         let isConnectedRef = db.ref('users/'+userId+'/publicFields/isConnected');
+                        let flag = true;
                         self.isConnectedRefs.push(isConnectedRef);
                         isConnectedRef.on('value', function(snapshot){
+                            flag = snapshot.val();
                             if(!snapshot.val()){
-                                self.updateStatus(snapshot.ref.parent.parent.key);
-                                snapshot.ref.off();
-                                let index = -1;
-                                self.isConnectedRefs.forEach((ref, i)=>{
-                                    if(ref.parent.parent.key === snapshot.ref.parent.parent.key){
-                                        index = i;
+                                setTimeout(function () {
+                                    if(!flag){
+                                        self.updateStatus(snapshot.ref.parent.parent.key);
+                                        snapshot.ref.off();
+                                        let index = -1;
+                                        self.isConnectedRefs.forEach((ref, i)=>{
+                                            if(ref.parent.parent.key === snapshot.ref.parent.parent.key){
+                                                index = i;
+                                            }
+                                        });
+                                        self.isConnectedRefs.splice(index, 1);
                                     }
-                                });
-                                self.isConnectedRefs.splice(index, 1);
+                                }, 500);
                             }
                         });
                     }
