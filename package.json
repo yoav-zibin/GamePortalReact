@@ -26,6 +26,7 @@
     "react-select": "^1.0.0-rc.10",
     "react-sidenav": "^2.1.2",
     "react-social-icons": "^2.7.0",
+    "react-toastify": "^2.2.0",
     "reactstrap": "^4.8.0",
     "redux": "^3.7.2",
     "redux-thunk": "^2.2.0"

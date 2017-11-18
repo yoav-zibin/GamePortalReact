@@ -3,6 +3,7 @@ import './css/VideoCall.css';
 import {Button} from 'reactstrap';
 import {db, auth} from '../firebase';
 import firebase from 'firebase';
+import { toast } from 'react-toastify';
 
 export default class VideoCall extends Component {
 
@@ -230,6 +231,7 @@ export default class VideoCall extends Component {
         let thiz = this;
         setTimeout(function () {
             if(!(thiz.state.localStream && thiz.state.remoteStream)){
+                toast.error("Call Failed! Other user should be online and in same Game Room");
                 thiz.endVideoCall();
             }
         }, FIVE_SECOND_MILLIS);
