@@ -43,11 +43,9 @@ export default class MyGroups extends React.Component {
                                     if(participants.length === numParticipants){
                                         groupVal.participants = participants;
                                         myGroupList.push(groupVal);
-                                        if(myGroupList.length === numGroups){
-                                            self.setState({
-                                                content: myGroupList
-                                            });
-                                        }
+                                        self.setState({
+                                            content: myGroupList
+                                        });
                                     }
                                 }).catch(self.handleFirebaseException);
                             });
@@ -64,11 +62,15 @@ export default class MyGroups extends React.Component {
         });
     }
 
+    handleFirebaseException(exception, param){
+        console.log('catching firebase exception:');
+    }
+
     toggle() {
         this.setState({
           tooltipOpen: !this.state.tooltipOpen
         });
-  }
+    }
 
     render(){
         let content = this.state.content.map((group)=>{
