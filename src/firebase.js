@@ -197,8 +197,29 @@ export const initPushNotification = ()=>{
         console.log("notification permission granted :)");
         return messaging.getToken();
     }).then((token)=>{
-        console.log(token);
+        sendTokenToServer(token);
     }).catch((error)=>{
         console.log('notification permission denied :/');
+    });
+    messaging.onTokenRefresh(function() {
+        messaging.getToken()
+        .then(function(refreshedToken) {
+            if(auth.currentUser){
+                sendTokenToServer(refreshedToken);
+            }
+        })
+        .catch(function(err) {
+            console.log('Unable to retrieve refreshed token ', err);
+        });
+    });
+}
+
+function sendTokenToServer(token){
+    let userRef = db.ref(`users/${auth.currentUser.uid}/privateFields/fcmTokens/${token}`);
+    userRef.set({
+      "createdOn": firebase.database.ServerValue.TIMESTAMP,
+      "lastTimeReceived": firebase.database.ServerValue.TIMESTAMP,
+      "platform": "web",
+      "app": "GamePortalReact"
     });
 }
