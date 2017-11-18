@@ -27,6 +27,8 @@ export const twitterProvider = new firebase.auth.TwitterAuthProvider();
 export const githubProvider = new firebase.auth.GithubAuthProvider();
 export const auth = firebaseApp.auth();
 export const db = firebaseApp.database();
+export const messaging = firebase.messaging();
+
 export const storageKey = 'GAME_BUILDER_LOCAL_STORAGE_$UID';
 export const isAuthenticated = () => {
   return !!auth.currentUser;
@@ -188,4 +190,15 @@ export const hidePresence = () => {
 export const signOut = () =>{
     auth.signOut();
     hidePresenceIntentional = false;
+}
+
+export const initPushNotification = ()=>{
+    messaging.requestPermission().then(()=>{
+        console.log("notification permission granted :)");
+        return messaging.getToken();
+    }).then((token)=>{
+        console.log(token);
+    }).catch((error)=>{
+        console.log('notification permission denied :/');
+    });
 }

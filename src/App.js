@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import './App.css';
-import { storageKey, auth, createUserIfNotExists } from './firebase';
+import { storageKey, auth, createUserIfNotExists, isAuthenticated, initPushNotification } from './firebase';
 import Login from './components/Login';
 import Header from './components/Header';
 import Footer from './components/Footer';
@@ -32,6 +32,9 @@ class App extends Component {
     }
 
     componentDidMount() {
+      if(isAuthenticated()){
+          initPushNotification();
+      }
       auth.onAuthStateChanged(user => {
         // adding presence listeners here because when the app initially loads the
         // isAuthenticated function returns false, and after some time only
@@ -40,6 +43,7 @@ class App extends Component {
           window.localStorage.setItem(storageKey, user.uid);
           this.setState({uid: user.uid});
           createUserIfNotExists();
+          initPushNotification();
         } else {
           window.localStorage.removeItem(storageKey);
           this.setState({uid: null});
