@@ -48,7 +48,7 @@ export default class VideoCall extends Component {
 
     dbSet(ref, writeVal) {
         let writeValJson = this.prettyJson(writeVal);
-        console.log(`Writing path=`, ref.toString(), ` writeVal=`, writeValJson, `...`);
+        // console.log(`Writing path=`, ref.toString(), ` writeVal=`, writeValJson, `...`);
         ref.set(writeVal);
     }
 
@@ -68,7 +68,7 @@ export default class VideoCall extends Component {
 
         // send any ice candidates to the other peer
         self.pc.onicecandidate = function (evt) {
-            console.log("onicecandidate: ", evt);
+            // console.log("onicecandidate: ", evt);
             if (evt.candidate) {
                 self.sendMessage("candidate", evt.candidate);
             }
@@ -76,7 +76,7 @@ export default class VideoCall extends Component {
 
         // once remote stream arrives, show it in the remote video element
         self.pc.onaddstream = function (evt) {
-            console.log("onaddstream: ", evt);
+            // console.log("onaddstream: ", evt);
             self.setVideoStream(false, evt.stream);
         };
 
@@ -87,10 +87,10 @@ export default class VideoCall extends Component {
         }
 
         // get the local stream, show it in the local video element and send it
-        console.log('Requesting getUserMedia...');
+        // console.log('Requesting getUserMedia...');
         navigator.mediaDevices.getUserMedia({ "audio": true, "video": true })
         .then(function (stream) {
-                console.log("getUserMedia response: ", stream);
+                // console.log("getUserMedia response: ", stream);
                 self.setVideoStream(true, stream);
                 self.pc.addStream(stream);
 
@@ -155,7 +155,7 @@ export default class VideoCall extends Component {
     }
 
     gotDescription(desc) {
-        console.log("gotDescription.bind(self): ", desc);
+        // console.log("gotDescription.bind(self): ", desc);
         this.pc.setLocalDescription(desc);
         this.sendMessage("sdp", desc);
     }
@@ -165,7 +165,7 @@ export default class VideoCall extends Component {
         let path = `users/${auth.currentUser.uid}/privateButAddable/signal`;
         db.ref(path).on('value',(snap) => {
             let signals = snap.val();
-            console.log("Got signals=", signals);
+            // console.log("Got signals=", signals);
             if (!signals) return;
 
             let signalIds = Object.keys(signals);
@@ -181,7 +181,7 @@ export default class VideoCall extends Component {
 
     receivedMessage(signalMsg) {
         const CALL_RECEIVE_WINDOW = 15 * 1000;
-        console.log("receivedMessage signalMsg=", signalMsg);
+        // console.log("receivedMessage signalMsg=", signalMsg);
         const now = new Date().getTime();
         if (now - CALL_RECEIVE_WINDOW > signalMsg.timestamp) {
           console.warn("Ignoring signal because it's more than a minute old");
