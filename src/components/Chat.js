@@ -32,11 +32,19 @@ export default class Chat extends Component {
     listenToVideoCall(isListening){
         if(isListening){
             let self = this;
+            const CALL_RECEIVE_WINDOW = 15 * 1000;
             if(self.videoRef === null)
                 self.videoRef = db.ref(`users/${auth.currentUser.uid}/privateButAddable/signal`);
             self.videoRef.on('value',(snap) => {
                 if(snap.exists()){
-                    self.videoCall('inComingCall');
+                    let signals = snap.val();
+                    let now = new Date().getTime();
+                    for(let key in signals){
+                        if(now - CALL_RECEIVE_WINDOW < signals[key].timestamp){
+                            self.videoCall('inComingCall');
+                            break;
+                        }
+                    }
                 }
             });
         }else{

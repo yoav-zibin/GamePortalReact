@@ -10,12 +10,13 @@ export default class VideoCall extends Component {
         super(props);
         this.state = {
             callOngoing: false,
-            groupMembers: {}
+            groupMembers: {},
+            localStream: null,
+            remoteStream: null
         };
         this.targetUserId = null;
         this.initGroupMembers(props.groupId)
         this.listenToMessages();
-        this.localStream = null;
     }
 
     initGroupMembers(groupId){
@@ -120,26 +121,28 @@ export default class VideoCall extends Component {
 
     setVideoStream(isLocal, stream){
         if(isLocal){
-            this.localStream = stream;
-            this.localVid.srcObject = stream;
+            this.setState({
+                localStream: stream
+            });
         }else{
-            this.remoteVid.srcObject = stream;
+            this.setState({
+                remoteStream: stream
+            });
         }
     }
 
     hideVideoStream(){
-        if(this.localVid)
-            this.localVid.srcObject = null;
-        if(this.remoteVid)
-            this.remoteVid.srcObject = null;
+        this.setState({
+            localStream: null,
+            remoteStream: null
+        });
     }
 
     stopLocalStream(){
-        if(this.localStream !== null){
-            for (let track of this.localStream.getTracks()) {
+        if(this.state.localStream !== null){
+            for (let track of this.state.localStream.getTracks()) {
                 track.stop()
             }
-            this.localStream = null;
         }
     }
 
@@ -215,18 +218,18 @@ export default class VideoCall extends Component {
     }
 
     endVideoCall(){
-        this.hideVideoStream();
         this.stopLocalStream()
+        this.hideVideoStream();
         this.disconnect();
         this.props.doneVideoCall();
     }
 
     render(){
-        let myComponent = this.state.callOngoing || this.props.inComingCall ?
+        let myComponent = this.state.localStream && this.state.remoteStream ?
             (
                 <div>
-                    <video ref={(elem)=> {this.remoteVid = elem;}} id="remotevideo" autoPlay/>
-                    <video ref={(elem)=> {this.localVid = elem;}} id="localvideo" autoPlay/>
+                    <video src={URL.createObjectURL(this.state.remoteStream)} id="remotevideo" autoPlay/>
+                    <video src={URL.createObjectURL(this.state.remoteStream)} id="localvideo" autoPlay/>
                     <Button
                         className='back-button'
                         color='primary'
