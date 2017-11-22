@@ -52,7 +52,7 @@ export default class Header extends React.Component {
       hidePresence();
       signOut();
       let history = createHistory();
-      history.push('/', {});
+      history.push(process.env.PUBLIC_URL, {});
   }
 
   handleSignUpClick() {
@@ -64,12 +64,12 @@ export default class Header extends React.Component {
       <div className='header-inner-container'>
           {this.state.uid ?
                 <div className='signup-logout'>
-                    <Link className='app-title' to={process.env.PUBLIC_URL}><h4 style={{margin:'0'}}>GamePortal</h4></Link>
+                    <Link className='app-title' to='/'><h4 style={{margin:'0'}}>GamePortal</h4></Link>
                     <h4 className='header-name-display'>Hello! {this.state.username}</h4>
                     <h4 className='signup-logout-link' onClick={this.handleLogoutClick.bind(this)}> Log Out</h4>
                 </div> :
                 <div className='signup-logout'>
-                    <Link className='app-title' to={process.env.PUBLIC_URL}><h4 style={{margin:'0'}}>GamePortal</h4></Link>
+                    <Link className='app-title' to='/'><h4 style={{margin:'0'}}>GamePortal</h4></Link>
                     <Link className='signup-logout-link' onClick={this.handleSignUpClick.bind(this)} to="Register">
                         <h4 style={{margin:'0'}}>Sign up</h4>
                     </Link>
