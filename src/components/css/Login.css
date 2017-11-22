@@ -73,3 +73,6 @@
 .login-button{
     width: 48%;
 }
+.link-with-phone:hover{
+    text-decoration: none;
+}

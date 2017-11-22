@@ -196,7 +196,7 @@ export default class Login extends Component {
                             <button className="btn btn-md btn-primary login-button" onClick={this.loginWithTwitter.bind(this)} >Twitter</button>
                         </div>
                         <div className='login-button-container'>
-                            <button className="btn btn-md btn-primary login-button" onClick={this.loginWithPhone.bind(this)} > {<Link to='/PhoneAuth' style={{decoration: 'none', color: 'white'}}>With Phone</Link>}</button>
+                            <button className="btn btn-md btn-primary login-button" onClick={this.loginWithPhone.bind(this)} > {<Link to='/PhoneAuth' className='link-with-phone' style={{decoration: 'none', color: 'white'}}>With Phone</Link>}</button>
                             <button className="btn btn-md btn-primary login-button" onClick={this.loginAnonymous.bind(this)}>Anonymous</button>
                         </div>
                     </div>
