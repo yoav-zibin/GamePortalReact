@@ -1,14 +1,27 @@
 .header-inner-container{
+    background-color: #F7F7F7;
     height: 100%;
-    background: #F7F7F7;
-    display: flex;
-    justify-content: space-between;
+    width: 100%;
+    position: relative;
+    color: #000;
+    font-family: 'Ubuntu', sans-serif;
 }
-.app-title, .app-title:hover, .signup-logout, .signup-logout:hover{
+.app-title, .app-title:hover, .app-title:active, .app-title:visited, .app-title:focus, .signup-logout-link, .signup-logout-link:hover{
     text-decoration: none;
-    color: black;
+    color: inherit;
     padding: 0 15px;
     margin: auto 0;
-    font-family: 'Ubuntu', sans-serif;
     cursor: pointer;
+}
+.header-name-display{
+    padding: 0;
+    margin: auto 0;
+    height: auto;
+    text-align: center;
+}
+.signup-logout{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: space-between;
 }

@@ -62,14 +62,18 @@ export default class Header extends React.Component {
   render(){
     return (
       <div className='header-inner-container'>
-          <Link className='app-title' to="/"><h4 style={{margin:'0'}}>GamePortal</h4></Link>
           {this.state.uid ?
-                <div className='signup-logout' onClick={this.handleLogoutClick.bind(this)}>
-                    <h5 style={{margin:'0'}}>{this.state.username}  Log Out</h5>
+                <div className='signup-logout'>
+                    <Link className='app-title' to={process.env.PUBLIC_URL}><h4 style={{margin:'0'}}>GamePortal</h4></Link>
+                    <h4 className='header-name-display'>Hello! {this.state.username}</h4>
+                    <h4 className='signup-logout-link' onClick={this.handleLogoutClick.bind(this)}> Log Out</h4>
                 </div> :
-                <Link className='signup-logout' onClick={this.handleSignUpClick.bind(this)} to="Register">
-                    <h5 style={{margin:'0'}}>Sign up</h5>
-                </Link>
+                <div className='signup-logout'>
+                    <Link className='app-title' to={process.env.PUBLIC_URL}><h4 style={{margin:'0'}}>GamePortal</h4></Link>
+                    <Link className='signup-logout-link' onClick={this.handleSignUpClick.bind(this)} to="Register">
+                        <h4 style={{margin:'0'}}>Sign up</h4>
+                    </Link>
+                </div>
           }
       </div>
     );
