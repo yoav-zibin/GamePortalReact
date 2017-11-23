@@ -31,8 +31,15 @@
 .group-members-item{
     list-style: none;
     cursor: pointer;
-    padding: 5px;
+    padding: 5px 10px;
 }
 .group-members-item:hover{
-    background: #000;
+    background: rgba(44,63,79,1);
+}
+.video-call-title{
+    font-family: 'Ubuntu', sans-serif;
+    width: 100%;
+    padding: 10px;
+    text-align: center;
+    margin: 0;
 }

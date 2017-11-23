@@ -245,7 +245,7 @@ export default class VideoCall extends Component {
                     <video src={URL.createObjectURL(this.state.remoteStream)} id="localvideo" autoPlay/>
                     <Button
                         className='back-button'
-                        color='primary'
+                        color='success'
                         onClick={this.endVideoCall.bind(this)}>
                         Hang Up!
                     </Button>
@@ -267,7 +267,7 @@ export default class VideoCall extends Component {
                     </ul>
                     <Button
                         className='back-button'
-                        color='primary'
+                        color='success'
                         onClick={()=>{this.props.doneVideoCall()}}>
                         Back
                     </Button>
@@ -276,6 +276,7 @@ export default class VideoCall extends Component {
 
         return(
             <div className='web-rtc-inner-container'>
+                <h5 className='video-call-title'>Video Call</h5>
                 {myComponent}
             </div>
         );
