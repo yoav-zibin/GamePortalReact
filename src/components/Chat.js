@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import ReactDOM from 'react-dom';
 import './css/Chat.css';
 import {db, auth} from '../firebase';
 import firebase from 'firebase';
@@ -19,10 +20,21 @@ export default class Chat extends Component {
         this.videoRef = null;
     }
 
+    scrollToBottom = (behavior) => {
+        const node = ReactDOM.findDOMNode(this.messagesEnd);
+        node.scrollIntoView({ behavior: behavior });
+    }
+
+
     componentDidMount(){
         this.initMembersFinish = false;
         this.initMembers();
         this.listenToVideoCall(true);
+        this.scrollToBottom("instant");
+    }
+
+    componentDidUpdate() {
+        this.scrollToBottom("smooth");
     }
 
     componentWillUnmount(){
@@ -223,6 +235,9 @@ export default class Chat extends Component {
                  </div>
                 <div className='chat-list-container'>
                     {chats}
+                    <div style={{ float:"left", clear: "both" }}
+                         ref={(el) => { this.messagesEnd = el; }}>
+                    </div>
                 </div>
                 <input
                     className='message-input-field'
