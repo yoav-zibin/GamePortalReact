@@ -23,6 +23,9 @@ let uiConfig = {
 export const firebaseApp = firebase.initializeApp(config);
 export const googleProvider = new firebase.auth.GoogleAuthProvider();
 export const facebookProvider = new firebase.auth.FacebookAuthProvider();
+facebookProvider.addScope('public_profile');
+facebookProvider.addScope('email');
+facebookProvider.addScope('user_friends');
 export const twitterProvider = new firebase.auth.TwitterAuthProvider();
 export const githubProvider = new firebase.auth.GithubAuthProvider();
 export const auth = firebaseApp.auth();
@@ -212,7 +215,7 @@ export const initPushNotification = ()=>{
             console.log('Unable to retrieve refreshed token ', err);
         });
     });
-    messaging().onMessage(function(payload) {
+    messaging.onMessage(function(payload) {
         console.log("In app notification:", payload);
     });
 }
