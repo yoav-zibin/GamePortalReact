@@ -21,6 +21,10 @@
     cursor: default;
 }
 
+.hoverable{
+    background: rgba(44,63,79,0);
+}
+
 .userNameContainer{
     display: flex;
     justify-content: space-between;
