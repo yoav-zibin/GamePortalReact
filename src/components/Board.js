@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Layer, Stage, Image } from 'react-konva';
+import { Layer, Stage } from 'react-konva';
 import CanvasImage from './CanvasImage';
 
 export default class Board extends Component {

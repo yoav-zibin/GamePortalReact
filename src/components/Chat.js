@@ -120,7 +120,7 @@ export default class Chat extends Component {
         if(secondsPast > 604800){
             let day = timeStamp.getDate();
             let month = timeStamp.toDateString().match(/ [a-zA-Z]*/)[0].replace(" ","");
-            let year = timeStamp.getFullYear() == now.getFullYear() ? "" :  " "+timeStamp.getFullYear();
+            let year = timeStamp.getFullYear() === now.getFullYear() ? "" :  " "+timeStamp.getFullYear();
             return day + " " + month + year;
         }
     }
@@ -215,7 +215,7 @@ export default class Chat extends Component {
             return(
                 <div key={'outer'+index} className={chat.cssClass}>
                     <span1>  {chat.sender}<br/> </span1>
-                    <img src={chat.senderImg} />
+                    <img src={chat.senderImg} alt='' />
                     <span>  {chat.message}<br/> </span>
 
                     <chat-timestamp>

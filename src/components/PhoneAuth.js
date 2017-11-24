@@ -1,18 +1,17 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
 import firebase from 'firebase';
 
-let uiConfig = {
-  signInSuccessUrl: '<url-to-redirect-to-on-success>',
-  signInOptions: [
-    firebase.auth.PhoneAuthProvider.PROVIDER_ID
-  ],
-  // Terms of service url.
-  tosUrl: '<your-tos-url>',
-  recaptchaParameters: {
-    'size': 'visible',
-  }
-};
+// let uiConfig = {
+//   signInSuccessUrl: '<url-to-redirect-to-on-success>',
+//   signInOptions: [
+//     firebase.auth.PhoneAuthProvider.PROVIDER_ID
+//   ],
+//   // Terms of service url.
+//   tosUrl: '<your-tos-url>',
+//   recaptchaParameters: {
+//     'size': 'visible',
+//   }
+// };
 
 let firebaseui = require('firebaseui');
 let ui = new firebaseui.auth.AuthUI(firebase.auth());

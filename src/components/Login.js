@@ -1,37 +1,7 @@
 import React, { Component } from 'react';
-import logo from '../logo.svg';
-import '../App.css';
 import './css/Login.css';
-import {firebaseApp, auth, googleProvider, facebookProvider, twitterProvider, githubProvider, isAuthenticated, db} from '../firebase';
-import firebase from 'firebase';
-import PhoneAuth from './PhoneAuth';
-import Main from './Main';
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  Link,
-  Redirect,
-  withRouter
-} from 'react-router-dom'
-
-function setErrorMsg(error) {
-  return {
-    loginMessage: error
-  }
-}
-
-const fakeAuth = {
-  isAuthenticated: false,
-  authenticate(cb) {
-    this.isAuthenticated = true
-    setTimeout(cb, 100) // fake async
-  },
-  signout(cb) {
-    this.isAuthenticated = false
-    setTimeout(cb, 100)
-  }
-}
+import { auth, googleProvider, facebookProvider, twitterProvider, githubProvider, db} from '../firebase';
+import {Link} from 'react-router-dom'
 
 export default class Login extends Component {
 
@@ -53,7 +23,7 @@ export default class Login extends Component {
         }
         // Sign in with email and pass.
         // [START authwithemail]
-        var loginPromise = auth.signInWithEmailAndPassword(email, password).catch(function(error) {
+        auth.signInWithEmailAndPassword(email, password).catch(function(error) {
           // Handle Errors here.
           var errorCode = error.code;
           var errorMessage = error.message;
@@ -77,7 +47,7 @@ export default class Login extends Component {
     auth.signInWithPopup(googleProvider).then(function (result) {
     //   this.setState({redirectToReferrer: true});
     }.bind(this)).catch(function(error){
-        let errorCode = error.code;
+        // let errorCode = error.code;
         alert(error.message);
     });
   }
@@ -122,7 +92,7 @@ export default class Login extends Component {
               console.log(error);
           });
       }.bind(this)).catch(function(error){
-          let errorCode = error.code;
+        //   let errorCode = error.code;
           alert(error.message);
       });
   }
@@ -131,7 +101,7 @@ export default class Login extends Component {
       auth.signInWithPopup(twitterProvider).then(function (result) {
       //   this.setState({redirectToReferrer: true});
       }.bind(this)).catch(function(error){
-          let errorCode = error.code;
+        //   let errorCode = error.code;
           alert(error.message);
       });
   }
@@ -140,7 +110,7 @@ export default class Login extends Component {
       auth.signInWithPopup(githubProvider).then(function (result) {
       //   this.setState({redirectToReferrer: true});
       }.bind(this)).catch(function(error){
-          let errorCode = error.code;
+        //   let errorCode = error.code;
           alert(error.message);
       });
   }
@@ -149,7 +119,7 @@ export default class Login extends Component {
   // onAuthStateChanged will be called which is registered in App.js
   // User_id for anonymous user will be received there.
   loginAnonymous(){
-      var loginPromise = auth.signInAnonymously().catch(function(error) {
+      auth.signInAnonymously().catch(function(error) {
           var errorCode = error.code;
           var errorMessage = error.message;
           console.error(errorCode, errorMessage);

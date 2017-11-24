@@ -47,7 +47,7 @@ export default class VideoCall extends Component {
     }
 
     dbSet(ref, writeVal) {
-        let writeValJson = this.prettyJson(writeVal);
+        // let writeValJson = this.prettyJson(writeVal);
         // console.log(`Writing path=`, ref.toString(), ` writeVal=`, writeValJson, `...`);
         ref.set(writeVal);
     }
@@ -197,12 +197,12 @@ export default class VideoCall extends Component {
 
         let signalType = signalMsg.signalType
         let signalData = JSON.parse(signalMsg.signalData);
-        if (signalType == "sdp") {
+        if (signalType === "sdp") {
           this.pc.setRemoteDescription(new RTCSessionDescription(signalData)).then(
             () => { console.log("setRemoteDescription success"); },
             (err: any) => { console.error("Error in setRemoteDescription: ", err); }
           );
-        } else if (signalType == "candidate")  {
+        } else if (signalType === "candidate")  {
           this.pc.addIceCandidate(new RTCIceCandidate(signalData)).then(
             () => { console.log("addIceCandidate success"); },
             (err: any) => { console.error("Error in addIceCandidate: ", err); }

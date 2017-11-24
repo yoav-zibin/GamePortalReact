@@ -35,7 +35,7 @@ export default class Social extends React.Component{
         }
         auth.currentUser.linkWithPopup(provider).then(function(result) {
             // Accounts successfully linked.
-            var credential = result.credential;
+            // var credential = result.credential;
             let user = result.user;
             user.providerData.forEach((provider)=>{
                 if(provider.providerId===providerId){

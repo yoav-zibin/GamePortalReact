@@ -20,7 +20,6 @@ export default class MyGroups extends React.Component {
         let self = this;
         groupsRef.on('value', function(snapshot){
             if(snapshot.exists()){
-                let numGroups = Object.keys(snapshot.val()).length;
                 let myGroupList = [];
                 Object.keys(snapshot.val()).forEach((groupId)=>{
                     let groupRef = db.ref('gamePortal/groups/'+groupId);
@@ -87,11 +86,11 @@ export default class MyGroups extends React.Component {
         });
         return(
             <div className="mygroups-inner-container">
-                <a href="#" id="group-participants-tooltip">
-                <ul className="groups-item-container">
-                    {content}
-                </ul>
-                </a>
+                <span id="group-participants-tooltip">
+                    <ul className="groups-item-container">
+                        {content}
+                    </ul>
+                </span>
                 <Tooltip placement="left" isOpen={this.state.tooltipOpen} target="group-participants-tooltip" toggle={this.toggle}>
                   <ul className="participants-list">
                       {this.state.participants.map((participant, index)=>{

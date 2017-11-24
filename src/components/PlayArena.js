@@ -52,7 +52,7 @@ export default class PlayArena extends Component {
                   myPiece.height = snapshot.val().height;
                   myPiece.width = snapshot.val().width;
                   self.allPieces.push(myPiece);
-                  if(self.allPieces.length == numPieces){
+                  if(self.allPieces.length === numPieces){
                       self.setState({
                           pieces:self.allPieces
                       });

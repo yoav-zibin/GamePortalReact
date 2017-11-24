@@ -1,11 +1,11 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import {auth, signOut, db, isAuthenticated, firebaseApp, googleProvider} from '../firebase';
+import {auth, signOut, db} from '../firebase';
 import { storageKey, hidePresence } from '../firebase';
 import './css/Header.css';
 import createHistory from 'history/createBrowserHistory';
 
-let  authenticated = true;
+// let  authenticated = true;
 
 export default class Header extends React.Component {
     state = {
@@ -47,7 +47,7 @@ export default class Header extends React.Component {
   }
 
   handleLogoutClick() {
-      authenticated = false;
+      // authenticated = false;
       // hidePresence has to be called before auth.signOut()
       hidePresence();
       signOut();
@@ -56,7 +56,7 @@ export default class Header extends React.Component {
   }
 
   handleSignUpClick() {
-      authenticated = true;
+      // authenticated = true;
   }
 
   render(){

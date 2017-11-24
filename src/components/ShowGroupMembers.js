@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import './css/ShowGroupMembers.css';
 import { Button } from 'reactstrap';
-import firebase from 'firebase';
 import {db, auth} from '../firebase';
 import { Link } from 'react-router-dom';
 
@@ -120,7 +119,7 @@ export default class ShowGroupMembers extends Component {
         let self = this;
         let groupRef = db.ref('gamePortal/groups/'+self.props.groupId);
         groupRef.once('value').then((snapshot)=>{
-            let groupMembers = snapshot.val().participants;
+            // let groupMembers = snapshot.val().participants;
             let myUid = auth.currentUser.uid;
                 let participantRef = db.ref('gamePortal/groups/' + self.props.groupId + '/participants/'+ myUid);
                 participantRef.remove();

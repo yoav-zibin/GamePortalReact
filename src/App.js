@@ -1,10 +1,8 @@
 import React, { Component } from 'react';
 import './App.css';
-import { storageKey, auth, createUserIfNotExists, isAuthenticated, initPushNotification } from './firebase';
-import Login from './components/Login';
+import { storageKey, auth, createUserIfNotExists } from './firebase';
 import Header from './components/Header';
 import Footer from './components/Footer';
-import Register from './components/Register';
 import RouteManager from './components/RouteManager';
 import Main from './components/Main';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
@@ -48,7 +46,7 @@ class App extends Component {
     }
 
   render() {
-        if (this.state.uid != -1) {
+        if (this.state.uid !== -1) {
 
             return (
             <MuiThemeProvider muiTheme={this.muiTheme}>

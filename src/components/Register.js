@@ -1,16 +1,6 @@
 import React, { Component } from 'react';
-import logo from '../logo.svg';
 import '../App.css';
-import './css/Login.css';
-import Main from './Main';
-import {firebaseApp, auth, googleProvider, isAuthenticated, db} from '../firebase';
-import firebase from 'firebase';
-
-function setErrorMsg(error) {
-  return {
-    loginMessage: error
-  }
-}
+import {auth, isAuthenticated, db} from '../firebase';
 
 export default class Register extends Component {
 
@@ -65,7 +55,7 @@ export default class Register extends Component {
         let errorCode = error.code;
         let errorMessage = error.message;
         // [START_EXCLUDE]
-        if (errorCode == 'auth/weak-password') {
+        if (errorCode === 'auth/weak-password') {
           alert('The password is too weak.');
         } else {
           alert(errorMessage);

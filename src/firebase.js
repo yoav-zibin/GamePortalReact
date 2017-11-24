@@ -30,7 +30,6 @@ export const isAuthenticated = () => {
 let connectedRef = null;
 let myConnectionsRef = null;
 let lastOnlineRef = null;
-let connection = null;
 let hidePresenceIntentional = false;
 
 export const addPresenceListeners = () => {
