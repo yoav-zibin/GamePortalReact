@@ -24,7 +24,7 @@ export default class PhoneAuth extends Component{
 
     componentDidMount(){
         ui.start('#firebaseui-auth-container', {
-          signInSuccessUrl: 'http://localhost:3000/',
+          signInSuccessUrl: 'https://yoav-zibin.github.io/GamePortalReact/',
           tosUrl: '<your-tos-url>',
           signInOptions: [
             {

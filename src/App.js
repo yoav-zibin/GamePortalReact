@@ -32,9 +32,6 @@ class App extends Component {
     }
 
     componentDidMount() {
-      if(isAuthenticated()){
-          initPushNotification();
-      }
       auth.onAuthStateChanged(user => {
         // adding presence listeners here because when the app initially loads the
         // isAuthenticated function returns false, and after some time only
@@ -43,7 +40,6 @@ class App extends Component {
           window.localStorage.setItem(storageKey, user.uid);
           this.setState({uid: user.uid});
           createUserIfNotExists();
-          initPushNotification();
         } else {
           window.localStorage.removeItem(storageKey);
           this.setState({uid: null});
