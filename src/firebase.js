@@ -9,17 +9,7 @@ let config = {
   storageBucket: "universalgamemaker.appspot.com",
   messagingSenderId: "144595629077"
 };
-let uiConfig = {
-  signInSuccessUrl: '<url-to-redirect-to-on-success>',
-  signInOptions: [
-    firebase.auth.PhoneAuthProvider.PROVIDER_ID
-  ],
-  // Terms of service url.
-  tosUrl: '<your-tos-url>',
-  recaptchaParameters: {
-    'size': 'visible',
-  }
-};
+
 export const firebaseApp = firebase.initializeApp(config);
 export const googleProvider = new firebase.auth.GoogleAuthProvider();
 export const facebookProvider = new firebase.auth.FacebookAuthProvider();
@@ -36,30 +26,12 @@ export const storageKey = 'GAME_BUILDER_LOCAL_STORAGE_$UID';
 export const isAuthenticated = () => {
   return !!auth.currentUser;
 }
-let firebaseui = require('firebaseui');
-let ui = new firebaseui.auth.AuthUI(firebase.auth());
-//ui.start('#firebaseui-auth-container', uiConfig);
+
 let connectedRef = null;
 let myConnectionsRef = null;
 let lastOnlineRef = null;
 let connection = null;
 let hidePresenceIntentional = false;
-
-ui.start('#firebaseui-auth-container', {
-  signInSuccessUrl: 'http://localhost:3000/',
-  tosUrl: '<your-tos-url>',
-  signInOptions: [
-    {
-      provider: firebase.auth.PhoneAuthProvider.PROVIDER_ID,
-      recaptchaParameters: {
-        type: 'image', // 'audio'
-        size: 'normal', // 'invisible' or 'compact'
-        badge: 'bottomright' //' bottomright' or 'inline' applies to invisible.
-      },
-      defaultCountry: 'US' // Set default country to the United Kingdom (+44).
-    }
-  ]
-});
 
 export const addPresenceListeners = () => {
     if(isAuthenticated()){
@@ -197,7 +169,7 @@ export const signOut = () =>{
 
 export const initPushNotification = ()=>{
     messaging.requestPermission().then(()=>{
-        console.log("notification permission granted :)");
+        // console.log("notification permission granted :)");
         return messaging.getToken();
     }).then((token)=>{
         sendTokenToServer(token);
