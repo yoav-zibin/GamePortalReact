@@ -30,11 +30,11 @@ export default class Chat extends Component {
         this.initMembersFinish = false;
         this.initMembers();
         this.listenToVideoCall(true);
-        this.scrollToBottom("instant");
+        // this.scrollToBottom("instant");
     }
 
     componentDidUpdate() {
-        this.scrollToBottom("smooth");
+        // this.scrollToBottom("smooth");
     }
 
     componentWillUnmount(){
