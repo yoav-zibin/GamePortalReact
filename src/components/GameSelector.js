@@ -54,15 +54,28 @@ export default class GameSelector extends React.Component {
 
   render() {
     return (
-        <div className='game-selector-container'>
-            <Select
-              className="spec-selector"
-              name="form-field-name"
-              value={this.state.selectedSpec}
-              options={this.state.specs}
-              onChange={this.changeSelectedSpec.bind(this)}
-            />
-            <Button color="success load-game-btn" onClick={this.loadGame.bind(this)}>Load Game</Button>
+        <div className='game-selector-inner-container'>
+            <div className='newgame-oldgame-container'>
+                <Select
+                  className="spec-selector"
+                  name="form-field-name"
+                  value={this.state.selectedSpec}
+                  options={this.state.specs}
+                  onChange={this.changeSelectedSpec.bind(this)}
+                />
+                <Button color="success load-game-btn" onClick={this.loadGame.bind(this)}>Start New Game</Button>
+            </div>
+
+            <div className='newgame-oldgame-container'>
+                <Select
+                  className="spec-selector"
+                  name="form-field-name"
+                  value={this.state.selectedSpec}
+                  options={this.state.specs}
+                  onChange={this.changeSelectedSpec.bind(this)}
+                />
+                <Button color="success load-game-btn" onClick={this.loadGame.bind(this)}>Continue Game</Button>
+            </div>
         </div>
     );
   }
