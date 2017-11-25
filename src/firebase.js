@@ -1,5 +1,6 @@
 import firebase from 'firebase';
 import {getName} from './pokemon';
+import { toast } from 'react-toastify';
 
 let config = {
   apiKey: "AIzaSyDA5tCzxNzykHgaSv1640GanShQze3UK-M",
@@ -187,7 +188,19 @@ export const initPushNotification = ()=>{
         });
     });
     messaging.onMessage(function(payload) {
-        console.log("In app notification:", payload);
+        let groupId = payload.data.groupId;
+        if(!window.location.href.includes(groupId)){
+            let message = payload.notification.body;
+            let senderName = payload.notification.title;
+            let groupRef = db.ref(`gamePortal/groups/${groupId}`);
+            groupRef.once('value').then((snap)=>{
+                let groupName = snap.val().groupName;
+                toast.success(`${senderName} says in ${groupName} group: ${message}`, {
+                    autoClose: 5000,
+                    closeOnClick: false
+                });
+            });
+        }
     });
 }
 

@@ -8,8 +8,6 @@ import Chat from './Chat';
 import RecentlyConnected from './RecentlyConnected';
 import ShowGroupMembers from './ShowGroupMembers';
 import VideoCall from './VideoCall';
-import { ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.min.css';
 
 export default class Play extends Component {
 
@@ -138,15 +136,6 @@ export default class Play extends Component {
 
     return (
     <div className="root-container">
-        <ToastContainer
-            position="top-right"
-            type="default"
-            autoClose={7000}
-            hideProgressBar={false}
-            newestOnTop={false}
-            closeOnClick
-            pauseOnHover
-        />
         <div className="play-arena-container">
             <GameSelector
                 setSpec={this.setSpec.bind(this)}

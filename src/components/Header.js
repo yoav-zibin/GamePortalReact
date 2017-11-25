@@ -4,6 +4,8 @@ import {auth, signOut, db} from '../firebase';
 import { storageKey, hidePresence } from '../firebase';
 import './css/Header.css';
 import createHistory from 'history/createBrowserHistory';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.min.css';
 
 // let  authenticated = true;
 
@@ -75,6 +77,15 @@ export default class Header extends React.Component {
                     </Link>
                 </div>
           }
+          <ToastContainer
+              position="top-right"
+              type="default"
+              autoClose={7000}
+              hideProgressBar={false}
+              newestOnTop={false}
+              closeOnClick
+              pauseOnHover
+          />
       </div>
     );
   }

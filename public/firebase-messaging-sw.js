@@ -11,9 +11,9 @@ firebase.initializeApp({
 });
 self.addEventListener('push', function(event) {
     // Just for logging, no need to do anything in this method.
-    console.log("[firebase-messaging-sw.js] Push Received with this data: ", event);
+    // console.log("[firebase-messaging-sw.js] Push Received with this data: ", event);
 });
 
 firebase.messaging().setBackgroundMessageHandler((payload)=> {
-  console.log("[firebase-messaging-sw.js] setBackgroundMessageHandler: Received background message payload=", payload);
+  // console.log("[firebase-messaging-sw.js] setBackgroundMessageHandler: Received background message payload=", payload);
 });
