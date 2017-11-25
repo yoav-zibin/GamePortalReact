@@ -21,7 +21,8 @@ export default class Play extends Component {
             addMember: false,
             deleteMember: false,
             videoCall: false,
-            inComingCall: false
+            inComingCall: false,
+            tabActive: 'chat'
         };
         this.playArena = null;
         this.participants = [];
@@ -97,6 +98,18 @@ export default class Play extends Component {
       });
   }
 
+  selectChatTab(){
+      this.setState({
+          tabActive: 'chat'
+      });
+  }
+
+  selectGameTab(){
+      this.setState({
+          tabActive: 'games'
+      });
+  }
+
   render() {
 
     if(this.state.spec){
@@ -134,19 +147,39 @@ export default class Play extends Component {
         );
     }
 
+    let gameTab = (
+        <div
+            onClick={this.selectGameTab.bind(this)}
+            className={'chat-games-tab '+(this.state.tabActive==='games' ? 'tab-active' : '')}>
+            <div className='tab-title-inner'>Games</div>
+        </div>
+    );
+    let chatTab = (
+        <div
+            onClick={this.selectChatTab.bind(this)}
+            className={'chat-games-tab '+(this.state.tabActive==='chat' ? 'tab-active' : '')}>
+            <div className='tab-title-inner'>Chat</div>
+        </div>
+    );
+
     return (
     <div className="root-container">
         <div className="play-arena-container">
-            <GameSelector
-                setSpec={this.setSpec.bind(this)}
-                setSpecId={this.setSpecId.bind(this)}/>
-            <div className="play-arena-component">
                 {this.playArena}
-            </div>
         </div>
 
         <div className="side-chat">
-            {sideBarComponent}
+            <div className='chat-or-games'>
+                {chatTab}
+                {gameTab}
+            </div>
+            {
+                this.state.tabActive === 'games' ?
+                <GameSelector
+                    setSpec={this.setSpec.bind(this)}
+                    setSpecId={this.setSpecId.bind(this)}/> :
+                sideBarComponent
+            }
         </div>
     </div>
     );

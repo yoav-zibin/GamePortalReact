@@ -5,8 +5,8 @@ import CanvasImage from './CanvasImage';
 export default class Board extends Component {
   constructor(){
       super();
-      this.height = 500;
-      this.width = 500;
+      this.height = 650;
+      this.width = 650;
       this.board = null;
       this.boardCanvas = null;
       this.pieces = null;
