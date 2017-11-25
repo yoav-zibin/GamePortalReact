@@ -1,5 +1,5 @@
 .mygroups-inner-container{
-    padding: 10px 0 0 0;
+    padding: 0;
 }
 
 .groups-item{
@@ -24,7 +24,7 @@
 .item-span-div{
     width: 100%;
     height: 100%;
-    padding: 5px 5px;
+    padding: 5px 10px;
 }
 
 .item-link:hover{
@@ -45,4 +45,12 @@
 #group-participants-tooltip{
     text-decoration: none;
     color: inherit;
+}
+.mygroups-title{
+    font-family: 'Ubuntu', sans-serif;
+    text-align: center;
+    width: 100%;
+    padding: 10px;
+    background: rgba(0,119,209,1);
+    text-transform: uppercase;
 }

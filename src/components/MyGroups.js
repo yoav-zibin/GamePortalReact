@@ -86,6 +86,9 @@ export default class MyGroups extends React.Component {
         });
         return(
             <div className="mygroups-inner-container">
+                <div className='mygroups-title'>
+                    My Groups
+                </div>
                 <span id="group-participants-tooltip">
                     <ul className="groups-item-container">
                         {content}

@@ -27,6 +27,7 @@ class App extends Component {
                 height: 50,
             },
         });
+        this.showFooter = false;
     }
 
     componentDidMount() {
@@ -48,6 +49,12 @@ class App extends Component {
   render() {
         if (this.state.uid !== -1) {
 
+            let footer = this.showFooter ? (
+                <div className="footer-container">
+                    <Footer />
+                </div>
+            ) : null;
+
             return (
             <MuiThemeProvider muiTheme={this.muiTheme}>
                 <div className='root'>
@@ -57,9 +64,7 @@ class App extends Component {
                     <div className="super-parent-container">
                     {this.state.uid ? (<RouteManager />) : (<Main />)}
                     </div>
-                    <div className="footer-container">
-                        <Footer />
-                    </div>
+                    {footer}
                 </div>
             </MuiThemeProvider>
             );

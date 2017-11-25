@@ -229,8 +229,8 @@ export default class Chat extends Component {
             <div className='chat-inner-container'>
                 <div className='group-title-container'>
 
-                    <ul onClick={this.deleteMember.bind(this)}>{this.state.groupName} {this.state.nOfMembers}</ul>
-                    <button onClick={this.videoCall.bind(this)}>&#128222;</button>
+                    <span className='chat-inner-container-title' onClick={this.deleteMember.bind(this)}>{this.state.groupName} {this.state.nOfMembers}</span>
+                    <button onClick={this.videoCall.bind(this)}><span style={{color:'#fff'}}>&#128222;</span></button>
                     <button onClick={this.addMember.bind(this)}>+</button>
                  </div>
                 <div className='chat-list-container'>

@@ -14,20 +14,21 @@
 .group-title-container{
     display: flex;
     width: 100%;
-    background-color: #A9A9A9;
+    font-family: 'Ubuntu', sans-serif;
+    background-color: rgba(16,777,216,1);
 }
 
-.chat-inner-container ul{
+.chat-inner-container-title{
     cursor: pointer;
 }
 
 .chat-inner-container button {
     position: relative;
-    background-color: #A9A9A9;
+    background-color: inherit;
     border: 10px;
     border-color: #ccc;
     font-size: 18px;
-    color: #FFFFFF;
+    color: #000;
 
     width: 40px;
     text-align: center;
@@ -58,11 +59,11 @@
     transition: 0s
 }
 
-.chat-inner-container ul {
+.chat-inner-container-title {
     flex:2;
     margin: 0px;
-    background-color: #A9A9A9;
-    color: white;
+    background-color: inherit;
+    color: #000;
     text-align: center;
     padding: 8px 10px;
     font-size: 18px;
