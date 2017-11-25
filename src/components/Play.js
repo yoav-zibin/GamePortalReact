@@ -30,18 +30,7 @@ export default class Play extends Component {
     }
 
   setSpec(spec){
-      let groupRef = db.ref('gamePortal/groups');
-      let participants = {[auth.currentUser.uid]:{participantIndex:1} ,
-          [this.participants[0]] :{participantIndex:0}};
-      let group = {
-          participants: participants,
-          messages: '',
-          matches: '',
-          createdOn: firebase.database.ServerValue.TIMESTAMP,
-          groupName: 'ReactPortal'
-      };
-      let ref = groupRef.push(group);
-      this.matchRef = db.ref('gamePortal/groups/'+ref.key+'/matches');
+      this.matchRef = db.ref(`gamePortal/groups/${this.state.groupId}/matches`);
       let match = {
           createdOn: firebase.database.ServerValue.TIMESTAMP,
           gameSpecId: this.specId,
