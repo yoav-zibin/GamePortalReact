@@ -3,11 +3,13 @@
     position: relative;
     display: flex;
     flex-direction: column;
-    height: 94%;
+    height: 100%;
     background: #E4DCD9;
 }
-.newgame-oldgame-container{
+.newgame-oldgame-container-first, .newgame-oldgame-container-last{
     padding: 20px 0;
+}
+.newgame-oldgame-container-first{
     border-bottom-color: #000;
     border-bottom-style: solid;
     border-bottom-width: 1px;

@@ -8,6 +8,7 @@ import Chat from './Chat';
 import RecentlyConnected from './RecentlyConnected';
 import ShowGroupMembers from './ShowGroupMembers';
 import VideoCall from './VideoCall';
+import {Tabs, Tab} from 'material-ui/Tabs';
 
 export default class Play extends Component {
 
@@ -22,7 +23,7 @@ export default class Play extends Component {
             deleteMember: false,
             videoCall: false,
             inComingCall: false,
-            tabActive: 'chat'
+            tab: 'chat'
         };
         this.playArena = null;
         this.participants = [];
@@ -87,16 +88,12 @@ export default class Play extends Component {
       });
   }
 
-  selectChatTab(){
-      this.setState({
-          tabActive: 'chat'
-      });
-  }
-
-  selectGameTab(){
-      this.setState({
-          tabActive: 'games'
-      });
+  handleTabChange = (value) => {
+      if(value!==this.state.tab){
+          this.setState({
+            tab: value
+          });
+      }
   }
 
   render() {
@@ -136,21 +133,6 @@ export default class Play extends Component {
         );
     }
 
-    let gameTab = (
-        <div
-            onClick={this.selectGameTab.bind(this)}
-            className={'chat-games-tab '+(this.state.tabActive==='games' ? 'tab-active' : '')}>
-            <div className='tab-title-inner'>Games</div>
-        </div>
-    );
-    let chatTab = (
-        <div
-            onClick={this.selectChatTab.bind(this)}
-            className={'chat-games-tab '+(this.state.tabActive==='chat' ? 'tab-active' : '')}>
-            <div className='tab-title-inner'>Chat</div>
-        </div>
-    );
-
     return (
     <div className="root-container">
         <div className="play-arena-container">
@@ -158,17 +140,19 @@ export default class Play extends Component {
         </div>
 
         <div className="side-chat">
-            <div className='chat-or-games'>
-                {chatTab}
-                {gameTab}
-            </div>
-            {
-                this.state.tabActive === 'games' ?
-                <GameSelector
-                    setSpec={this.setSpec.bind(this)}
-                    setSpecId={this.setSpecId.bind(this)}/> :
-                sideBarComponent
-            }
+            <Tabs
+                className='side-chat-tabs-container'
+                value={this.state.tab}
+                onChange={this.handleTabChange.bind(this)}>
+                    <Tab label="Chat" value="chat">
+                        {sideBarComponent}
+                    </Tab>
+                    <Tab label="Games" value="games">
+                        <GameSelector
+                            setSpec={this.setSpec.bind(this)}
+                            setSpecId={this.setSpecId.bind(this)}/>
+                    </Tab>
+            </Tabs>
         </div>
     </div>
     );

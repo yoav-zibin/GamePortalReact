@@ -55,7 +55,7 @@ export default class GameSelector extends React.Component {
   render() {
     return (
         <div className='game-selector-inner-container'>
-            <div className='newgame-oldgame-container'>
+            <div className='newgame-oldgame-container-first'>
                 <Select
                   className="spec-selector"
                   name="form-field-name"
@@ -66,7 +66,7 @@ export default class GameSelector extends React.Component {
                 <Button color="success load-game-btn" onClick={this.loadGame.bind(this)}>Start New Game</Button>
             </div>
 
-            <div className='newgame-oldgame-container'>
+            <div className='newgame-oldgame-container-last'>
                 <Select
                   className="spec-selector"
                   name="form-field-name"

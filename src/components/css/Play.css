@@ -41,3 +41,17 @@
     margin: auto 0;
     height: 100%;
 }
+.side-chat-tabs-container{
+    position: relative;
+    height: 100%;
+}
+.side-chat-tabs-container > div:first-child{
+    height: 7%;
+}
+.side-chat-tabs-container > div:nth-child(3){
+    height: 93%;
+    position: relative;
+}
+.side-chat-tabs-container > div:nth-child(3) > div{
+    height: 100%;
+}
