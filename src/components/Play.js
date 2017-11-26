@@ -149,6 +149,7 @@ export default class Play extends Component {
                     </Tab>
                     <Tab label="Games" value="games">
                         <GameSelector
+                            groupId={this.state.groupId}
                             setSpec={this.setSpec.bind(this)}
                             setSpecId={this.setSpecId.bind(this)}/>
                     </Tab>

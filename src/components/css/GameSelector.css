@@ -6,13 +6,8 @@
     height: 100%;
     background: #E4DCD9;
 }
-.newgame-oldgame-container-first, .newgame-oldgame-container-last{
+.newgame-oldgame-container{
     padding: 20px 0;
-}
-.newgame-oldgame-container-first{
-    border-bottom-color: #000;
-    border-bottom-style: solid;
-    border-bottom-width: 1px;
 }
 .game-selector-inner-title{
     margin: 0;

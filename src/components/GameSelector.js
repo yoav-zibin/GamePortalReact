@@ -4,6 +4,8 @@ import Select from 'react-select';
 import 'react-select/dist/react-select.css';
 import './css/GameSelector.css';
 import {db} from '../firebase';
+import {Tabs, Tab} from 'material-ui/Tabs';
+import { toast } from 'react-toastify';
 
 export default class GameSelector extends React.Component {
 
@@ -11,25 +13,45 @@ export default class GameSelector extends React.Component {
       super();
       this.state = {
           specs:null,
-          selectedSpec: null
+          matchSpecs: null,
+          selectedNewGameSpec: null,
+          selectedRecentGameSpec: null,
+          tab: 'new_game'
       };
   }
 
-  loadGame(event){
-      if(this.state.selectedSpec){
-          this.props.setSpecId(this.state.selectedSpec.id);
-          this.props.setSpec(this.state.selectedSpec.value);
+  startNewGame(event){
+      if(this.state.selectedNewGameSpec){
+          this.props.setSpecId(this.state.selectedNewGameSpec.id);
+          this.props.setSpec(this.state.selectedNewGameSpec.value);
       }else{
-          // TODO:
-          // Show some error message
+          toast.warning('Please select a game first',{
+              autoClose: 2000,
+              pauseOnHover: false,
+              newestOnTop: true
+          });
+      }
+  }
+
+  loadMatch(){
+      if(this.state.selectedNewGameSpec){
+          this.props.setSpecId(this.state.selectedRecentGameSpec.id);
+          this.props.setSpec(this.state.selectedRecentGameSpec.value);
+      }else{
+          toast.warning('Please select a game first',{
+              autoClose: 2000,
+              pauseOnHover: false,
+              newestOnTop: true
+          });
       }
   }
 
   componentDidMount(){
-      this.loadSpecs();
+      this.loadNewGameSpecs();
+      this.loadRecentGameSpecs();
   }
 
-  loadSpecs(){
+  loadNewGameSpecs(){
       let specRef = db.ref('gameBuilder/gameSpecs');
       let self = this;
       specRef.on("value",function(snapshot){
@@ -46,36 +68,79 @@ export default class GameSelector extends React.Component {
       })
   }
 
-  changeSelectedSpec(event){
+  loadRecentGameSpecs(){
+      let matchRef = db.ref(`gamePortal/groups/${this.props.groupId}/matches`);
+      let self = this;
+      matchRef.on("value",function(snapshot){
+          let matches = snapshot.val();
+          let list = [];
+          for(let match in matches){
+              let specId = matches[match].gameSpecId;
+              let specRef = db.ref(`gameBuilder/gameSpecs/${specId}`);
+              specRef.once('value').then((snap)=>{
+                  list.push({
+                    value: snap.val(),
+                    label: snap.val().gameName,
+                    id: specId
+                  });
+                  self.setState({matchSpecs:list});
+              });
+          }
+      })
+  }
+
+  changeSelectedNewGameSpec(event){
       this.setState({
-          selectedSpec: event
+          selectedNewGameSpec: event
       });
+  }
+
+  changeSelectedRecentGameSpec(event){
+      this.setState({
+          selectedRecentGameSpec: event
+      });
+  }
+
+  handleTabChange = (value) => {
+      if(value!==this.state.tab){
+          this.setState({
+            tab: value
+          });
+      }
   }
 
   render() {
     return (
         <div className='game-selector-inner-container'>
-            <div className='newgame-oldgame-container-first'>
-                <Select
-                  className="spec-selector"
-                  name="form-field-name"
-                  value={this.state.selectedSpec}
-                  options={this.state.specs}
-                  onChange={this.changeSelectedSpec.bind(this)}
-                />
-                <Button color="success load-game-btn" onClick={this.loadGame.bind(this)}>Start New Game</Button>
-            </div>
-
-            <div className='newgame-oldgame-container-last'>
-                <Select
-                  className="spec-selector"
-                  name="form-field-name"
-                  value={this.state.selectedSpec}
-                  options={this.state.specs}
-                  onChange={this.changeSelectedSpec.bind(this)}
-                />
-                <Button color="success load-game-btn" onClick={this.loadGame.bind(this)}>Continue Game</Button>
-            </div>
+            <Tabs
+                className='side-chat-tabs-container'
+                value={this.state.tab}
+                onChange={this.handleTabChange.bind(this)}>
+                    <Tab label="New Game" value="new_game">
+                        <div className='newgame-oldgame-container'>
+                            <Select
+                              className="spec-selector"
+                              name="form-field-name"
+                              value={this.state.selectedNewGameSpec}
+                              options={this.state.specs}
+                              onChange={this.changeSelectedNewGameSpec.bind(this)}
+                            />
+                            <Button color="success load-game-btn" onClick={this.startNewGame.bind(this)}>Start New Game</Button>
+                        </div>
+                    </Tab>
+                    <Tab label="Recently Played" value="recently_played">
+                        <div className='newgame-oldgame-container'>
+                            <Select
+                              className="spec-selector"
+                              name="form-field-name"
+                              value={this.state.selectedRecentGameSpec}
+                              options={this.state.matchSpecs}
+                              onChange={this.changeSelectedRecentGameSpec.bind(this)}
+                            />
+                            <Button color="success load-game-btn" onClick={this.loadMatch.bind(this)}>Continue Game</Button>
+                        </div>
+                    </Tab>
+            </Tabs>
         </div>
     );
   }

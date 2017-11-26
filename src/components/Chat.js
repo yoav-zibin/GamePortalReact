@@ -192,7 +192,7 @@ export default class Chat extends Component {
 
   addMember(){
       this.props.addMember();
-      console.log(this.state.members);
+      // console.log(this.state.members);
   }
 
   deleteMember(){
