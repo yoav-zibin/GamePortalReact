@@ -16,7 +16,7 @@ export default class Board extends Component {
   componentWillMount(){
       this.createNewPieceCanvases = true;
       this.updatePiecesListener = false;
-      this.canvasPiecesUpdated = false;
+      this.canvasPiecesUpdated = null;
   }
 
   componentDidMount(){
@@ -95,7 +95,7 @@ export default class Board extends Component {
     }
     if(this.createNewPieceCanvases){
         this.createNewPieceCanvases = false;
-        this.canvasPiecesUpdated = true;
+        this.canvasPiecesUpdated = this.canvasPiecesUpdated === null ? false : true;
         this.piecesCanvases = this.props.pieces.map(
             (piece, index) => {
                 return (
