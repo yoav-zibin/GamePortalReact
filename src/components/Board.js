@@ -54,15 +54,18 @@ export default class Board extends Component {
   }
 
   updatePosition(index, x, y){
-      console.log('updatePosition', this.refs['canvasImage'+index]);
-      // TODO:
-    //   Need to update position of the component
-    //   this.refs['canvasImage'+index].x = x-100;
-    //   this.refs['canvasImage'+index].y = y-100;
+    if(this.refs['canvasImage'+index]){
+        this.refs['canvasImage'+index].refs.image.position({
+            x:x,
+            y:y
+        });
+        if(this.refs.piecesCanvasesLayer)
+            this.refs.piecesCanvasesLayer.draw();
+    }
   }
 
   handleDragEnd(index){
-      let position = this.refs['canvasImage'+index].refs.image.getAbsolutePosition();;
+      let position = this.refs['canvasImage'+index].refs.image.getAbsolutePosition();
       let value = {
           currentImageIndex:index,
           x: position.x/this.width*100,
@@ -108,7 +111,7 @@ export default class Board extends Component {
         <Layer>
           {this.boardCanvas}
         </Layer>
-        <Layer>
+        <Layer ref='piecesCanvasesLayer'>
             {this.piecesCanvases}
         </Layer>
       </Stage>
