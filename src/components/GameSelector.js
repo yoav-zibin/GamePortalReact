@@ -22,7 +22,7 @@ export default class GameSelector extends React.Component {
 
   startNewGame(event){
       if(this.state.selectedNewGameSpec){
-          this.props.setSpecId(this.state.selectedNewGameSpec.id, true);
+          this.props.setSpecId(this.state.selectedNewGameSpec.id);
           this.props.setSpec(this.state.selectedNewGameSpec.value, true);
       }else{
           toast.warning('Please select a game first',{
@@ -35,7 +35,7 @@ export default class GameSelector extends React.Component {
 
   loadMatch(){
       if(this.state.selectedRecentGameSpec){
-          this.props.setSpecId(this.state.selectedRecentGameSpec.id, false);
+          this.props.setSpecId(this.state.selectedRecentGameSpec.id);
           this.props.setSpec(this.state.selectedRecentGameSpec.value, false,
               this.state.selectedRecentGameSpec.matchId);
       }else{
