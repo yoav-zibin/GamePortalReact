@@ -242,7 +242,7 @@ export default class VideoCall extends Component {
             (
                 <div>
                     <video src={URL.createObjectURL(this.state.remoteStream)} id="remotevideo" autoPlay/>
-                    <video src={URL.createObjectURL(this.state.remoteStream)} id="localvideo" autoPlay/>
+                    <video src={URL.createObjectURL(this.state.localStream)} id="localvideo" autoPlay/>
                     <Button
                         className='back-button'
                         color='success'
