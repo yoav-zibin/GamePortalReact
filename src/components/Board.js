@@ -55,12 +55,11 @@ export default class Board extends Component {
 
   updatePosition(index, x, y){
     if(this.refs['canvasImage'+index]){
-        this.refs['canvasImage'+index].refs.image.position({
+        this.refs['canvasImage'+index].refs.image.to({
             x:x,
-            y:y
+            y:y,
+            duration: 0.5
         });
-        if(this.refs.piecesCanvasesLayer)
-            this.refs.piecesCanvasesLayer.draw();
     }
   }
 
