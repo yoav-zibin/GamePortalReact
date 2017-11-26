@@ -67,9 +67,12 @@ export default class PlayArena extends Component {
           this.spec = this.props.spec;
           this.loadSpec();
       }
+      let myBoard = this.state.board && this.state.pieces.length > 0 ?
+                (<Board board={this.state.board} pieces={this.state.pieces} matchRef={this.props.matchRef}/>) :
+                null;
     return (
     <div>
-      <Board board={this.state.board} pieces={this.state.pieces} matchRef={this.props.matchRef}/>
+      {myBoard}
     </div>
     );
   }

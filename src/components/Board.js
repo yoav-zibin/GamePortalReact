@@ -9,13 +9,15 @@ export default class Board extends Component {
       this.width = 650;
       this.board = null;
       this.boardCanvas = null;
-      this.createNewPieceCanvases = false;
       this.piecesCanvases = null;
       this.numMoves = -1;
   }
 
-  componentDidMount(){
+  componentWillMount(){
       this.createNewPieceCanvases = true;
+  }
+
+  componentDidMount(){
       this.addPieceUpdateListener(this.props.matchRef);
   }
 
@@ -24,9 +26,6 @@ export default class Board extends Component {
           this.createNewPieceCanvases = true;
       }
       if(nextProps.matchRef !== this.props.matchRef){
-          if(this.props.matchRef){
-              this.props.matchRef.off();
-          }
           this.numMoves = -1;
           this.removePieceUpdateListener(this.props.matchRef);
           this.addPieceUpdateListener(nextProps.matchRef);
@@ -103,7 +102,6 @@ export default class Board extends Component {
             }
         );
     }
-
     return (
     <div>
       <Stage width={this.width} height={this.height}>
