@@ -30,22 +30,34 @@ export default class Play extends Component {
         this.specId = null;
     }
 
-  setSpec(spec){
-      this.matchRef = db.ref(`gamePortal/groups/${this.state.groupId}/matches`);
-      let match = {
-          createdOn: firebase.database.ServerValue.TIMESTAMP,
-          gameSpecId: this.specId,
-          lastUpdatedOn: firebase.database.ServerValue.TIMESTAMP,
-          pieces: ''
-      };
-      this.matchRef = this.matchRef.push(match);
+  setSpec(spec, isNewGame, matchId){
+      if(isNewGame){
+          this.matchRef = db.ref(`gamePortal/groups/${this.state.groupId}/matches`);
+          let match = {
+              createdOn: firebase.database.ServerValue.TIMESTAMP,
+              gameSpecId: this.specId,
+              lastUpdatedOn: firebase.database.ServerValue.TIMESTAMP,
+              pieces: ''
+          };
+          this.matchRef = this.matchRef.push(match);
+      }
+      else{
+          this.matchRef = db.ref(`gamePortal/groups/${this.state.groupId}/matches/${matchId}`);
+      }
       this.setState({
           spec: spec
       });
   }
 
-  setSpecId(id){
+  setSpecId(id, isNewGame){
       this.specId = id;
+      if(! isNewGame){
+          this.loadMoves();
+      }
+  }
+
+  loadMoves(){
+      console.log('loadMoves');
   }
 
   addMember(){
