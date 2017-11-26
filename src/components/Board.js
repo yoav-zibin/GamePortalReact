@@ -14,9 +14,8 @@ export default class Board extends Component {
   }
 
   componentDidMount(){
-      this.matchRef = this.props.matchRef;
       let self = this;
-      this.matchRef.child('pieces').on('child_added', function(snapshot) {
+      this.props.matchRef.child('pieces').on('child_added', function(snapshot) {
           let val = snapshot.val();
           let index = val.currentState.currentImageIndex;
           let position = {
@@ -26,6 +25,25 @@ export default class Board extends Component {
           self.pieces[index] = position;
           self.updatePosition(index, position.x, position.y);
       });
+  }
+
+  componentWillReceiveProps(nextProps){
+      if(nextProps.matchRef !== this.props.matchRef){
+          if(this.props.matchRef){
+              this.props.matchRef.off();
+          }
+          let self = this;
+          nextProps.matchRef.child('pieces').on('child_added', function(snapshot) {
+              let val = snapshot.val();
+              let index = val.currentState.currentImageIndex;
+              let position = {
+                  x:val.currentState.x/100*self.width,
+                  y:val.currentState.y/100*self.height
+              };
+              self.pieces[index] = position;
+              self.updatePosition(index, position.x, position.y);
+          });
+      }
   }
 
   updatePosition(index, x, y){
@@ -49,7 +67,7 @@ export default class Board extends Component {
           zDepth: 1
       };
       value = {currentState: value};
-      let pieceRef = this.matchRef.child('pieces').child('0');
+      let pieceRef = this.props.matchRef.child('pieces').child('0');
       pieceRef.set(value);
   }
 

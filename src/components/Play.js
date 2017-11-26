@@ -44,9 +44,6 @@ export default class Play extends Component {
       else{
           this.matchRef = db.ref(`gamePortal/groups/${this.state.groupId}/matches/${matchId}`);
       }
-      if(!isNewGame){
-          this.loadMoves();
-      }
       this.setState({
           spec: spec
       });
@@ -54,10 +51,6 @@ export default class Play extends Component {
 
   setSpecId(id){
       this.specId = id;
-  }
-
-  loadMoves(){
-      console.log('loadMoves');
   }
 
   addMember(){
