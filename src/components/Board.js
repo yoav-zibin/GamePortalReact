@@ -11,6 +11,7 @@ export default class Board extends Component {
       this.boardCanvas = null;
       this.createNewPieceCanvases = false;
       this.piecesCanvases = null;
+      this.numMoves = -1;
   }
 
   componentDidMount(){
@@ -26,6 +27,8 @@ export default class Board extends Component {
           if(this.props.matchRef){
               this.props.matchRef.off();
           }
+          this.numMoves = -1;
+          this.removePieceUpdateListener(this.props.matchRef);
           this.addPieceUpdateListener(nextProps.matchRef);
       }
   }
@@ -33,14 +36,21 @@ export default class Board extends Component {
   addPieceUpdateListener(dbRef){
       let self = this;
       dbRef.child('pieces').on('child_added', function(snapshot) {
-          let val = snapshot.val();
-          let index = val.currentState.currentImageIndex;
-          let position = {
-              x:val.currentState.x/100*self.width,
-              y:val.currentState.y/100*self.height
-          };
-          self.updatePosition(index, position.x, position.y);
+          if(snapshot.exists()){
+              let val = snapshot.val();
+              self.numMoves = Math.max(self.numMoves, parseInt(snapshot.key));
+              let index = val.currentState.currentImageIndex;
+              let position = {
+                  x:val.currentState.x/100*self.width,
+                  y:val.currentState.y/100*self.height
+              };
+              self.updatePosition(index, position.x, position.y);
+          }
       });
+  }
+
+  removePieceUpdateListener(dbRef){
+      dbRef.child('pieces').off();
   }
 
   updatePosition(index, x, y){
@@ -60,7 +70,7 @@ export default class Board extends Component {
           zDepth: 1
       };
       value = {currentState: value};
-      let pieceRef = this.props.matchRef.child('pieces').child('0');
+      let pieceRef = this.props.matchRef.child('pieces').child(this.numMoves+1);
       pieceRef.set(value);
   }
 
