@@ -15,10 +15,20 @@ export default class Board extends Component {
 
   componentWillMount(){
       this.createNewPieceCanvases = true;
+      this.updatePiecesListener = false;
+      this.canvasPiecesUpdated = false;
   }
 
   componentDidMount(){
       this.addPieceUpdateListener(this.props.matchRef);
+  }
+
+  componentDidUpdate(){
+       if(this.updatePiecesListener && this.canvasPiecesUpdated){
+           this.updatePiecesListener = false;
+           this.addPieceUpdateListener(this.props.matchRef);
+       }
+       this.canvasPiecesUpdated = false;
   }
 
   componentWillReceiveProps(nextProps){
@@ -28,7 +38,7 @@ export default class Board extends Component {
       if(nextProps.matchRef !== this.props.matchRef){
           this.numMoves = -1;
           this.removePieceUpdateListener(this.props.matchRef);
-          this.addPieceUpdateListener(nextProps.matchRef);
+          this.updatePiecesListener = true;
       }
   }
 
@@ -85,6 +95,7 @@ export default class Board extends Component {
     }
     if(this.createNewPieceCanvases){
         this.createNewPieceCanvases = false;
+        this.canvasPiecesUpdated = true;
         this.piecesCanvases = this.props.pieces.map(
             (piece, index) => {
                 return (
