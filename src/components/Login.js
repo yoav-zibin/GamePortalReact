@@ -143,12 +143,12 @@ export default class Login extends Component {
   render() {
     return (
         <div className="signin-super-container">
-            <div className="container col-md-6 col-xs-12 signin-root">
+            <div className="signin-root">
                 <h2 className="form-signin-heading">
                     Sign In
                 </h2>
                 <div className="login-container">
-                    <div className="signin-container col-md-6 col-xs-12">
+                    <div className="signin-container">
                         <label htmlFor="inputEmail" className="sr-only">Email address</label>
                         <input type="email" id="inputEmail" className="form-control" placeholder="Email address" required autoFocus/>
                         <label htmlFor="inputPassword" className="sr-only">Password</label>
@@ -156,7 +156,7 @@ export default class Login extends Component {
                         <br />
                         <button id = "signin" className="btn btn-md btn-primary btn-block" onClick={this.handleSubmit.bind(this)} >Log In</button>
                     </div>
-                    <div className="login-options-container col-md-6 col-xs-12">
+                    <div className="login-options-container">
                         <div className='login-button-container'>
                             <button className="btn btn-md btn-primary login-button" onClick={this.loginWithGoogle.bind(this)} >Google</button>
                             <button className="btn btn-md btn-primary login-button" onClick={this.loginWithFacebook.bind(this)} >Facebook</button>
