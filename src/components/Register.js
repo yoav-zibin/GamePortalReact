@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import '../App.css';
 import {auth, isAuthenticated, db} from '../firebase';
+import './css/Register.css';
 
 export default class Register extends Component {
 
@@ -69,18 +70,20 @@ export default class Register extends Component {
 
   render() {
     return (
-        <div className="container text-center col-md-3">
-          <br />
-          <h2 className="form-signin-heading">
-            Please sign up
-          </h2>
-          <label htmlFor="inputEmail" className="sr-only">Email address</label>
-          <input type="email" id="inputEmail" className="form-control" placeholder="Email address" required autoFocus/>
-          <label htmlFor="inputPassword" className="sr-only">Password</label>
-          <input type="password" id="inputPassword" className="form-control" placeholder="Password" required/>
-          <br />
-          <button className="btn btn-md btn-primary btn-block" onClick={this.handlesignup}>Sign up</button>
-    </div>
+        <div className='register-inner-container'>
+            <div className="register-root">
+              <br />
+              <h2 className="form-signin-heading">
+                Please sign up
+              </h2>
+              <label htmlFor="inputEmail" className="sr-only">Email address</label>
+              <input type="email" id="inputEmail" className="form-control" placeholder="Email address" required autoFocus/>
+              <label htmlFor="inputPassword" className="sr-only">Password</label>
+              <input type="password" id="inputPassword" className="form-control" placeholder="Password" required/>
+              <br />
+              <button className="btn btn-md btn-primary btn-block" onClick={this.handlesignup}>Sign up</button>
+            </div>
+        </div>
     );
   }
 }
