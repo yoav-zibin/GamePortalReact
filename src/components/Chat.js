@@ -21,24 +21,25 @@ export default class Chat extends Component {
     }
 
     scrollToBottom = (behavior) => {
-        const node = ReactDOM.findDOMNode(this.messagesEnd);
-        node.scrollIntoView({ behavior: behavior });
+        if(behavior==='smooth'){
+            const node = ReactDOM.findDOMNode(this.messagesEnd);
+            node.scrollIntoView({ behavior: behavior });
+        }else if(behavior === 'instant'){
+            this.messagesEnd.scrollIntoView();
+        }
     }
 
 
     componentDidMount(){
+        this.componentDidJustMount = true;
         this.initMembersFinish = false;
         this.initMembers();
         this.listenToVideoCall(true);
-        // this.scrollToBottom("instant");
-    }
-
-    componentDidUpdate() {
-        // this.scrollToBottom("smooth");
     }
 
     componentWillUnmount(){
         this.listenToVideoCall(false);
+        this.chatRef.off();
     }
 
     listenToVideoCall(isListening){
@@ -127,8 +128,8 @@ export default class Chat extends Component {
 
     initChat(){
         let self = this;
-        let chatRef = db.ref('gamePortal/groups/'+self.props.groupId);
-        chatRef.on('value', function(snapshot){
+        this.chatRef = db.ref('gamePortal/groups/'+self.props.groupId);
+        this.chatRef.on('value', function(snapshot){
             if(snapshot.exists()){
                 let chat = [];
                 let messages = snapshot.child('/messages').val();
@@ -156,6 +157,12 @@ export default class Chat extends Component {
                 self.setState({
                     content: chat,
                 });
+                if(self.componentDidJustMount){
+                    self.componentDidJustMount = false;
+                    self.scrollToBottom('instant');
+                } else{
+                    self.scrollToBottom('smooth');
+                }
             }
         });
     }
