@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import '../App.css';
 import {auth, isAuthenticated, db} from '../firebase';
 import './css/Register.css';
+import { toast } from 'react-toastify';
 
 export default class Register extends Component {
 
@@ -42,11 +43,11 @@ export default class Register extends Component {
       let email = document.getElementById('inputEmail').value;
       let password = document.getElementById('inputPassword').value;
       if (email.length < 4) {
-        alert('Please enter an email address.');
+        toast.error('Please enter an email address.', {position:toast.POSITION.TOP_CENTER});
         return;
       }
       if (password.length < 4) {
-        alert('Please enter a password.');
+        toast.error('Please enter a password.', {position:toast.POSITION.TOP_CENTER});
         return;
       }
       // Sign in with email and pass.
@@ -57,9 +58,9 @@ export default class Register extends Component {
         let errorMessage = error.message;
         // [START_EXCLUDE]
         if (errorCode === 'auth/weak-password') {
-          alert('The password is too weak.');
+          toast.error('The password is too weak.', {position:toast.POSITION.TOP_CENTER});
         } else {
-          alert(errorMessage);
+          toast.error(errorMessage, {position:toast.POSITION.TOP_CENTER});
         }
         // [END_EXCLUDE]
       });

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import './css/Login.css';
 import { auth, googleProvider, facebookProvider, twitterProvider, githubProvider, db} from '../firebase';
 import {Link} from 'react-router-dom'
+import { toast } from 'react-toastify';
 
 export default class Login extends Component {
 
@@ -14,11 +15,11 @@ export default class Login extends Component {
         var email = document.getElementById('inputEmail').value;
         var password = document.getElementById('inputPassword').value;
         if (email.length < 4) {
-          alert('Please enter an email address.');
+          toast.error('Please enter an email address.', {position:toast.POSITION.TOP_CENTER});
           return;
         }
         if (password.length < 4) {
-          alert('Please enter a password.');
+          toast.error('Please enter a password.', {position:toast.POSITION.TOP_CENTER});
           return;
         }
         // Sign in with email and pass.
@@ -29,11 +30,10 @@ export default class Login extends Component {
           var errorMessage = error.message;
           // [START_EXCLUDE]
           if (errorCode === 'auth/wrong-password') {
-            alert('Wrong password.');
+            toast.error('Wrong password.',{position:toast.POSITION.TOP_CENTER});
           } else {
-            alert(errorMessage);
+            toast.error(errorMessage, {position:toast.POSITION.TOP_CENTER});
           }
-          console.log(error);
           document.getElementById('signin').disabled = false;
           // [END_EXCLUDE]
       });
@@ -48,7 +48,7 @@ export default class Login extends Component {
     //   this.setState({redirectToReferrer: true});
     }.bind(this)).catch(function(error){
         // let errorCode = error.code;
-        alert(error.message);
+        toast.error(error.message, {position:toast.POSITION.TOP_CENTER});
     });
   }
 
@@ -93,7 +93,7 @@ export default class Login extends Component {
           });
       }.bind(this)).catch(function(error){
         //   let errorCode = error.code;
-          alert(error.message);
+          toast.error(error.message, {position:toast.POSITION.TOP_CENTER});
       });
   }
 
@@ -102,7 +102,7 @@ export default class Login extends Component {
       //   this.setState({redirectToReferrer: true});
       }.bind(this)).catch(function(error){
         //   let errorCode = error.code;
-          alert(error.message);
+          toast.error(error.message, {position:toast.POSITION.TOP_CENTER});
       });
   }
 
@@ -111,7 +111,7 @@ export default class Login extends Component {
       //   this.setState({redirectToReferrer: true});
       }.bind(this)).catch(function(error){
         //   let errorCode = error.code;
-          alert(error.message);
+          toast.error(error.message,{position:toast.POSITION.TOP_CENTER});
       });
   }
 
@@ -123,6 +123,7 @@ export default class Login extends Component {
           var errorCode = error.code;
           var errorMessage = error.message;
           console.error(errorCode, errorMessage);
+          toast.error(errorMessage,{position:toast.POSITION.TOP_CENTER});
       });
   }
 
