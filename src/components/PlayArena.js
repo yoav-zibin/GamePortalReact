@@ -45,19 +45,28 @@ export default class PlayArena extends Component {
           };
           elemRef.once('value').then(function(snapshot) {
               piece.draggable = snapshot.val().isDraggable;
+              piece.kind = snapshot.val().elementKind;
+              piece.pieceImages = [];
               let images = snapshot.val().images;
-              let imageId = images[0].imageId;
-              let imageRef = db.ref('gameBuilder/images/'+imageId);
-              imageRef.once('value').then(function(snapshot) {
-                  piece.imageUrl = snapshot.val().downloadURL;
-                  piece.height = snapshot.val().height;
-                  piece.width = snapshot.val().width;
-                  self.allPieces.push(piece);
-                  if(self.allPieces.length === numPieces){
-                      self.setState({
-                          pieces:self.allPieces
-                      });
-                  }
+              let numImages = images.length;
+              images.forEach((imageId)=>{
+                  let imageRef = db.ref('gameBuilder/images/'+imageId.imageId);
+                  imageRef.once('value').then(function(snapshot) {
+                      let pieceImage = {
+                          imageUrl: snapshot.val().downloadURL,
+                          height: snapshot.val().height,
+                          width: snapshot.val().width
+                      };
+                      piece.pieceImages.push(pieceImage);
+                      if(piece.pieceImages.length === numImages){
+                          self.allPieces.push(piece);
+                          if(self.allPieces.length === numPieces){
+                              self.setState({
+                                  pieces:self.allPieces
+                              });
+                          }
+                      }
+                  });
               });
           });
       }
