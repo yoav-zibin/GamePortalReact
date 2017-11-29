@@ -32,12 +32,19 @@ export default class Play extends Component {
 
   setSpec(spec, isNewGame, matchId){
       if(isNewGame){
+          let pieces = {};
+          spec.pieces.forEach((piece, index)=>{
+              let result = {
+                  currentState: piece.initialState
+              };
+              pieces[index] = result;
+          });
           this.matchRef = db.ref(`gamePortal/groups/${this.state.groupId}/matches`);
           let match = {
               createdOn: firebase.database.ServerValue.TIMESTAMP,
               gameSpecId: this.specId,
               lastUpdatedOn: firebase.database.ServerValue.TIMESTAMP,
-              pieces: ''
+              pieces: pieces
           };
           this.matchRef = this.matchRef.push(match);
       }
