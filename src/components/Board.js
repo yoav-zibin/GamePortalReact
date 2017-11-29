@@ -54,7 +54,9 @@ export default class Board extends Component {
                   x:val.currentState.x/100*thiz.width,
                   y:val.currentState.y/100*thiz.height
               };
+              let imageIndex = val.currentState.currentImageIndex;
               thiz.updatePosition(index, position.x, position.y);
+              thiz.updateImage(index, imageIndex);
           }
       });
   }
@@ -69,10 +71,26 @@ export default class Board extends Component {
                       x:pieceState.currentState.x/100*thiz.width,
                       y:pieceState.currentState.y/100*thiz.height
                   };
+                  let imageIndex = pieceState.currentState.currentImageIndex;
                   thiz.updatePosition(index, position.x, position.y);
+                  thiz.updateImage(index, imageIndex);
               });
           }
       });
+  }
+
+  updateImage(index, imageIndex){
+      let thiz = this;
+      let canvasRef = 'canvasImage'+index;
+      if(thiz.pieceIndices[index] != imageIndex){
+          thiz.pieceIndices[index] = imageIndex;
+          let myImage = new Image();
+          myImage.onload = function (){
+              thiz.refs[canvasRef].refs.image.setImage(myImage);
+              thiz.refs.piecesCanvasesLayer.draw();
+          }
+          myImage.src = this.props.pieces[index].pieceImages[thiz.pieceIndices[index]];
+      }
   }
 
   removePieceUpdateListener(dbRef){
@@ -92,7 +110,7 @@ export default class Board extends Component {
   handleDragEnd(index){
       let position = this.refs['canvasImage'+index].refs.image.getAbsolutePosition();
       let value = {
-          currentImageIndex:index,
+          currentImageIndex: this.pieceIndices[index],
           x: position.x/this.width*100,
           y: position.y/this.height*100,
           zDepth: 1
@@ -105,10 +123,20 @@ export default class Board extends Component {
   togglePiece(canvasRef, index, piece){
       let thiz = this;
       thiz.pieceIndices[index] = (thiz.pieceIndices[index] + 1) % piece.pieceImages.length;
+      let position = thiz.refs['canvasImage'+index].refs.image.getAbsolutePosition();
       let myImage = new Image();
       myImage.onload = function (){
           thiz.refs[canvasRef].refs.image.setImage(myImage);
           thiz.refs.piecesCanvasesLayer.draw();
+          let value = {
+              currentImageIndex:thiz.pieceIndices[index],
+              x: position.x/thiz.width*100,
+              y: position.y/thiz.height*100,
+              zDepth: 1
+          };
+          value = {currentState: value};
+          let pieceRef = thiz.props.matchRef.child('pieces').child(index);
+          pieceRef.set(value);
       }
       myImage.src = piece.pieceImages[thiz.pieceIndices[index]];
   }
