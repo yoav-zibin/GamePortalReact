@@ -3,8 +3,8 @@ import { Layer, Stage } from 'react-konva';
 import CanvasImage from './CanvasImage';
 
 export default class Board extends Component {
-  constructor(){
-      super();
+  constructor(props){
+      super(props);
       this.height = 650;
       this.width = 650;
       this.board = null;
@@ -17,6 +17,7 @@ export default class Board extends Component {
       this.createNewPieceCanvases = true;
       this.updatePiecesListener = false;
       this.canvasPiecesUpdated = null;
+      this.pieceIndices = new Array(this.props.pieces.length).fill(0);
   }
 
   componentDidMount(){
@@ -34,6 +35,7 @@ export default class Board extends Component {
   componentWillReceiveProps(nextProps){
       if(nextProps.pieces !== this.props.pieces){
           this.createNewPieceCanvases = true;
+          this.pieceIndices = new Array(nextProps.pieces.length).fill(0);
       }
       if(nextProps.matchRef !== this.props.matchRef){
           this.numMoves = -1;
@@ -85,6 +87,17 @@ export default class Board extends Component {
       pieceRef.set(value);
   }
 
+  togglePiece(canvasRef, index, piece){
+      let thiz = this;
+      thiz.pieceIndices[index] = (thiz.pieceIndices[index] + 1) % piece.pieceImages.length;
+      let myImage = new Image();
+      myImage.onload = function (){
+          thiz.refs[canvasRef].refs.image.setImage(myImage);
+          thiz.refs.piecesCanvasesLayer.draw();
+      }
+      myImage.src = piece.pieceImages[thiz.pieceIndices[index]];
+  }
+
   render() {
     let self = this;
     if (this.props.board){
@@ -102,12 +115,27 @@ export default class Board extends Component {
                     <CanvasImage
                     ref={'canvasImage' + index}
                     key={index}
-                    draggable={piece.draggable}
+                    draggable={piece.draggable || piece.kind === 'standard'}
+                    onClick={()=>{
+                        if(piece.kind === 'standard'){
+                            //do nothing, just make it draggable
+                        } else if(piece.kind === 'toggable'){
+                            this.togglePiece('canvasImage'+index, index, piece);
+                        } else if(piece.kind === 'dice'){
+                            // TODO
+                        } else if(piece.kind === 'card'){
+                            // TODO
+                        } else if(piece.kind === 'cardsDeck'){
+                            // TODO
+                        } else if(piece.kind === 'piecesDeck'){
+                            // TODO
+                        }
+                    }}
                     height={piece.height*self.height/self.board.height}
                     width={piece.width*self.width/self.board.width}
                     x={piece.x*self.width/100}
                     y={piece.y*self.height/100}
-                    src={piece.pieceImages[0].imageUrl}
+                    src={piece.pieceImages[self.pieceIndices[index]]}
                     onDragEnd={() => self.handleDragEnd(index)}/>
                 );
             }

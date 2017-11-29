@@ -55,9 +55,7 @@ export default class PlayArena extends Component {
               images.forEach((imageId)=>{
                   let imageRef = db.ref('gameBuilder/images/'+imageId.imageId);
                   imageRef.once('value').then(function(snapshot) {
-                      let pieceImage = {
-                          imageUrl: snapshot.val().downloadURL,
-                      };
+                      let pieceImage = snapshot.val().downloadURL;
                       piece.pieceImages.push(pieceImage);
                       if(piece.pieceImages.length === numImages){
                           self.allPieces.push(piece);
