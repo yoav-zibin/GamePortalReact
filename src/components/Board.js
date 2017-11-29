@@ -102,7 +102,7 @@ export default class Board extends Component {
                     <CanvasImage
                     ref={'canvasImage' + index}
                     key={index}
-                    draggable={true}
+                    draggable={piece.draggable}
                     height={piece.height*self.height/self.board.height}
                     width={piece.width*self.width/self.board.width}
                     x={piece.x*self.width/100}
