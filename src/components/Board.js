@@ -20,12 +20,14 @@ export default class Board extends Component {
   }
 
   componentDidMount(){
+      this.preserveSavedState(this.props.matchRef);
       this.addPieceUpdateListener(this.props.matchRef);
   }
 
   componentDidUpdate(){
        if(this.updatePiecesListener && this.canvasPiecesUpdated){
            this.updatePiecesListener = false;
+           this.preserveSavedState(this.props.matchRef);
            this.addPieceUpdateListener(this.props.matchRef);
        }
        this.canvasPiecesUpdated = false;
@@ -43,16 +45,32 @@ export default class Board extends Component {
   }
 
   addPieceUpdateListener(dbRef){
-      let self = this;
+      let thiz = this;
       dbRef.child('pieces').on('child_changed', function(snapshot) {
           if(snapshot.exists()){
               let val = snapshot.val();
               let index = snapshot.key;
               let position = {
-                  x:val.currentState.x/100*self.width,
-                  y:val.currentState.y/100*self.height
+                  x:val.currentState.x/100*thiz.width,
+                  y:val.currentState.y/100*thiz.height
               };
-              self.updatePosition(index, position.x, position.y);
+              thiz.updatePosition(index, position.x, position.y);
+          }
+      });
+  }
+
+  preserveSavedState(dbRef){
+      let thiz = this;
+      dbRef.child('pieces').once('value').then(function(snapshot) {
+          if(snapshot.exists()){
+              let val = snapshot.val();
+              val.forEach((pieceState, index)=>{
+                  let position = {
+                      x:pieceState.currentState.x/100*thiz.width,
+                      y:pieceState.currentState.y/100*thiz.height
+                  };
+                  thiz.updatePosition(index, position.x, position.y);
+              });
           }
       });
   }
