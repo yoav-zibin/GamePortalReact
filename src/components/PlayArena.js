@@ -42,10 +42,13 @@ export default class PlayArena extends Component {
           let piece = {
               x:piece_info.initialState.x,
               y:piece_info.initialState.y,
+              zDepth: piece_info.initialState.zDepth
           };
           elemRef.once('value').then(function(snapshot) {
               piece.draggable = snapshot.val().isDraggable;
               piece.kind = snapshot.val().elementKind;
+              piece.height = snapshot.val().height;
+              piece.width = snapshot.val().width;
               piece.pieceImages = [];
               let images = snapshot.val().images;
               let numImages = images.length;
@@ -54,8 +57,6 @@ export default class PlayArena extends Component {
                   imageRef.once('value').then(function(snapshot) {
                       let pieceImage = {
                           imageUrl: snapshot.val().downloadURL,
-                          height: snapshot.val().height,
-                          width: snapshot.val().width
                       };
                       piece.pieceImages.push(pieceImage);
                       if(piece.pieceImages.length === numImages){

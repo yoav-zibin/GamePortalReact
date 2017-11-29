@@ -107,7 +107,7 @@ export default class Board extends Component {
                     width={piece.width*self.width/self.board.width}
                     x={piece.x*self.width/100}
                     y={piece.y*self.height/100}
-                    src={piece.imageUrl}
+                    src={piece.pieceImages[0].imageUrl}
                     onDragEnd={() => self.handleDragEnd(index)}/>
                 );
             }
