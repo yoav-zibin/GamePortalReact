@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Layer, Stage } from 'react-konva';
 import CanvasImage from './CanvasImage';
+import Konva from 'konva';
 
 export default class Board extends Component {
   constructor(props){
@@ -143,13 +144,24 @@ export default class Board extends Component {
 
   rollDice(canvasRef, index, piece){
       let thiz = this;
+      let tweenDuration = 0.5;
+      let tween = new Konva.Tween({
+        node: thiz.refs[canvasRef].refs.image,
+        scaleX: 1.5,
+        scaleY: 1.5,
+        easing: Konva.Easings.EaseInOut,
+        duration: tweenDuration
+      });
+      tween.play();
+      setTimeout(function () {
+          tween.reverse();
+      }, tweenDuration*1000);
       let myImage = new Image();
       myImage.onload = function (){
           thiz.refs[canvasRef].refs.image.setImage(myImage);
           thiz.refs.piecesCanvasesLayer.draw();
       }
       let newPieceImageIndex = Math.floor(Math.random() * piece.pieceImages.length);
-      console.log(newPieceImageIndex);
       myImage.src = piece.pieceImages[newPieceImageIndex];
   }
 
