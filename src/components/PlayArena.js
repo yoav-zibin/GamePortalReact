@@ -42,23 +42,32 @@ export default class PlayArena extends Component {
           let piece = {
               x:piece_info.initialState.x,
               y:piece_info.initialState.y,
+              zDepth: piece_info.initialState.zDepth
           };
-          elemRef.once('value').then(function(p, snapshot) {
+          elemRef.once('value').then(function(snapshot) {
+              piece.draggable = snapshot.val().isDraggable;
+              piece.kind = snapshot.val().elementKind;
+              piece.height = snapshot.val().height;
+              piece.width = snapshot.val().width;
+              piece.pieceImages = [];
               let images = snapshot.val().images;
-              let imageId = images[0].imageId;
-              let imageRef = db.ref('gameBuilder/images/'+imageId);
-              imageRef.once('value').then(function(myPiece, snapshot) {
-                  myPiece.imageUrl = snapshot.val().downloadURL;
-                  myPiece.height = snapshot.val().height;
-                  myPiece.width = snapshot.val().width;
-                  self.allPieces.push(myPiece);
-                  if(self.allPieces.length === numPieces){
-                      self.setState({
-                          pieces:self.allPieces
-                      });
-                  }
-              }.bind(null, p));
-          }.bind(null, piece));
+              let numImages = images.length;
+              images.forEach((imageId)=>{
+                  let imageRef = db.ref('gameBuilder/images/'+imageId.imageId);
+                  imageRef.once('value').then(function(snapshot) {
+                      let pieceImage = snapshot.val().downloadURL;
+                      piece.pieceImages.push(pieceImage);
+                      if(piece.pieceImages.length === numImages){
+                          self.allPieces.push(piece);
+                          if(self.allPieces.length === numPieces){
+                              self.setState({
+                                  pieces:self.allPieces
+                              });
+                          }
+                      }
+                  });
+              });
+          });
       }
   }
 

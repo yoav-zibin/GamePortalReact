@@ -3,20 +3,26 @@
     background: url('../res/pexels-photo-51055.jpg');
     background-position: center;
     background-size: cover;
+    position: relative;
+    display: flex;
+    justify-content: center;
 }
 .signin-root{
     position: absolute;
     top: 25%;
-    left: 25%;
+    width: 50%;
     background-color: rgba(255,255,255,0.7);
     border-radius: 5px;
+    padding: 0 15px;
 }
 .signin-container{
     border-right: 1px solid black;
     padding: 15px;
+    flex: 1;
 }
 .login-options-container{
     padding: 15px;
+    flex: 1;
 }
 .form-signin-heading{
     text-align: center;
@@ -26,7 +32,7 @@
 .login-container{
     margin: 5px;
     display: flex;
-    justify-content: center space-around;
+    justify-content: center space-between;
 }
 .form-signin {
   max-width: 330px;
@@ -75,4 +81,19 @@
 }
 .link-with-phone:hover{
     text-decoration: none;
+}
+@media screen and (max-width: 992px) {
+    .login-container{
+        display: block;
+    }
+    .signin-container{
+        border-right: 0;
+    }
+}
+@media screen and (max-width: 650px) {
+    .signin-root{
+        top: 10%;
+        width: 80%;
+        padding: 0;
+    }
 }

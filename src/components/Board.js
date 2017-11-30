@@ -3,49 +3,94 @@ import { Layer, Stage } from 'react-konva';
 import CanvasImage from './CanvasImage';
 
 export default class Board extends Component {
-  constructor(){
-      super();
+  constructor(props){
+      super(props);
       this.height = 650;
       this.width = 650;
       this.board = null;
       this.boardCanvas = null;
       this.piecesCanvases = null;
-      this.numMoves = -1;
   }
 
   componentWillMount(){
       this.createNewPieceCanvases = true;
+      this.updatePiecesListener = false;
+      this.canvasPiecesUpdated = null;
+      this.pieceIndices = new Array(this.props.pieces.length).fill(0);
   }
 
   componentDidMount(){
+      this.preserveSavedState(this.props.matchRef);
       this.addPieceUpdateListener(this.props.matchRef);
+  }
+
+  componentDidUpdate(){
+       if(this.updatePiecesListener && this.canvasPiecesUpdated){
+           this.updatePiecesListener = false;
+           this.preserveSavedState(this.props.matchRef);
+           this.addPieceUpdateListener(this.props.matchRef);
+       }
+       this.canvasPiecesUpdated = false;
   }
 
   componentWillReceiveProps(nextProps){
       if(nextProps.pieces !== this.props.pieces){
           this.createNewPieceCanvases = true;
+          this.pieceIndices = new Array(nextProps.pieces.length).fill(0);
       }
       if(nextProps.matchRef !== this.props.matchRef){
-          this.numMoves = -1;
           this.removePieceUpdateListener(this.props.matchRef);
-          this.addPieceUpdateListener(nextProps.matchRef);
+          this.updatePiecesListener = true;
       }
   }
 
   addPieceUpdateListener(dbRef){
-      let self = this;
-      dbRef.child('pieces').on('child_added', function(snapshot) {
+      let thiz = this;
+      dbRef.child('pieces').on('child_changed', function(snapshot) {
           if(snapshot.exists()){
               let val = snapshot.val();
-              self.numMoves = Math.max(self.numMoves, parseInt(snapshot.key));
-              let index = val.currentState.currentImageIndex;
+              let index = snapshot.key;
               let position = {
-                  x:val.currentState.x/100*self.width,
-                  y:val.currentState.y/100*self.height
+                  x:val.currentState.x/100*thiz.width,
+                  y:val.currentState.y/100*thiz.height
               };
-              self.updatePosition(index, position.x, position.y);
+              let imageIndex = val.currentState.currentImageIndex;
+              thiz.updatePosition(index, position.x, position.y);
+              thiz.updateImage(index, imageIndex);
           }
       });
+  }
+
+  preserveSavedState(dbRef){
+      let thiz = this;
+      dbRef.child('pieces').once('value').then(function(snapshot) {
+          if(snapshot.exists()){
+              let val = snapshot.val();
+              val.forEach((pieceState, index)=>{
+                  let position = {
+                      x:pieceState.currentState.x/100*thiz.width,
+                      y:pieceState.currentState.y/100*thiz.height
+                  };
+                  let imageIndex = pieceState.currentState.currentImageIndex;
+                  thiz.updatePosition(index, position.x, position.y);
+                  thiz.updateImage(index, imageIndex);
+              });
+          }
+      });
+  }
+
+  updateImage(index, imageIndex){
+      let thiz = this;
+      let canvasRef = 'canvasImage'+index;
+      if(thiz.pieceIndices[index] != imageIndex){
+          thiz.pieceIndices[index] = imageIndex;
+          let myImage = new Image();
+          myImage.onload = function (){
+              thiz.refs[canvasRef].refs.image.setImage(myImage);
+              thiz.refs.piecesCanvasesLayer.draw();
+          }
+          myImage.src = this.props.pieces[index].pieceImages[thiz.pieceIndices[index]];
+      }
   }
 
   removePieceUpdateListener(dbRef){
@@ -65,14 +110,47 @@ export default class Board extends Component {
   handleDragEnd(index){
       let position = this.refs['canvasImage'+index].refs.image.getAbsolutePosition();
       let value = {
-          currentImageIndex:index,
+          currentImageIndex: this.pieceIndices[index],
           x: position.x/this.width*100,
           y: position.y/this.height*100,
           zDepth: 1
       };
       value = {currentState: value};
-      let pieceRef = this.props.matchRef.child('pieces').child(this.numMoves+1);
+      let pieceRef = this.props.matchRef.child('pieces').child(index);
       pieceRef.set(value);
+  }
+
+  togglePiece(canvasRef, index, piece){
+      let thiz = this;
+      thiz.pieceIndices[index] = (thiz.pieceIndices[index] + 1) % piece.pieceImages.length;
+      let position = thiz.refs['canvasImage'+index].refs.image.getAbsolutePosition();
+      let myImage = new Image();
+      myImage.onload = function (){
+          thiz.refs[canvasRef].refs.image.setImage(myImage);
+          thiz.refs.piecesCanvasesLayer.draw();
+          let value = {
+              currentImageIndex:thiz.pieceIndices[index],
+              x: position.x/thiz.width*100,
+              y: position.y/thiz.height*100,
+              zDepth: 1
+          };
+          value = {currentState: value};
+          let pieceRef = thiz.props.matchRef.child('pieces').child(index);
+          pieceRef.set(value);
+      }
+      myImage.src = piece.pieceImages[thiz.pieceIndices[index]];
+  }
+
+  rollDice(canvasRef, index, piece){
+      let thiz = this;
+      let myImage = new Image();
+      myImage.onload = function (){
+          thiz.refs[canvasRef].refs.image.setImage(myImage);
+          thiz.refs.piecesCanvasesLayer.draw();
+      }
+      let newPieceImageIndex = Math.floor(Math.random() * piece.pieceImages.length);
+      console.log(newPieceImageIndex);
+      myImage.src = piece.pieceImages[newPieceImageIndex];
   }
 
   render() {
@@ -85,18 +163,34 @@ export default class Board extends Component {
     }
     if(this.createNewPieceCanvases){
         this.createNewPieceCanvases = false;
+        this.canvasPiecesUpdated = this.canvasPiecesUpdated === null ? false : true;
         this.piecesCanvases = this.props.pieces.map(
             (piece, index) => {
                 return (
                     <CanvasImage
                     ref={'canvasImage' + index}
                     key={index}
-                    draggable={true}
+                    draggable={piece.draggable || piece.kind === 'standard'}
+                    onClick={()=>{
+                        if(piece.kind === 'standard'){
+                            //do nothing, just make it draggable
+                        } else if(piece.kind === 'toggable'){
+                            this.togglePiece('canvasImage'+index, index, piece);
+                        } else if(piece.kind === 'dice'){
+                            this.rollDice('canvasImage'+index, index, piece);
+                        } else if(piece.kind === 'card'){
+                            // TODO
+                        } else if(piece.kind === 'cardsDeck'){
+                            // TODO
+                        } else if(piece.kind === 'piecesDeck'){
+                            // TODO
+                        }
+                    }}
                     height={piece.height*self.height/self.board.height}
                     width={piece.width*self.width/self.board.width}
                     x={piece.x*self.width/100}
                     y={piece.y*self.height/100}
-                    src={piece.imageUrl}
+                    src={piece.pieceImages[self.pieceIndices[index]]}
                     onDragEnd={() => self.handleDragEnd(index)}/>
                 );
             }

@@ -1,3 +1,4 @@
+import {messaging, auth, initPushNotification} from './firebase';
 // In production, we register a service worker to serve assets from local cache.
 
 // This lets the app load faster on subsequent visits in production, and gives
@@ -7,7 +8,6 @@
 
 // To learn more about the benefits of this model, read https://goo.gl/KwvDNy.
 // This link also includes instructions on opting out of this behavior.
-
 const isLocalhost = Boolean(
   window.location.hostname === 'localhost' ||
     // [::1] is the IPv6 localhost address.
@@ -42,11 +42,16 @@ export default function register() {
     });
   }
 }
-
 function registerValidSW(swUrl) {
   navigator.serviceWorker
     .register(swUrl)
     .then(registration => {
+        messaging.useServiceWorker(registration);
+        auth.onAuthStateChanged(user => {
+          if (user) {
+            initPushNotification();
+          }
+        });
       registration.onupdatefound = () => {
         const installingWorker = registration.installing;
         installingWorker.onstatechange = () => {
