@@ -141,6 +141,18 @@ export default class Board extends Component {
       myImage.src = piece.pieceImages[thiz.pieceIndices[index]];
   }
 
+  rollDice(canvasRef, index, piece){
+      let thiz = this;
+      let myImage = new Image();
+      myImage.onload = function (){
+          thiz.refs[canvasRef].refs.image.setImage(myImage);
+          thiz.refs.piecesCanvasesLayer.draw();
+      }
+      let newPieceImageIndex = Math.floor(Math.random() * piece.pieceImages.length);
+      console.log(newPieceImageIndex);
+      myImage.src = piece.pieceImages[newPieceImageIndex];
+  }
+
   render() {
     let self = this;
     if (this.props.board){
@@ -165,7 +177,7 @@ export default class Board extends Component {
                         } else if(piece.kind === 'toggable'){
                             this.togglePiece('canvasImage'+index, index, piece);
                         } else if(piece.kind === 'dice'){
-                            // TODO
+                            this.rollDice('canvasImage'+index, index, piece);
                         } else if(piece.kind === 'card'){
                             // TODO
                         } else if(piece.kind === 'cardsDeck'){
