@@ -153,6 +153,7 @@ export default class Board extends Component {
         node: thiz.refs[canvasRef].refs.image,
         scaleX: 1.5,
         scaleY: 1.5,
+        rotation:1080,
         easing: Konva.Easings.EaseInOut,
         duration: tweenDuration
       });
@@ -163,22 +164,30 @@ export default class Board extends Component {
       if(justAnimate){
           return;
       }
-      let myImage = new Image();
-      myImage.onload = function (){
-          thiz.refs[canvasRef].refs.image.setImage(myImage);
-          thiz.refs.piecesCanvasesLayer.draw();
-      }
       let newPieceImageIndex = Math.floor(Math.random() * piece.pieceImages.length);
-      myImage.src = piece.pieceImages[newPieceImageIndex];
-      let value = {
-          currentImageIndex:newPieceImageIndex,
-          x: position.x/thiz.width*100,
-          y: position.y/thiz.height*100,
-          zDepth: 1
-      };
-      value = {currentState: value};
-      let pieceRef = thiz.props.matchRef.child('pieces').child(index);
-      pieceRef.set(value);
+      if(thiz.pieceIndices[index] === newPieceImageIndex){
+          let pieceRef = thiz.props.matchRef.child('pieces').child(index)
+                        .child('currentState').child('currentImageIndex');
+          pieceRef.set((newPieceImageIndex+1)%piece.pieceImages.length);
+          pieceRef.set(newPieceImageIndex);
+      }else{
+          let myImage = new Image();
+          myImage.onload = function (){
+              thiz.refs[canvasRef].refs.image.setImage(myImage);
+              thiz.refs.piecesCanvasesLayer.draw();
+          }
+          thiz.pieceIndices[index] = newPieceImageIndex;
+          myImage.src = piece.pieceImages[newPieceImageIndex];
+          let value = {
+              currentImageIndex:newPieceImageIndex,
+              x: position.x/thiz.width*100,
+              y: position.y/thiz.height*100,
+              zDepth: 1
+          };
+          value = {currentState: value};
+          let pieceRef = thiz.props.matchRef.child('pieces').child(index);
+          pieceRef.set(value);
+      }
   }
 
   render() {
