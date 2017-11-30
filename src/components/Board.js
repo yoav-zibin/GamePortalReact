@@ -58,6 +58,9 @@ export default class Board extends Component {
               let imageIndex = val.currentState.currentImageIndex;
               thiz.updatePosition(index, position.x, position.y);
               thiz.updateImage(index, imageIndex);
+              if(thiz.props.pieces[index].kind === 'dice'){
+                  thiz.rollDice('canvasImage'+index, index, thiz.props.pieces[index], true)
+              }
           }
       });
   }
@@ -142,8 +145,9 @@ export default class Board extends Component {
       myImage.src = piece.pieceImages[thiz.pieceIndices[index]];
   }
 
-  rollDice(canvasRef, index, piece){
+  rollDice(canvasRef, index, piece, justAnimate=false){
       let thiz = this;
+      let position = thiz.refs[canvasRef].refs.image.getAbsolutePosition();
       let tweenDuration = 0.5;
       let tween = new Konva.Tween({
         node: thiz.refs[canvasRef].refs.image,
@@ -156,6 +160,9 @@ export default class Board extends Component {
       setTimeout(function () {
           tween.reverse();
       }, tweenDuration*1000);
+      if(justAnimate){
+          return;
+      }
       let myImage = new Image();
       myImage.onload = function (){
           thiz.refs[canvasRef].refs.image.setImage(myImage);
@@ -163,6 +170,15 @@ export default class Board extends Component {
       }
       let newPieceImageIndex = Math.floor(Math.random() * piece.pieceImages.length);
       myImage.src = piece.pieceImages[newPieceImageIndex];
+      let value = {
+          currentImageIndex:newPieceImageIndex,
+          x: position.x/thiz.width*100,
+          y: position.y/thiz.height*100,
+          zDepth: 1
+      };
+      value = {currentState: value};
+      let pieceRef = thiz.props.matchRef.child('pieces').child(index);
+      pieceRef.set(value);
   }
 
   render() {
