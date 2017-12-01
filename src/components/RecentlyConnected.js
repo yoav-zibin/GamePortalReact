@@ -218,20 +218,36 @@ export default class RecentlyConnected extends React.Component {
                     {content}
                 </ul>
                 {this.props.createGroup ?
-                    <Button
-                        className='create-group-final-button'
-                        color='success'
-                        onClick={this.handleCreateGroup.bind(this)}>
-                        Create Group
-                    </Button>
+                    <div style={{display:'flex', alignContent:'center', flexFlow:'column'}}>
+                        <Button
+                            className='create-group-final-button'
+                            color='success'
+                            onClick={this.handleCreateGroup.bind(this)}>
+                            Create Group
+                        </Button>
+                        <Button
+                            className='create-group-final-button'
+                            color='success'
+                            onClick={()=>{this.props.doneCreating()}}>
+                            Cancel
+                        </Button>
+                    </div>
                 : null}
                 {this.props.updateGroup ?
-                    <Button
-                        className='create-group-final-button'
-                        color='success'
-                        onClick={this.handleUpdateGroup.bind(this)}>
-                        Add Members
-                    </Button>
+                    <div style={{display:"flex", alignContent:'center', flexFlow:'column'}}>
+                        <Button
+                            className='create-group-final-button'
+                            color='success'
+                            onClick={this.handleUpdateGroup.bind(this)}>
+                            Add Members
+                        </Button>
+                        <Button
+                            className='create-group-final-button'
+                            color='success'
+                            onClick={()=>{this.props.doneCreating()}}>
+                            Cancel
+                        </Button>
+                    </div>
                 : null}
             </div>
         );

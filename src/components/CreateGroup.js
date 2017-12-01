@@ -74,6 +74,14 @@ export default class CreateGroup extends React.Component {
                             block>
                             {this.props.createGroup ? 'Cancel' : 'Create New Group'}
                         </Button>
+                        <Button
+                            className='create-group-button show-component-for-small-screens'
+                            onClick={()=>{this.props.showMyGroups()}}
+                            color='primary'
+                            size='lg'
+                            block>
+                            My Groups
+                        </Button>
                     </div>
                 </div>
                 <Alert color="success login-alert" isOpen={this.state.showSuccessLogin}>
