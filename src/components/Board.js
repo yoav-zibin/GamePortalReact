@@ -151,8 +151,6 @@ export default class Board extends Component {
       let tweenDuration = 0.5;
       let tween = new Konva.Tween({
         node: thiz.refs[canvasRef].refs.image,
-        scaleX: 1.5,
-        scaleY: 1.5,
         rotation:1080,
         easing: Konva.Easings.EaseInOut,
         duration: tweenDuration
