@@ -30,7 +30,7 @@
     height: 100%;
     overflow: auto;
 }
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 900px) {
     .hide-component-for-small-screens{
         display: none;
     }

@@ -54,7 +54,7 @@
     background: rgba(0,119,209,1);
     text-transform: uppercase;
 }
-@media screen and (min-width: 768px) {
+@media screen and (min-width: 900px) {
     .show-component-for-small-screens{
         display: none;
     }
