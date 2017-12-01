@@ -56,11 +56,11 @@ export default class Board extends Component {
                   y:val.currentState.y/100*thiz.height
               };
               let imageIndex = val.currentState.currentImageIndex;
-              thiz.updatePosition(index, position.x, position.y);
-              thiz.updateImage(index, imageIndex);
-              if(thiz.props.pieces[index].kind === 'dice'){
+              if(thiz.props.pieces[index].kind === 'dice' && imageIndex !== thiz.pieceIndices[index]){
                   thiz.rollDice('canvasImage'+index, index, thiz.props.pieces[index], true)
               }
+              thiz.updatePosition(index, position.x, position.y);
+              thiz.updateImage(index, imageIndex);
           }
       });
   }
