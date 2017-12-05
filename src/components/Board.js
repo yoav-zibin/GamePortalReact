@@ -78,8 +78,17 @@ export default class Board extends Component {
               if(thiz.props.pieces[index].kind === 'dice' && imageIndex !== thiz.pieceIndices[index]){
                   thiz.rollDice('canvasImage'+index, index, thiz.props.pieces[index], true)
               }
+              if(thiz.props.pieces[index].kind === 'card'){
+                  thiz.cardVisibility[index] = val.currentState.cardVisibility;
+                  if(thiz.cardVisibility[index] && thiz.cardVisibility[index][thiz.selfParticipantIndex]){
+                      thiz.updateImage(index, 1);
+                  } else{
+                      thiz.updateImage(index, 0);
+                  }
+              } else{
+                  thiz.updateImage(index, imageIndex);
+              }
               thiz.updatePosition(index, position.x, position.y);
-              thiz.updateImage(index, imageIndex);
           }
       });
   }
@@ -96,7 +105,16 @@ export default class Board extends Component {
                   };
                   let imageIndex = pieceState.currentState.currentImageIndex;
                   thiz.updatePosition(index, position.x, position.y);
-                  thiz.updateImage(index, imageIndex);
+                  if(thiz.props.pieces[index].kind === 'card'){
+                      thiz.cardVisibility[index] = pieceState.currentState.cardVisibility;
+                      if(thiz.cardVisibility[index] && thiz.cardVisibility[index][thiz.selfParticipantIndex]){
+                          thiz.updateImage(index, 1);
+                      } else{
+                          thiz.updateImage(index, 0);
+                      }
+                  } else{
+                      thiz.updateImage(index, imageIndex);
+                  }
               });
           }
       });
@@ -207,13 +225,15 @@ export default class Board extends Component {
       }
   }
 
-  showCardVisibility(canvasRef, piece){
-      let thiz = this;
+  showCardVisibility(index){
       let visibleTo = [];
-      Object.keys(piece.cardVisibility).forEach((participantIndex)=>{
-          visibleTo.push(thiz.participantNames[participantIndex]);
-      });
-      // console.log('showCardVisibility', canvasRef, piece, visibleTo);
+      if(this.cardVisibility[index]){
+          let thiz = this;
+          Object.keys(this.cardVisibility[index]).forEach((participantIndex)=>{
+              visibleTo.push(thiz.participantNames[participantIndex]);
+          });
+      }
+      console.log('showCardVisibility', visibleTo);
   }
 
   hideCardVisibility(canvasRef, piece){
@@ -244,6 +264,16 @@ export default class Board extends Component {
       visibilityRef.set(null);
   }
 
+  updateCardVisibility(){
+      let thiz = this;
+      thiz.cardVisibility = {};
+      this.props.pieces.forEach((piece, index)=>{
+          if(piece.kind === 'card'){
+              thiz.cardVisibility[index] = piece.cardVisibility ? piece.cardVisibility : null;
+          }
+      });
+  }
+
   render() {
     let self = this;
     if (this.props.board){
@@ -255,6 +285,7 @@ export default class Board extends Component {
     if(this.createNewPieceCanvases){
         this.createNewPieceCanvases = false;
         this.canvasPiecesUpdated = this.canvasPiecesUpdated === null ? false : true;
+        this.updateCardVisibility();
         this.piecesCanvases = this.props.pieces.map(
             (piece, index) => {
                 if(piece.kind === 'cardsDeck' || piece.kind === 'piecesDeck'){
@@ -290,7 +321,7 @@ export default class Board extends Component {
                         }}
                         onMouseOver={()=>{
                             if(piece.kind === 'card'){
-                                this.showCardVisibility('canvasImage'+index, piece);
+                                this.showCardVisibility(index);
                             }
                         }}
                         onMouseOut={()=>{
