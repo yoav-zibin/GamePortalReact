@@ -108,9 +108,39 @@ export default class Play extends Component {
       }
   }
 
+  revealCards(){
+      this.setState({
+          revealCards: true
+      });
+  }
+
+  shuffleDeck(){
+      this.setState({
+          shuffleDeck: true
+      });
+  }
+
+  doneShuffle(){
+      this.setState({
+          shuffleDeck: false
+      });
+  }
+
+  doneReveal(){
+      this.setState({
+          revealCards: false
+      });
+  }
+
   render() {
     if(this.state.spec){
-        this.playArena = (<PlayArena spec={this.state.spec} matchRef={this.matchRef}/>);
+        this.playArena = (<PlayArena
+            spec={this.state.spec}
+            matchRef={this.matchRef}
+            shuffleDeck={this.state.shuffleDeck}
+            revealCards={this.state.revealCards}
+            doneShuffle={this.doneShuffle.bind(this)}
+            doneReveal={this.doneReveal.bind(this)}/>);
     }
 
     let sideBarComponent = null;
@@ -160,6 +190,8 @@ export default class Play extends Component {
                     </Tab>
                     <Tab label="Games" value="games">
                         <GameSelector
+                            revealCards={this.revealCards.bind(this)}
+                            shuffleDeck={this.shuffleDeck.bind(this)}
                             groupId={this.state.groupId}
                             setSpec={this.setSpec.bind(this)}
                             setSpecId={this.setSpecId.bind(this)}/>

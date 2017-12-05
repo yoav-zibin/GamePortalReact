@@ -22,8 +22,12 @@
     margin: 20px auto;
 }
 .load-game-btn{
-    margin: 0px 15px;
     width: 50%;
     display: block;
     margin: 10px auto;
+}
+.deck-button{
+    margin: 30px auto;
+    display: block;
+    width: 50%;
 }

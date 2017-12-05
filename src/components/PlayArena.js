@@ -34,6 +34,7 @@ export default class PlayArena extends Component {
   setPieces(){
       let pieces = this.props.spec.pieces;
       this.allPieces = [];
+      this.deckElements = [];
       let self = this;
       let numPieces = pieces.length;
       for(let i in pieces){
@@ -52,6 +53,38 @@ export default class PlayArena extends Component {
               piece.pieceImages = [];
               let images = snapshot.val().images;
               let numImages = images.length;
+              if(piece.kind === 'cardsDeck'){
+                  let deckElems = snapshot.val().deckElements;
+                  let numDeckElems = deckElems.length;
+                  deckElems.forEach((deckElem)=>{
+                      let cardRef = db.ref(`gameBuilder/elements/${deckElem.deckMemberElementId}`);
+                      cardRef.once('value').then((snap)=>{
+                          let elem = {};
+                          elem.draggable = snap.val().isDraggable;
+                          elem.kind = snap.val().elementKind;
+                          elem.height = snap.val().height;
+                          elem.width = snap.val().width;
+                          elem.pieceImages = [];
+                          let elemImages = snap.val().images;
+                          let numElemImages = elemImages.length;
+                          elemImages.forEach((imageId)=>{
+                              let imageRef = db.ref('gameBuilder/images/'+imageId.imageId);
+                              imageRef.once('value').then(function(snapshot) {
+                                  let pieceImage = snapshot.val().downloadURL;
+                                  elem.pieceImages.push(pieceImage);
+                                  if(elem.pieceImages.length === numElemImages){
+                                      self.deckElements.push(elem);
+                                      if(self.deckElements.length === numDeckElems){
+                                          self.setState({
+                                              deckElements: self.deckElements
+                                          });
+                                      }
+                                  }
+                              });
+                          });
+                      });
+                  });
+              }
               images.forEach((imageId)=>{
                   let imageRef = db.ref('gameBuilder/images/'+imageId.imageId);
                   imageRef.once('value').then(function(snapshot) {
@@ -77,7 +110,7 @@ export default class PlayArena extends Component {
           this.loadSpec();
       }
       let myBoard = this.state.board && this.state.pieces.length > 0 ?
-                (<Board board={this.state.board} pieces={this.state.pieces} matchRef={this.props.matchRef}/>) :
+                (<Board deckElements={this.state.deckElements} board={this.state.board} pieces={this.state.pieces} matchRef={this.props.matchRef}/>) :
                 null;
     return (
     <div>

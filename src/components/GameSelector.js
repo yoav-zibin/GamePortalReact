@@ -128,6 +128,8 @@ export default class GameSelector extends React.Component {
                               onChange={this.changeSelectedNewGameSpec.bind(this)}
                             />
                             <Button color="success load-game-btn" onClick={this.startNewGame.bind(this)}>Start New Game</Button>
+                            <Button color="primary" className="deck-button" onClick={()=>{this.props.shuffleDeck()}}> Reset Deck</Button>
+                            <Button color="primary" className="deck-button" onClick={()=>{this.props.revealCards()}}> Reveal Cards</Button>
                         </div>
                     </Tab>
                     <Tab label="Recently Played" value="recently_played">
@@ -140,6 +142,8 @@ export default class GameSelector extends React.Component {
                               onChange={this.changeSelectedRecentGameSpec.bind(this)}
                             />
                             <Button color="success load-game-btn" onClick={this.loadMatch.bind(this)}>Continue Game</Button>
+                            <Button color="primary" className="deck-button" onClick={()=>{this.props.shuffleDeck()}}> Reset Deck</Button>
+                            <Button color="primary" className="deck-button" onClick={()=>{this.props.revealCards()}}> Reveal Cards</Button>
                         </div>
                     </Tab>
             </Tabs>
