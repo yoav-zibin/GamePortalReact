@@ -188,6 +188,10 @@ export default class Board extends Component {
       }
   }
 
+  showCardVisibility(canvasRef, piece){
+      console.log(canvasRef, piece);
+  }
+
   render() {
     let self = this;
     if (this.props.board){
@@ -201,33 +205,50 @@ export default class Board extends Component {
         this.canvasPiecesUpdated = this.canvasPiecesUpdated === null ? false : true;
         this.piecesCanvases = this.props.pieces.map(
             (piece, index) => {
-                return (
-                    <CanvasImage
-                    ref={'canvasImage' + index}
-                    key={index}
-                    draggable={piece.draggable || piece.kind === 'standard'}
-                    onClick={()=>{
-                        if(piece.kind === 'standard'){
-                            //do nothing, just make it draggable
-                        } else if(piece.kind === 'toggable'){
-                            this.togglePiece('canvasImage'+index, index, piece);
-                        } else if(piece.kind === 'dice'){
-                            this.rollDice('canvasImage'+index, index, piece);
-                        } else if(piece.kind === 'card'){
-                            // TODO
-                        } else if(piece.kind === 'cardsDeck'){
-                            // TODO
-                        } else if(piece.kind === 'piecesDeck'){
-                            // TODO
-                        }
-                    }}
-                    height={piece.height*self.height/self.board.height}
-                    width={piece.width*self.width/self.board.width}
-                    x={piece.x*self.width/100}
-                    y={piece.y*self.height/100}
-                    src={piece.pieceImages[self.pieceIndices[index]]}
-                    onDragEnd={() => self.handleDragEnd(index)}/>
-                );
+                if(piece.kind === 'cardsDeck' || piece.kind === 'piecesDeck'){
+                    // Return nothing and making deck invisible because no need to display deck
+                    return null;
+                    // return(
+                    //     <CanvasImage
+                    //     ref={'canvasImage' + index}
+                    //     key={index}
+                    //     draggable={false}
+                    //     height={1}
+                    //     width={1}
+                    //     x={piece.x*self.width/100}
+                    //     y={piece.y*self.height/100}
+                    //     src={piece.pieceImages[self.pieceIndices[index]]}/>
+                    // );
+                } else{
+                    return (
+                        <CanvasImage
+                        ref={'canvasImage' + index}
+                        key={index}
+                        draggable={piece.draggable || piece.kind === 'standard'}
+                        onClick={()=>{
+                            if(piece.kind === 'standard'){
+                                //do nothing, just make it draggable
+                            } else if(piece.kind === 'toggable'){
+                                this.togglePiece('canvasImage'+index, index, piece);
+                            } else if(piece.kind === 'dice'){
+                                this.rollDice('canvasImage'+index, index, piece);
+                            } else if(piece.kind === 'card'){
+                                // TODO
+                            }
+                        }}
+                        onMouseOver={()=>{
+                            if(piece.kind === 'card'){
+                                this.showCardVisibility('canvasImage'+index, piece);
+                            }
+                        }}
+                        height={piece.height*self.height/self.board.height}
+                        width={piece.width*self.width/self.board.width}
+                        x={piece.x*self.width/100}
+                        y={piece.y*self.height/100}
+                        src={piece.pieceImages[self.pieceIndices[index]]}
+                        onDragEnd={() => self.handleDragEnd(index)}/>
+                    );
+                }
             }
         );
     }

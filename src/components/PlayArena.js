@@ -32,7 +32,7 @@ export default class PlayArena extends Component {
   }
 
   setPieces(){
-      let pieces = this.props.spec.pieces;
+      let pieces = this.props.spec.pieces ? this.props.spec.pieces : [];
       this.allPieces = [];
       let self = this;
       let numPieces = pieces.length;
