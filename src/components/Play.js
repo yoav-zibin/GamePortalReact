@@ -128,6 +128,7 @@ export default class Play extends Component {
             spec={this.state.spec}
             matchRef={this.matchRef}
             shuffleDeck={this.state.shuffleDeck}
+            groupId={this.state.groupId}
             doneShuffle={this.doneShuffle.bind(this)}/>);
     }
 

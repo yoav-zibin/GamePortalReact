@@ -42,7 +42,9 @@ export default class PlayArena extends Component {
           let piece = {
               x:piece_info.initialState.x,
               y:piece_info.initialState.y,
-              zDepth: piece_info.initialState.zDepth
+              zDepth: piece_info.initialState.zDepth,
+              cardVisibility: piece_info.initialState.cardVisibility ? piece_info.initialState.cardVisibility : {},
+              deckPieceIndex: piece_info.deckPieceIndex,
           };
           elemRef.once('value').then(function(snapshot) {
               piece.draggable = snapshot.val().isDraggable;
@@ -77,7 +79,7 @@ export default class PlayArena extends Component {
           this.loadSpec();
       }
       let myBoard = this.state.board && this.state.pieces.length > 0 ?
-                (<Board board={this.state.board} pieces={this.state.pieces} matchRef={this.props.matchRef}/>) :
+                (<Board groupId={this.props.groupId} board={this.state.board} pieces={this.state.pieces} matchRef={this.props.matchRef}/>) :
                 null;
     return (
     <div>

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Layer, Stage } from 'react-konva';
 import CanvasImage from './CanvasImage';
 import Konva from 'konva';
+import {db, auth} from '../firebase';
 
 export default class Board extends Component {
   constructor(props){
@@ -14,15 +15,33 @@ export default class Board extends Component {
   }
 
   componentWillMount(){
+      let thiz = this;
       this.createNewPieceCanvases = true;
       this.updatePiecesListener = false;
       this.canvasPiecesUpdated = null;
       this.pieceIndices = new Array(this.props.pieces.length).fill(0);
+      this.groupParticipantsRef = db.ref(`gamePortal/groups/${this.props.groupId}/participants`);
+      this.groupParticipantsRef.on('value', (snap)=>{
+          let participants = snap.val();
+          thiz.numParticipants = Object.keys(participants).length;
+          thiz.selfParticipantIndex = participants[auth.currentUser.uid].participantIndex;
+          thiz.participantNames = {};
+          Object.keys(participants).forEach((uid)=>{
+              let userRef = db.ref(`users/${uid}/publicFields/displayName`);
+              userRef.once('value').then((snap)=>{
+                  thiz.participantNames[participants[uid].participantIndex] = snap.val();
+              });
+          });
+      });
   }
 
   componentDidMount(){
       this.preserveSavedState(this.props.matchRef);
       this.addPieceUpdateListener(this.props.matchRef);
+  }
+
+  componentWillUnmount(){
+      this.groupParticipantsRef.off();
   }
 
   componentDidUpdate(){
@@ -189,7 +208,40 @@ export default class Board extends Component {
   }
 
   showCardVisibility(canvasRef, piece){
-      console.log(canvasRef, piece);
+      let thiz = this;
+      let visibleTo = [];
+      Object.keys(piece.cardVisibility).forEach((participantIndex)=>{
+          visibleTo.push(thiz.participantNames[participantIndex]);
+      });
+      // console.log('showCardVisibility', canvasRef, piece, visibleTo);
+  }
+
+  hideCardVisibility(canvasRef, piece){
+      // console.log('hideCardVisibility', canvasRef, piece);
+  }
+
+  handleCardClick(canvasRef, index, piece){
+      this.makeCardVisibleToSelf(index);
+  }
+
+  makeCardVisibleToSelf(cardIndex){
+      let refPath = `pieces/${cardIndex}/currentState/cardVisibility/${this.selfParticipantIndex}`;
+      let visibilityRef = this.props.matchRef.child(refPath);
+      visibilityRef.set(true);
+  }
+
+  makeCardVisibleToAll(cardIndex){
+      Object.keys(this.participantNames).forEach((pi)=>{
+          let refPath = `pieces/${cardIndex}/currentState/cardVisibility/${pi}`;
+          let visibilityRef = this.props.matchRef.child(refPath);
+          visibilityRef.set(true);
+      });
+  }
+
+  makeCardHiddedToAll(cardIndex){
+      let refPath = `pieces/${cardIndex}/currentState/cardVisibility`;
+      let visibilityRef = this.props.matchRef.child(refPath);
+      visibilityRef.set(null);
   }
 
   render() {
@@ -233,12 +285,17 @@ export default class Board extends Component {
                             } else if(piece.kind === 'dice'){
                                 this.rollDice('canvasImage'+index, index, piece);
                             } else if(piece.kind === 'card'){
-                                // TODO
+                                this.handleCardClick('canvasImage'+index, index, piece);
                             }
                         }}
                         onMouseOver={()=>{
                             if(piece.kind === 'card'){
                                 this.showCardVisibility('canvasImage'+index, piece);
+                            }
+                        }}
+                        onMouseOut={()=>{
+                            if(piece.kind === 'card'){
+                                this.hideCardVisibility('canvasImage'+index, piece);
                             }
                         }}
                         height={piece.height*self.height/self.board.height}
