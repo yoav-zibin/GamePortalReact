@@ -170,7 +170,7 @@ export default class Board extends Component {
 
   handleDragStart(index){
       let canvasRef = 'canvasImage'+index;
-      this.refs[canvasRef].refs.image.moveToTop();
+      this.refs[canvasRef].refs.image.setZIndex(++this.maxZIndex);
       this.refs.piecesCanvasesLayer.draw();
   }
 
@@ -296,13 +296,11 @@ export default class Board extends Component {
       });
   }
 
-  updateZIndex(index, zIndex){
-      if(!zIndex){
-          zIndex = -1;
-      }
+  updateZIndex(index, z){
+      let zIndex = z ? z : this.maxZIndex;
       this.maxZIndex = Math.max(zIndex, this.maxZIndex);
       let canvasRef = 'canvasImage'+index;
-      this.refs[canvasRef].refs.image.moveToTop();
+      this.refs[canvasRef].refs.image.setZIndex(zIndex);
       this.refs.piecesCanvasesLayer.draw();
   }
 
