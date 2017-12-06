@@ -15,7 +15,8 @@ export default class Board extends Component {
       this.piecesCanvases = null;
       this.state = {
           showTooltip: false,
-          tooltipPosition: null
+          tooltipPosition: null,
+          showCardOptions: false
       };
   }
 
@@ -247,7 +248,8 @@ export default class Board extends Component {
       };
       this.setState({
           showTooltip: true,
-          tooltipPosition: position
+          tooltipPosition: position,
+          showCardOptions: false
       });
   }
 
@@ -259,9 +261,10 @@ export default class Board extends Component {
 
   handleCardClick(canvasRef, index, piece){
       this.setState({
-          showTooltip: false
+          showTooltip: false,
+          showCardOptions: true
       });
-      this.makeCardVisibleToSelf(index);
+      this.cardIndex = index;
   }
 
   makeCardVisibleToSelf(cardIndex){
@@ -341,6 +344,7 @@ export default class Board extends Component {
                         }}
                         onMouseOver={()=>{
                             if(piece.kind === 'card'){
+                                this.setState({showCardOptions:false});
                                 this.showCardVisibility(index);
                             }
                         }}
@@ -387,6 +391,41 @@ export default class Board extends Component {
             </div> :
             null
         }
+
+        {
+            this.state.showCardOptions ?
+            <div className='my-card-options'
+                style={{
+                    left:this.state.tooltipPosition.x,
+                    top: this.state.tooltipPosition.y
+                }}>
+                    <div className='close-card-options'
+                        onClick={()=>{
+                            this.setState({
+                                showCardOptions: false
+                            });
+                        }}>
+                        x
+                    </div>
+                    <span style={{textDecoration:'underline', textAlign:'center'}}>OPTIONS:</span>
+                    <ul style={{padding:'0', listStyle:'none', margin:'0'}}>
+                            <li className='card-options-item'
+                                onClick={()=>{this.makeCardVisibleToSelf(this.cardIndex);}}>
+                                Make Visible To me
+                            </li>
+                            <li className='card-options-item'
+                                onClick={()=>{this.makeCardVisibleToAll(this.cardIndex);}}>
+                                Make Visible To Everyone
+                            </li>
+                            <li className='card-options-item'
+                                onClick={()=>{this.makeCardHiddedToAll(this.cardIndex);}}>
+                                Hide From Everyone
+                            </li>
+                    </ul>
+            </div> :
+            null
+        }
+
       <Stage width={this.width} height={this.height}>
         <Layer>
           {this.boardCanvas}
