@@ -15,6 +15,13 @@ export default class Board extends Component {
       this.maxZIndex = 0;
   }
 
+  shouldComponentUpdate(nextProps, nextState){
+      if(nextProps.board !== this.props.board || nextProps.pieces !== this.props.pieces || nextProps.matchRef !== this.props.matchRef){
+          return true;
+      }
+      return false;
+  }
+
   componentWillMount(){
       let thiz = this;
       this.createNewPieceCanvases = true;
