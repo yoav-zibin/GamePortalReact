@@ -283,7 +283,7 @@ export default class Board extends Component {
   }
 
   handleCardClick(canvasRef, index, piece){
-      this.props.showCardOptions(index, this.selfParticipantIndex, this.participantNames);
+      this.props.showCardOptions(index, this.selfParticipantIndex, this.participantNames, this.props.pieces[index].deckPieceIndex);
   }
 
   updateCardVisibility(props){

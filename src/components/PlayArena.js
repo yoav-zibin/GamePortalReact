@@ -112,10 +112,11 @@ export default class PlayArena extends Component {
       });
   }
 
-  showCardOptions(cardIndex, selfParticipantIndex, participantNames){
+  showCardOptions(cardIndex, selfParticipantIndex, participantNames, deckIndex){
       this.cardIndex = cardIndex;
       this.selfParticipantIndex = selfParticipantIndex;
-      this.participantNames = participantNames
+      this.participantNames = participantNames;
+      this.deckIndex = deckIndex;
       this.setState({
           showTooltip: false,
           showCardOptions: true
@@ -126,6 +127,31 @@ export default class PlayArena extends Component {
       this.setState({
           showCardOptions: false
       });
+  }
+
+   shuffle(a) {
+        for (let i = a.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [a[i], a[j]] = [a[j], a[i]];
+        }
+        return a;
+    }
+
+  shuffleDeck(){
+      if(this.spec.pieces){
+          let shuffledZindices = new Array(this.spec.pieces.length).fill(0);
+          shuffledZindices.forEach((val, index)=>{
+              shuffledZindices[index] = index+1;
+          });
+          shuffledZindices = this.shuffle(shuffledZindices);
+          this.spec.pieces.forEach((piece, index)=>{
+              if(piece.deckPieceIndex === this.deckIndex){
+                  let currentState = piece.initialState;
+                  currentState.zDepth = shuffledZindices[index];
+                  this.props.matchRef.child(`pieces/${index}/currentState`).set(currentState);
+              }
+          });
+      }
   }
 
   render() {
@@ -198,6 +224,10 @@ export default class PlayArena extends Component {
                             <li className='card-options-item'
                                 onClick={()=>{this.makeCardHiddedToAll()}}>
                                 Hide From Everyone
+                            </li>
+                            <li className='card-options-item'
+                                onClick={()=>{this.shuffleDeck()}}>
+                                Shuffle Deck
                             </li>
                     </ul>
             </div> :
