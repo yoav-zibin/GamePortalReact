@@ -89,6 +89,9 @@ export default class Board extends Component {
               if(thiz.props.pieces[index].kind === 'dice' && imageIndex !== thiz.pieceIndices[index]){
                   thiz.rollDice('canvasImage'+index, index, thiz.props.pieces[index], true)
               }
+              if(thiz.props.pieces[index].kind === 'cardsDeck' || thiz.props.pieces[index].kind === 'piecesDeck'){
+                  return;
+              }
               if(thiz.props.pieces[index].kind === 'card'){
                   thiz.cardVisibility[index] = val.currentState.cardVisibility;
                   if(thiz.cardVisibility[index] && thiz.cardVisibility[index][thiz.selfParticipantIndex]){
@@ -118,6 +121,9 @@ export default class Board extends Component {
                   let zDepth = pieceState.currentState.zDepth;
                   let imageIndex = pieceState.currentState.currentImageIndex;
                   thiz.updatePosition(index, position.x, position.y);
+                  if(thiz.props.pieces[index].kind === 'cardsDeck' || thiz.props.pieces[index].kind === 'piecesDeck'){
+                      return;
+                  }
                   if(thiz.props.pieces[index].kind === 'card'){
                       thiz.cardVisibility[index] = pieceState.currentState.cardVisibility;
                       if(thiz.cardVisibility[index] && thiz.cardVisibility[index][thiz.selfParticipantIndex]){
