@@ -239,9 +239,10 @@ export default class Board extends Component {
           });
       }
       let cardPosition = this.refs['canvasImage'+index].refs.image.getAbsolutePosition();
-      let cardWidth = this.props.pieces[index].height*this.height/this.board.height
+      let cardWidth = this.refs['canvasImage'+index].refs.image.attrs.width;
+      let parentContainerX = this.refs.parentContainer.getBoundingClientRect().x;
       let position = {
-          x: cardPosition.x + cardWidth,
+          x: cardPosition.x + cardWidth + parentContainerX,
           y: cardPosition.y
       };
       this.setState({
@@ -257,6 +258,9 @@ export default class Board extends Component {
   }
 
   handleCardClick(canvasRef, index, piece){
+      this.setState({
+          showTooltip: false
+      });
       this.makeCardVisibleToSelf(index);
   }
 
@@ -357,7 +361,7 @@ export default class Board extends Component {
         );
     }
     return (
-    <div>
+    <div ref='parentContainer'>
         {
             this.state.showTooltip ?
             <div className='my-tooltip'
