@@ -110,26 +110,12 @@ export default class Play extends Component {
       }
   }
 
-  shuffleDeck(){
-      this.setState({
-          shuffleDeck: true
-      });
-  }
-
-  doneShuffle(){
-      this.setState({
-          shuffleDeck: false
-      });
-  }
-
   render() {
     if(this.state.spec){
         this.playArena = (<PlayArena
             spec={this.state.spec}
             matchRef={this.matchRef}
-            shuffleDeck={this.state.shuffleDeck}
-            groupId={this.state.groupId}
-            doneShuffle={this.doneShuffle.bind(this)}/>);
+            groupId={this.state.groupId}/>);
     }
 
     let sideBarComponent = null;
@@ -179,7 +165,6 @@ export default class Play extends Component {
                     </Tab>
                     <Tab label="Games" value="games">
                         <GameSelector
-                            shuffleDeck={this.shuffleDeck.bind(this)}
                             groupId={this.state.groupId}
                             setSpec={this.setSpec.bind(this)}
                             setSpecId={this.setSpecId.bind(this)}/>
