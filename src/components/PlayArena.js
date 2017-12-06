@@ -1,13 +1,18 @@
 import React, { Component } from 'react';
 import Board from './Board';
 import {db} from '../firebase';
+import './css/PlayArena.css';
 
 export default class PlayArena extends Component {
   constructor(props){
       super(props);
       this.state = {
           board: null,
-          pieces: []
+          pieces: [],
+          showTooltip: false,
+          tooltipPosition: null,
+          showCardOptions: false,
+          visibleTo: []
       };
       this.spec = null;
   }
@@ -73,16 +78,131 @@ export default class PlayArena extends Component {
       }
   }
 
+  makeCardVisibleToSelf(){
+      let refPath = `pieces/${this.cardIndex}/currentState/cardVisibility/${this.selfParticipantIndex}`;
+      let visibilityRef = this.props.matchRef.child(refPath);
+      visibilityRef.set(true);
+  }
+
+  makeCardVisibleToAll(){
+      Object.keys(this.participantNames).forEach((pi)=>{
+          let refPath = `pieces/${this.cardIndex}/currentState/cardVisibility/${pi}`;
+          let visibilityRef = this.props.matchRef.child(refPath);
+          visibilityRef.set(true);
+      });
+  }
+
+  makeCardHiddedToAll(){
+      let refPath = `pieces/${this.cardIndex}/currentState/cardVisibility`;
+      let visibilityRef = this.props.matchRef.child(refPath);
+      visibilityRef.set(null);
+  }
+
+  showTooltip(position, visibleTo){
+      this.setState({
+          showTooltip: true,
+          tooltipPosition: position,
+          visibleTo: visibleTo
+      });
+  }
+
+  hideTooltip(){
+      this.setState({
+          showTooltip: false
+      });
+  }
+
+  showCardOptions(cardIndex, selfParticipantIndex, participantNames){
+      this.cardIndex = cardIndex;
+      this.selfParticipantIndex = selfParticipantIndex;
+      this.participantNames = participantNames
+      this.setState({
+          showTooltip: false,
+          showCardOptions: true
+      });
+  }
+
+  hideCardOptions(){
+      this.setState({
+          showCardOptions: false
+      });
+  }
+
   render() {
       if(this.props.spec !== this.spec){
           this.spec = this.props.spec;
           this.loadSpec();
       }
       let myBoard = this.state.board && this.state.pieces.length > 0 ?
-                (<Board groupId={this.props.groupId} board={this.state.board} pieces={this.state.pieces} matchRef={this.props.matchRef}/>) :
+                (<Board groupId={this.props.groupId}
+                    showTooltip={this.showTooltip.bind(this)}
+                    hideTooltip={this.hideTooltip.bind(this)}
+                    showCardOptions={this.showCardOptions.bind(this)}
+                    hideCardOptions={this.hideCardOptions.bind(this)}
+                    board={this.state.board}
+                    pieces={this.state.pieces}
+                    matchRef={this.props.matchRef}/>) :
                 null;
     return (
     <div>
+        {
+            this.state.showTooltip ?
+            <div className='my-tooltip'
+                style={{
+                    left:this.state.tooltipPosition.x,
+                    top: this.state.tooltipPosition.y
+                }}>
+                {
+                    this.state.visibleTo.length > 0 ?
+                    <span style={{textDecoration:'underline'}}>Card is Visible to:</span> :
+                    'Card is visible to no one.'
+                }
+                <ul style={{padding:'0', listStyle:'none', margin:'0'}}>
+                    {this.state.visibleTo.map((name, index)=>{
+                        return (
+                            <li key={this.props.groupId+'tooltip'+index}
+                                style={{padding:'0', listStyle:'none', margin:'0'}}>
+                                {name}
+                            </li>
+                        );
+                    })}
+                </ul>
+            </div> :
+            null
+        }
+        {
+            this.state.showCardOptions ?
+            <div className='my-card-options'
+                style={{
+                    left:this.state.tooltipPosition.x,
+                    top: this.state.tooltipPosition.y
+                }}>
+                    <div className='close-card-options'
+                        onClick={()=>{
+                            this.setState({
+                                showCardOptions: false
+                            });
+                        }}>
+                        x
+                    </div>
+                    <span style={{textDecoration:'underline', textAlign:'center'}}>OPTIONS:</span>
+                    <ul style={{padding:'0', listStyle:'none', margin:'0'}}>
+                            <li className='card-options-item'
+                                onClick={()=>{this.makeCardVisibleToSelf()}}>
+                                Make Visible To me
+                            </li>
+                            <li className='card-options-item'
+                                onClick={()=>{this.makeCardVisibleToAll()}}>
+                                Make Visible To Everyone
+                            </li>
+                            <li className='card-options-item'
+                                onClick={()=>{this.makeCardHiddedToAll()}}>
+                                Hide From Everyone
+                            </li>
+                    </ul>
+            </div> :
+            null
+        }
       {myBoard}
     </div>
     );

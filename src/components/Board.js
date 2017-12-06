@@ -3,7 +3,6 @@ import { Layer, Stage } from 'react-konva';
 import CanvasImage from './CanvasImage';
 import Konva from 'konva';
 import {db, auth} from '../firebase';
-import './css/Board.css';
 
 export default class Board extends Component {
   constructor(props){
@@ -13,11 +12,6 @@ export default class Board extends Component {
       this.board = null;
       this.boardCanvas = null;
       this.piecesCanvases = null;
-      this.state = {
-          showTooltip: false,
-          tooltipPosition: null,
-          showCardOptions: false
-      };
       this.maxZIndex = 0;
   }
 
@@ -268,45 +262,15 @@ export default class Board extends Component {
           x: cardPosition.x + cardWidth + parentContainerX,
           y: cardPosition.y
       };
-      this.setState({
-          showTooltip: true,
-          tooltipPosition: position,
-          showCardOptions: false
-      });
+      this.props.showTooltip(position, this.visibleTo);
   }
 
   hideCardVisibility(canvasRef, piece){
-      this.setState({
-          showTooltip: false,
-      });
+      this.props.hideTooltip();
   }
 
   handleCardClick(canvasRef, index, piece){
-      this.setState({
-          showTooltip: false,
-          showCardOptions: true
-      });
-      this.cardIndex = index;
-  }
-
-  makeCardVisibleToSelf(cardIndex){
-      let refPath = `pieces/${cardIndex}/currentState/cardVisibility/${this.selfParticipantIndex}`;
-      let visibilityRef = this.props.matchRef.child(refPath);
-      visibilityRef.set(true);
-  }
-
-  makeCardVisibleToAll(cardIndex){
-      Object.keys(this.participantNames).forEach((pi)=>{
-          let refPath = `pieces/${cardIndex}/currentState/cardVisibility/${pi}`;
-          let visibilityRef = this.props.matchRef.child(refPath);
-          visibilityRef.set(true);
-      });
-  }
-
-  makeCardHiddedToAll(cardIndex){
-      let refPath = `pieces/${cardIndex}/currentState/cardVisibility`;
-      let visibilityRef = this.props.matchRef.child(refPath);
-      visibilityRef.set(null);
+      this.props.showCardOptions(index, this.selfParticipantIndex, this.participantNames);
   }
 
   updateCardVisibility(props){
@@ -347,17 +311,6 @@ export default class Board extends Component {
                 if(piece.kind === 'cardsDeck' || piece.kind === 'piecesDeck'){
                     // Return nothing and making deck invisible because no need to display deck
                     return null;
-                    // return(
-                    //     <CanvasImage
-                    //     ref={'canvasImage' + index}
-                    //     key={index}
-                    //     draggable={false}
-                    //     height={1}
-                    //     width={1}
-                    //     x={piece.x*self.width/100}
-                    //     y={piece.y*self.height/100}
-                    //     src={piece.pieceImages[self.pieceIndices[index]]}/>
-                    // );
                 } else{
                     return (
                         <CanvasImage
@@ -376,8 +329,8 @@ export default class Board extends Component {
                             }
                         }}
                         onMouseOver={()=>{
+                            this.props.hideCardOptions();
                             if(piece.kind === 'card'){
-                                this.setState({showCardOptions:false});
                                 this.showCardVisibility(index);
                             }
                         }}
@@ -400,66 +353,6 @@ export default class Board extends Component {
     }
     return (
     <div ref='parentContainer'>
-        {
-            this.state.showTooltip ?
-            <div className='my-tooltip'
-                style={{
-                    left:this.state.tooltipPosition.x,
-                    top: this.state.tooltipPosition.y
-                }}>
-                {
-                    this.visibleTo.length > 0 ?
-                    <span style={{textDecoration:'underline'}}>Card is Visible to:</span> :
-                    'Card is visible to no one.'
-                }
-                <ul style={{padding:'0', listStyle:'none', margin:'0'}}>
-                    {this.visibleTo.map((name, index)=>{
-                        return (
-                            <li key={this.props.groupId+'tooltip'+index}
-                                style={{padding:'0', listStyle:'none', margin:'0'}}>
-                                {name}
-                            </li>
-                        );
-                    })}
-                </ul>
-            </div> :
-            null
-        }
-
-        {
-            this.state.showCardOptions ?
-            <div className='my-card-options'
-                style={{
-                    left:this.state.tooltipPosition.x,
-                    top: this.state.tooltipPosition.y
-                }}>
-                    <div className='close-card-options'
-                        onClick={()=>{
-                            this.setState({
-                                showCardOptions: false
-                            });
-                        }}>
-                        x
-                    </div>
-                    <span style={{textDecoration:'underline', textAlign:'center'}}>OPTIONS:</span>
-                    <ul style={{padding:'0', listStyle:'none', margin:'0'}}>
-                            <li className='card-options-item'
-                                onClick={()=>{this.makeCardVisibleToSelf(this.cardIndex);}}>
-                                Make Visible To me
-                            </li>
-                            <li className='card-options-item'
-                                onClick={()=>{this.makeCardVisibleToAll(this.cardIndex);}}>
-                                Make Visible To Everyone
-                            </li>
-                            <li className='card-options-item'
-                                onClick={()=>{this.makeCardHiddedToAll(this.cardIndex);}}>
-                                Hide From Everyone
-                            </li>
-                    </ul>
-            </div> :
-            null
-        }
-
       <Stage width={this.width} height={this.height}>
         <Layer>
           {this.boardCanvas}
