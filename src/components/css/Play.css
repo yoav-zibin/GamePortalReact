@@ -51,6 +51,7 @@
 .side-chat-tabs-container > div:nth-child(3){
     height: 93%;
     position: relative;
+    overflow-y: auto;
 }
 .side-chat-tabs-container > div:nth-child(3) > div{
     height: 100%;
