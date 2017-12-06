@@ -49,3 +49,8 @@
     top: 90%;
     width: 100%;
 }
+@media screen and (min-width: 900px) {
+    .show-component-for-small-screens{
+        display: none;
+    }
+}

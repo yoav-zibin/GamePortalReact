@@ -11,16 +11,27 @@
     flex: 1;
     color: #ffffff;
     background-color: rgba(44,63,79,0.7);
+    height: 100%;
+    overflow: auto;
 }
 
 .create-group-container{
     flex: 3;
     color: #ffffff;
     position: relative;
+    height: 100%;
+    overflow-y: auto;
 }
 
 .my-groups-container{
     flex: 1;
     color: #ffffff;
     background-color: rgba(44,63,79,0.7);
+    height: 100%;
+    overflow: auto;
+}
+@media screen and (max-width: 900px) {
+    .hide-component-for-small-screens{
+        display: none;
+    }
 }

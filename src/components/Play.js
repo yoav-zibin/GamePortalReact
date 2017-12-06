@@ -33,12 +33,14 @@ export default class Play extends Component {
   setSpec(spec, isNewGame, matchId){
       if(isNewGame){
           let pieces = {};
-          spec.pieces.forEach((piece, index)=>{
-              let result = {
-                  currentState: piece.initialState
-              };
-              pieces[index] = result;
-          });
+          if(spec.pieces){
+              spec.pieces.forEach((piece, index)=>{
+                  let result = {
+                      currentState: piece.initialState
+                  };
+                  pieces[index] = result;
+              });
+          }
           this.matchRef = db.ref(`gamePortal/groups/${this.state.groupId}/matches`);
           let match = {
               createdOn: firebase.database.ServerValue.TIMESTAMP,
@@ -110,7 +112,10 @@ export default class Play extends Component {
 
   render() {
     if(this.state.spec){
-        this.playArena = (<PlayArena spec={this.state.spec} matchRef={this.matchRef}/>);
+        this.playArena = (<PlayArena
+            spec={this.state.spec}
+            matchRef={this.matchRef}
+            groupId={this.state.groupId}/>);
     }
 
     let sideBarComponent = null;

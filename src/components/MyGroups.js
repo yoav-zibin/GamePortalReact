@@ -3,6 +3,7 @@ import './css/MyGroups.css';
 import {db, auth} from '../firebase';
 import { Tooltip } from 'reactstrap';
 import { Link } from 'react-router-dom';
+import { Button } from 'reactstrap';
 
 export default class MyGroups extends React.Component {
     constructor(props){
@@ -104,6 +105,15 @@ export default class MyGroups extends React.Component {
                           )})}
                   </ul>
                 </Tooltip>
+                <div style={{display: 'flex', justifyContent: 'center'}}>
+                    <Button
+                        style={{width:'50%'}}
+                        className='show-component-for-small-screens'
+                        color='success'
+                        onClick={()=>{this.props.hideMyGroups()}}>
+                        Back
+                    </Button>
+                </div>
             </div>
         );
     }

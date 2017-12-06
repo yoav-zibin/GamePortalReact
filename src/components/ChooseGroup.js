@@ -12,7 +12,8 @@ export default class ChooseGroup extends Component {
             createGroup: false,
             groupName: 'Suicide Squad',
             tab: 'recently_connected',
-            deSelectAll: false
+            deSelectAll: false,
+            showMyGroups: false
         };
     }
 
@@ -49,11 +50,35 @@ export default class ChooseGroup extends Component {
         });
     }
 
+    showMyGroups(){
+        this.setState({
+            showMyGroups: true
+        });
+    }
+
+    hideMyGroups(){
+        this.setState({
+            showMyGroups: false
+        });
+    }
+
   render() {
+    let createGroupCssClasses = 'create-group-container ';
+    let recentlyConnectedCssClasses = 'recently-connected-container ';
+    let myGroupsCssClasses = 'my-groups-container ';
+    if(this.state.createGroup || this.state.showMyGroups){
+        createGroupCssClasses += 'hide-component-for-small-screens';
+    }
+    if(!this.state.createGroup){
+        recentlyConnectedCssClasses += 'hide-component-for-small-screens';
+    }
+    if(!this.state.showMyGroups){
+        myGroupsCssClasses += 'hide-component-for-small-screens';
+    }
 
     return (
     <div className='choose-group-container'>
-        <div className="recently-connected-container">
+        <div className={recentlyConnectedCssClasses}>
             <Tabs
                 value={this.state.tab}
                 onChange={this.handleTabChange.bind(this)}>
@@ -77,16 +102,17 @@ export default class ChooseGroup extends Component {
                     </Tab>
             </Tabs>
         </div>
-        <div className="create-group-container">
+        <div className={createGroupCssClasses}>
             <CreateGroup
                 createGroup={this.state.createGroup}
                 create={this.createGroup.bind(this)}
+                showMyGroups={this.showMyGroups.bind(this)}
                 cancelCreateGroup={this.cancelCreateGroup.bind(this)}
                 groupName={this.state.groupName}
                 updateGroupName={this.updateGroupName.bind(this)}/>
         </div>
-        <div className="my-groups-container">
-            <MyGroups />
+        <div className={myGroupsCssClasses}>
+            <MyGroups hideMyGroups={this.hideMyGroups.bind(this)} />
         </div>
     </div>
     );
