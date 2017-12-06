@@ -18,6 +18,7 @@ export default class Board extends Component {
           tooltipPosition: null,
           showCardOptions: false
       };
+      this.maxZIndex = 0;
   }
 
   componentWillMount(){
@@ -44,6 +45,7 @@ export default class Board extends Component {
   componentDidMount(){
       this.preserveSavedState(this.props.matchRef);
       this.addPieceUpdateListener(this.props.matchRef);
+      this.updateCardVisibility(this.props);
   }
 
   componentWillUnmount(){
@@ -63,6 +65,7 @@ export default class Board extends Component {
       if(nextProps.pieces !== this.props.pieces){
           this.createNewPieceCanvases = true;
           this.pieceIndices = new Array(nextProps.pieces.length).fill(0);
+          this.updateCardVisibility(nextProps);
       }
       if(nextProps.matchRef !== this.props.matchRef){
           this.removePieceUpdateListener(this.props.matchRef);
@@ -76,6 +79,7 @@ export default class Board extends Component {
           if(snapshot.exists()){
               let val = snapshot.val();
               let index = snapshot.key;
+              let zDepth = val.currentState.zDepth;
               let position = {
                   x:val.currentState.x/100*thiz.width,
                   y:val.currentState.y/100*thiz.height
@@ -95,6 +99,7 @@ export default class Board extends Component {
                   thiz.updateImage(index, imageIndex);
               }
               thiz.updatePosition(index, position.x, position.y);
+              thiz.updateZIndex(index, zDepth);
           }
       });
   }
@@ -109,6 +114,7 @@ export default class Board extends Component {
                       x:pieceState.currentState.x/100*thiz.width,
                       y:pieceState.currentState.y/100*thiz.height
                   };
+                  let zDepth = pieceState.currentState.zDepth;
                   let imageIndex = pieceState.currentState.currentImageIndex;
                   thiz.updatePosition(index, position.x, position.y);
                   if(thiz.props.pieces[index].kind === 'card'){
@@ -121,6 +127,7 @@ export default class Board extends Component {
                   } else{
                       thiz.updateImage(index, imageIndex);
                   }
+                  thiz.updateZIndex(index, zDepth);
               });
           }
       });
@@ -154,13 +161,28 @@ export default class Board extends Component {
     }
   }
 
+  handleDragStart(index){
+      let canvasRef = 'canvasImage'+index;
+      this.refs[canvasRef].refs.image.moveToTop();
+      this.refs.piecesCanvasesLayer.draw();
+  }
+
   handleDragEnd(index){
-      let position = this.refs['canvasImage'+index].refs.image.getAbsolutePosition();
+      let canvasRef = 'canvasImage'+index;
+      let position = this.refs[canvasRef].refs.image.getAbsolutePosition();
+      let cardVisibility = null;
+      if(this.cardVisibility[index]){
+          cardVisibility ={};
+          Object.keys(this.cardVisibility[index]).forEach((participantIndex)=>{
+              cardVisibility[participantIndex] = true;
+          });
+      }
       let value = {
           currentImageIndex: this.pieceIndices[index],
           x: position.x/this.width*100,
           y: position.y/this.height*100,
-          zDepth: 1
+          zDepth: ++this.maxZIndex,
+          cardVisibility: cardVisibility
       };
       value = {currentState: value};
       let pieceRef = this.props.matchRef.child('pieces').child(index);
@@ -179,7 +201,7 @@ export default class Board extends Component {
               currentImageIndex:thiz.pieceIndices[index],
               x: position.x/thiz.width*100,
               y: position.y/thiz.height*100,
-              zDepth: 1
+              zDepth: ++thiz.maxZIndex
           };
           value = {currentState: value};
           let pieceRef = thiz.props.matchRef.child('pieces').child(index);
@@ -223,7 +245,7 @@ export default class Board extends Component {
               currentImageIndex:newPieceImageIndex,
               x: position.x/thiz.width*100,
               y: position.y/thiz.height*100,
-              zDepth: 1
+              zDepth: ++thiz.maxZIndex
           };
           value = {currentState: value};
           let pieceRef = thiz.props.matchRef.child('pieces').child(index);
@@ -287,14 +309,24 @@ export default class Board extends Component {
       visibilityRef.set(null);
   }
 
-  updateCardVisibility(){
+  updateCardVisibility(props){
       let thiz = this;
       thiz.cardVisibility = {};
-      this.props.pieces.forEach((piece, index)=>{
+      props.pieces.forEach((piece, index)=>{
           if(piece.kind === 'card'){
               thiz.cardVisibility[index] = piece.cardVisibility ? piece.cardVisibility : null;
           }
       });
+  }
+
+  updateZIndex(index, zIndex){
+      if(!zIndex){
+          zIndex = -1;
+      }
+      this.maxZIndex = Math.max(zIndex, this.maxZIndex);
+      let canvasRef = 'canvasImage'+index;
+      this.refs[canvasRef].refs.image.moveToTop();
+      this.refs.piecesCanvasesLayer.draw();
   }
 
   render() {
@@ -307,10 +339,11 @@ export default class Board extends Component {
     }
     if(this.createNewPieceCanvases){
         this.createNewPieceCanvases = false;
+        this.maxZIndex = 0;
         this.canvasPiecesUpdated = this.canvasPiecesUpdated === null ? false : true;
-        this.updateCardVisibility();
         this.piecesCanvases = this.props.pieces.map(
             (piece, index) => {
+                this.maxZIndex = Math.max(this.maxZIndex, piece.zDepth);
                 if(piece.kind === 'cardsDeck' || piece.kind === 'piecesDeck'){
                     // Return nothing and making deck invisible because no need to display deck
                     return null;
@@ -358,6 +391,7 @@ export default class Board extends Component {
                         x={piece.x*self.width/100}
                         y={piece.y*self.height/100}
                         src={piece.pieceImages[self.pieceIndices[index]]}
+                        onDragStart={() => {self.handleDragStart(index)}}
                         onDragEnd={() => self.handleDragEnd(index)}/>
                     );
                 }
