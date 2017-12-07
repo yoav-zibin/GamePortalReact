@@ -170,7 +170,8 @@ export default class Board extends Component {
 
   handleDragStart(index){
       let canvasRef = 'canvasImage'+index;
-      this.refs[canvasRef].refs.image.setZIndex(++this.maxZIndex);
+      this.refs[canvasRef].refs.image.moveToTop();
+      this.maxZIndex = this.refs[canvasRef].refs.image.getZIndex();
       this.refs.piecesCanvasesLayer.draw();
   }
 
