@@ -50,12 +50,14 @@ export default class PlayArena extends Component {
               zDepth: piece_info.initialState.zDepth,
               cardVisibility: piece_info.initialState.cardVisibility ? piece_info.initialState.cardVisibility : {},
               deckPieceIndex: piece_info.deckPieceIndex,
+              rotatableDegrees: 360,
           };
           elemRef.once('value').then(function(snapshot) {
               piece.draggable = snapshot.val().isDraggable;
               piece.kind = snapshot.val().elementKind;
               piece.height = snapshot.val().height;
               piece.width = snapshot.val().width;
+              piece.rotatableDegrees = snapshot.val().rotatableDegrees;
               piece.pieceImages = [];
               let images = snapshot.val().images;
               let numImages = images.length;
