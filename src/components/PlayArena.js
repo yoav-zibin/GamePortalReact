@@ -67,12 +67,15 @@ export default class PlayArena extends Component {
                       let pieceImage = snapshot.val().downloadURL;
                       piece.pieceImages.push(pieceImage);
                       if(piece.pieceImages.length === numImages){
-                          self.allPieces.push(piece);
+                          //self.allPieces.push(piece);
+                          self.allPieces[i] = piece;
                           if(self.allPieces.length === numPieces){
                               self.setState({
                                   pieces:self.allPieces
                               });
                           }
+                      } else {
+                        self.allPieces[i] = piece;
                       }
                   });
               });
