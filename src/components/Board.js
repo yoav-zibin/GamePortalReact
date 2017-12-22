@@ -209,6 +209,7 @@ export default class Board extends Component {
           x: position.x/this.width*100,
           y: position.y/this.height*100,
           zDepth: ++this.maxZIndex,
+          rotationDegrees: this.pieceRotation[index],
           cardVisibility: cardVisibility
       };
       value = {currentState: value};
