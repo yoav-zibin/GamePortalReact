@@ -104,16 +104,16 @@ export default class Chat extends Component {
         timeStamp = new Date(timeStamp);
         let secondsPast = (now.getTime() - timeStamp.getTime()) / 1000;
         if(secondsPast < 60){
-          return parseInt(secondsPast) + 's';
+          return parseInt(secondsPast, 10) + 's';
         }
         if(secondsPast < 3600){
-          return parseInt(secondsPast/60) + 'm';
+          return parseInt(secondsPast/60, 10) + 'm';
         }
         if(secondsPast <= 86400){
-          return parseInt(secondsPast/3600) + 'h';
+          return parseInt(secondsPast/3600, 10) + 'h';
         }
         if(secondsPast <= 604800){
-          return parseInt(secondsPast/86400) + 'd';
+          return parseInt(secondsPast/86400, 10) + 'd';
         }
         // if(secondsPast <= 18144000){
         //   return parseInt(secondsPast/604800) + 'w';
@@ -237,7 +237,7 @@ export default class Chat extends Component {
                 <div className='group-title-container'>
 
                     <span className='chat-inner-container-title' onClick={this.deleteMember.bind(this)}>{this.state.groupName} {this.state.nOfMembers}</span>
-                    <button onClick={this.videoCall.bind(this)}><span style={{color:'#fff'}}>&#128222;</span></button>
+                    <button onClick={this.videoCall.bind(this)}><span role='img' aria-label='phone' style={{color:'#fff'}}>&#128222;</span></button>
                     <button onClick={this.addMember.bind(this)}>+</button>
                  </div>
                 <div className='chat-list-container'>

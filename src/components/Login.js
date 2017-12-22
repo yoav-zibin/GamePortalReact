@@ -46,7 +46,7 @@ export default class Login extends Component {
     // console.log('signin with google');
     auth.signInWithPopup(googleProvider).then(function (result) {
     //   this.setState({redirectToReferrer: true});
-    }.bind(this)).catch(function(error){
+    }).catch(function(error){
         // let errorCode = error.code;
         toast.error(error.message, {position:toast.POSITION.TOP_CENTER});
     });
@@ -91,7 +91,7 @@ export default class Login extends Component {
           }).catch((error)=>{
               console.log(error);
           });
-      }.bind(this)).catch(function(error){
+      }).catch(function(error){
         //   let errorCode = error.code;
           toast.error(error.message, {position:toast.POSITION.TOP_CENTER});
       });
@@ -100,7 +100,7 @@ export default class Login extends Component {
   loginWithTwitter(){
       auth.signInWithPopup(twitterProvider).then(function (result) {
       //   this.setState({redirectToReferrer: true});
-      }.bind(this)).catch(function(error){
+      }).catch(function(error){
         //   let errorCode = error.code;
           toast.error(error.message, {position:toast.POSITION.TOP_CENTER});
       });
@@ -109,7 +109,7 @@ export default class Login extends Component {
   loginWithGithub(){
       auth.signInWithPopup(githubProvider).then(function (result) {
       //   this.setState({redirectToReferrer: true});
-      }.bind(this)).catch(function(error){
+      }).catch(function(error){
         //   let errorCode = error.code;
           toast.error(error.message,{position:toast.POSITION.TOP_CENTER});
       });

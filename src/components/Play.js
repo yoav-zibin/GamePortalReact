@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import firebase from 'firebase';
 import './css/Play.css';
-import {auth, db} from '../firebase';
+import {db} from '../firebase';
 import PlayArena from './PlayArena';
 import GameSelector from './GameSelector';
 import Chat from './Chat';
