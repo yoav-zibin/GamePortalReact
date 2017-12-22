@@ -162,7 +162,7 @@ export default class Board extends Component {
   updateImage(index, imageIndex){
       let thiz = this;
       let canvasRef = 'canvasImage'+index;
-      if(thiz.pieceIndices[index] != imageIndex){
+      if(thiz.pieceIndices[index] !== imageIndex){
           thiz.pieceIndices[index] = imageIndex;
           let myImage = new Image();
           myImage.onload = function (){
