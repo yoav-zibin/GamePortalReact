@@ -79,13 +79,15 @@ export default class GameSelector extends React.Component {
               let specId = matches[match].gameSpecId;
               let specRef = db.ref(`gameBuilder/gameSpecs/${specId}`);
               specRef.once('value').then((snap)=>{
-                  list.push({
-                    matchId: match,
-                    value: snap.val(),
-                    label: snap.val().gameName,
-                    id: specId
-                  });
-                  self.setState({matchSpecs:list});
+                  if(snap.exists()){
+                      list.push({
+                          matchId: match,
+                          value: snap.val(),
+                          label: snap.val().gameName,
+                          id: specId
+                      });
+                      self.setState({matchSpecs:list});
+                  }
               });
           }
       })
