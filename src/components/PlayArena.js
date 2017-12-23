@@ -41,6 +41,7 @@ export default class PlayArena extends Component {
       this.allPieces = [];
       let self = this;
       let numPieces = pieces.length;
+      let piecesAdded = 0;
       for(let i in pieces){
           let piece_info = pieces[i];
           let elemRef = db.ref('gameBuilder/elements/'+piece_info.pieceElementId);
@@ -65,8 +66,9 @@ export default class PlayArena extends Component {
                       let pieceImage = snapshot.val().downloadURL;
                       piece.pieceImages.push(pieceImage);
                       if(piece.pieceImages.length === numImages){
-                          self.allPieces.push(piece);
-                          if(self.allPieces.length === numPieces){
+                          self.allPieces[i] = piece;
+                          piecesAdded++;
+                          if(piecesAdded === numPieces){
                               self.setState({
                                   pieces:self.allPieces
                               });
