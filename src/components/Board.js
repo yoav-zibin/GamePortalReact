@@ -32,7 +32,7 @@ export default class Board extends Component {
       this.groupParticipantsRef.on('value', (snap)=>{
           let participants = snap.val();
           thiz.numParticipants = Object.keys(participants).length;
-          thiz.selfParticipantIndex = participants[auth.currentUser.uid].participantIndex;
+          thiz.thizParticipantIndex = participants[auth.currentUser.uid].participantIndex;
           thiz.participantNames = {};
           Object.keys(participants).forEach((uid)=>{
               let userRef = db.ref(`users/${uid}/publicFields/displayName`);
@@ -94,7 +94,7 @@ export default class Board extends Component {
               }
               if(thiz.props.pieces[index].kind === 'card'){
                   thiz.cardVisibility[index] = val.currentState.cardVisibility;
-                  if(thiz.cardVisibility[index] && thiz.cardVisibility[index][thiz.selfParticipantIndex]){
+                  if(thiz.cardVisibility[index] && thiz.cardVisibility[index][thiz.thizParticipantIndex]){
                       thiz.updateImage(index, 1);
                   } else{
                       thiz.updateImage(index, 0);
@@ -126,7 +126,7 @@ export default class Board extends Component {
                   }
                   if(thiz.props.pieces[index].kind === 'card'){
                       thiz.cardVisibility[index] = pieceState.currentState.cardVisibility;
-                      if(thiz.cardVisibility[index] && thiz.cardVisibility[index][thiz.selfParticipantIndex]){
+                      if(thiz.cardVisibility[index] && thiz.cardVisibility[index][thiz.thizParticipantIndex]){
                           thiz.updateImage(index, 1);
                       } else{
                           thiz.updateImage(index, 0);
@@ -279,12 +279,12 @@ export default class Board extends Component {
       this.props.showTooltip(position, this.visibleTo);
   }
 
-  hideCardVisibility(canvasRef, piece){
+  hideCardVisibility(){
       this.props.hideTooltip();
   }
 
   handleCardClick(canvasRef, index, piece){
-      this.props.showCardOptions(index, this.selfParticipantIndex, this.participantNames, this.props.pieces[index].deckPieceIndex);
+      this.props.showCardOptions(index, this.thizParticipantIndex, this.participantNames, this.props.pieces[index].deckPieceIndex);
   }
 
   updateCardVisibility(props){
@@ -306,7 +306,7 @@ export default class Board extends Component {
   }
 
   render() {
-    let self = this;
+    let thiz = this;
     if (this.props.board){
         if(this.board !== this.props.board){
             this.board = this.props.board;
@@ -348,16 +348,27 @@ export default class Board extends Component {
                         }}
                         onMouseOut={()=>{
                             if(piece.kind === 'card'){
-                                this.hideCardVisibility('canvasImage'+index, piece);
+                                this.hideCardVisibility();
                             }
                         }}
-                        height={piece.height*self.height/self.board.height}
-                        width={piece.width*self.width/self.board.width}
-                        x={piece.x*self.width/100}
-                        y={piece.y*self.height/100}
-                        src={piece.pieceImages[self.pieceIndices[index]]}
-                        onDragStart={() => {self.handleDragStart(index)}}
-                        onDragEnd={() => self.handleDragEnd(index)}/>
+                        height={piece.height*thiz.height/thiz.board.height}
+                        width={piece.width*thiz.width/thiz.board.width}
+                        x={piece.x*thiz.width/100}
+                        y={piece.y*thiz.height/100}
+                        src={piece.pieceImages[thiz.pieceIndices[index]]}
+                        onDragStart={() => {
+                            if(piece.kind === 'card'){
+                                thiz.hideCardVisibility();
+                                thiz.props.hideCardOptions();
+                            }
+                            thiz.handleDragStart(index);
+                        }}
+                        onDragEnd={() => {
+                            if(piece.kind === 'card'){
+                                thiz.showCardVisibility(index);
+                            }
+                            thiz.handleDragEnd(index)
+                        }}/>
                     );
                 }
             }
