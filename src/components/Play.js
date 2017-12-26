@@ -117,6 +117,7 @@ export default class Play extends Component {
             matchRef={this.matchRef}
             groupId={this.state.groupId}/>);
     }
+    let chatComponentVisibility = 'hide-component';
 
     let sideBarComponent = null;
     if(this.state.addMember){
@@ -141,13 +142,21 @@ export default class Play extends Component {
             doneVideoCall={this.doneVideoCall.bind(this)}/>
         );
     } else{
-        sideBarComponent = (
-            <Chat groupId={this.state.groupId}
-            videoCall={this.videoCall.bind(this)}
-            addMember={this.addMember.bind(this)}
-            deleteMember={this.deleteMember.bind(this)}/>
-        );
+        //passing no class name which will diplay the component again on screen
+        chatComponentVisibility = '';
     }
+
+    // There is a reason for defining chatComonent outside
+    // and defining other sideBarComponents in ifElse above.
+    // We don't want to call constructor of chatComponent again and again.
+    // Because then it will load entire chat again from firebase.
+    let chatComonent = (
+        <Chat groupId={this.state.groupId}
+        videoCall={this.videoCall.bind(this)}
+        addMember={this.addMember.bind(this)}
+        componentVisibility={chatComponentVisibility}
+        deleteMember={this.deleteMember.bind(this)}/>
+    );
 
     return (
     <div className="root-container">
@@ -162,6 +171,7 @@ export default class Play extends Component {
                 onChange={this.handleTabChange.bind(this)}>
                     <Tab label="Chat" value="chat">
                         {sideBarComponent}
+                        {chatComonent}
                     </Tab>
                     <Tab label="Games" value="games">
                         <GameSelector

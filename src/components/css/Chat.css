@@ -149,3 +149,7 @@
     float: right;
     color: #aaa;
 }
+
+.hide-component{
+    display: none;
+}
