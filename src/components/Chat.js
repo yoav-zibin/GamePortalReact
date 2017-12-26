@@ -232,8 +232,7 @@ export default class Chat extends Component {
             );
         });
         return(
-
-            <div className='chat-inner-container'>
+            <div className={'chat-inner-container '+ this.props.componentVisibility}>
                 <div className='group-title-container'>
 
                     <span className='chat-inner-container-title' onClick={this.deleteMember.bind(this)}>{this.state.groupName} {this.state.nOfMembers}</span>

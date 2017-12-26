@@ -28,6 +28,7 @@ export default class Board extends Component {
       this.updatePiecesListener = false;
       this.canvasPiecesUpdated = null;
       this.pieceIndices = new Array(this.props.pieces.length).fill(0);
+      this.pieceRotation = new Array(this.props.pieces.length).fill(0);
       this.groupParticipantsRef = db.ref(`gamePortal/groups/${this.props.groupId}/participants`);
       this.groupParticipantsRef.on('value', (snap)=>{
           let participants = snap.val();
@@ -66,6 +67,7 @@ export default class Board extends Component {
       if(nextProps.pieces !== this.props.pieces){
           this.createNewPieceCanvases = true;
           this.pieceIndices = new Array(nextProps.pieces.length).fill(0);
+          this.pieceRotation = new Array(this.props.pieces.length).fill(0);
           this.updateCardVisibility(nextProps);
       }
       if(nextProps.matchRef !== this.props.matchRef){
@@ -102,6 +104,11 @@ export default class Board extends Component {
               } else{
                   thiz.updateImage(index, imageIndex);
               }
+              if(thiz.props.pieces[index].kind === 'standard') {
+                  thiz.pieceRotation[index] = val.currentState.rotationDegrees ? val.currentState.rotationDegrees : 0;
+                  let degree = thiz.pieceRotation[index];
+                  thiz.updateRotation(index, degree);
+              }
               thiz.updatePosition(index, position.x, position.y);
               thiz.updateZIndex(index, zDepth);
           }
@@ -134,10 +141,22 @@ export default class Board extends Component {
                   } else{
                       thiz.updateImage(index, imageIndex);
                   }
+                  if(thiz.props.pieces[index].kind === 'standard') {
+                    thiz.pieceRotation[index] = pieceState.currentState.rotationDegrees ? pieceState.currentState.rotationDegrees : 0;
+                    let degree = thiz.pieceRotation[index];
+                    thiz.updateRotation(index, degree);
+                  }
                   thiz.updateZIndex(index, zDepth);
               });
           }
       });
+  }
+
+  updateRotation(index, degree) {
+    let thiz = this;
+    let canvasRef = 'canvasImage'+index;
+    thiz.refs[canvasRef].refs.image.rotation(degree);
+    thiz.refs.piecesCanvasesLayer.draw();
   }
 
   updateImage(index, imageIndex){
@@ -190,11 +209,32 @@ export default class Board extends Component {
           x: position.x/this.width*100,
           y: position.y/this.height*100,
           zDepth: ++this.maxZIndex,
+          rotationDegrees:this.pieceRotation[index] ? this.pieceRotation[index] : 0,
           cardVisibility: cardVisibility
       };
       value = {currentState: value};
       let pieceRef = this.props.matchRef.child('pieces').child(index);
       pieceRef.set(value);
+  }
+
+  rotatePiece(canvasRef, index, piece){
+    let thiz = this;
+    let position = thiz.refs['canvasImage'+index].refs.image.getAbsolutePosition();
+    let degree = (piece.rotatableDegrees + thiz.pieceRotation[index]) % 360;
+    thiz.pieceRotation[index] = degree;
+    thiz.refs[canvasRef].refs.image.rotation(degree);
+    thiz.refs.piecesCanvasesLayer.draw();
+    let value = {
+      currentImageIndex:thiz.pieceIndices[index],
+      x: position.x/thiz.width*100,
+      y: position.y/thiz.height*100,
+      rotationDegrees:degree,
+      zDepth: ++thiz.maxZIndex
+    };
+    value = {currentState: value};
+    let pieceRef = thiz.props.matchRef.child('pieces').child(index);
+    pieceRef.set(value);
+
   }
 
   togglePiece(canvasRef, index, piece){
@@ -279,7 +319,7 @@ export default class Board extends Component {
       this.props.showTooltip(position, this.visibleTo);
   }
 
-  hideCardVisibility(canvasRef, piece){
+  hideCardVisibility(){
       this.props.hideTooltip();
   }
 
@@ -306,7 +346,7 @@ export default class Board extends Component {
   }
 
   render() {
-    let self = this;
+    let thiz = this;
     if (this.props.board){
         if(this.board !== this.props.board){
             this.board = this.props.board;
@@ -331,7 +371,7 @@ export default class Board extends Component {
                         draggable={piece.draggable || piece.kind === 'standard'}
                         onClick={()=>{
                             if(piece.kind === 'standard'){
-                                //do nothing, just make it draggable
+                                this.rotatePiece('canvasImage'+index, index, piece);
                             } else if(piece.kind === 'toggable'){
                                 this.togglePiece('canvasImage'+index, index, piece);
                             } else if(piece.kind === 'dice'){
@@ -348,16 +388,27 @@ export default class Board extends Component {
                         }}
                         onMouseOut={()=>{
                             if(piece.kind === 'card'){
-                                this.hideCardVisibility('canvasImage'+index, piece);
+                                this.hideCardVisibility();
                             }
                         }}
-                        height={piece.height*self.height/self.board.height}
-                        width={piece.width*self.width/self.board.width}
-                        x={piece.x*self.width/100}
-                        y={piece.y*self.height/100}
-                        src={piece.pieceImages[self.pieceIndices[index]]}
-                        onDragStart={() => {self.handleDragStart(index)}}
-                        onDragEnd={() => self.handleDragEnd(index)}/>
+                        height={piece.height*thiz.height/thiz.board.height}
+                        width={piece.width*thiz.width/thiz.board.width}
+                        x={piece.x*thiz.width/100}
+                        y={piece.y*thiz.height/100}
+                        src={piece.pieceImages[thiz.pieceIndices[index]]}
+                        onDragStart={() => {
+                            if(piece.kind === 'card'){
+                                thiz.hideCardVisibility();
+                                thiz.props.hideCardOptions();
+                            }
+                            thiz.handleDragStart(index);
+                        }}
+                        onDragEnd={() => {
+                            if(piece.kind === 'card'){
+                                thiz.showCardVisibility(index);
+                            }
+                            thiz.handleDragEnd(index)
+                        }}/>
                     );
                 }
             }

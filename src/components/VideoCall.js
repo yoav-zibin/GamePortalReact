@@ -20,10 +20,15 @@ export default class VideoCall extends Component {
         this.listenToMessages();
     }
 
+    componentWillUnmount(){
+        this.groupRef.off();
+        this.videoSignalRef.off();
+    }
+
     initGroupMembers(groupId){
-        let self = this;
-        let groupRef = db.ref(`gamePortal/groups/${groupId}/participants`);
-        groupRef.on('value', (snap)=>{
+        let thiz = this;
+        thiz.groupRef = db.ref(`gamePortal/groups/${groupId}/participants`);
+        thiz.groupRef.on('value', (snap)=>{
             let content = {};
             Object.keys(snap.val()).forEach((uid)=>{
                 if(auth.currentUser.uid === uid){
@@ -33,7 +38,7 @@ export default class VideoCall extends Component {
                 userRef.once('value').then((snap)=>{
                     if(snap.exists){
                         content[snap.val()] = uid;
-                        self.setState({
+                        thiz.setState({
                             groupMembers: content
                         });
                     }
@@ -53,7 +58,7 @@ export default class VideoCall extends Component {
     }
 
     start(isCaller){
-        let self = this;
+        let thiz = this;
         console.log('calling Started');
         const configuration = {
             'iceServers': [{
@@ -64,25 +69,25 @@ export default class VideoCall extends Component {
             offerToReceiveAudio: 1,
             offerToReceiveVideo: 1
         };
-        self.pc = new RTCPeerConnection(configuration);
+        thiz.pc = new RTCPeerConnection(configuration);
 
         // send any ice candidates to the other peer
-        self.pc.onicecandidate = function (evt) {
+        thiz.pc.onicecandidate = function (evt) {
             // console.log("onicecandidate: ", evt);
             if (evt.candidate) {
-                self.sendMessage("candidate", evt.candidate);
+                thiz.sendMessage("candidate", evt.candidate);
             }
         };
 
         // once remote stream arrives, show it in the remote video element
-        self.pc.onaddstream = function (evt) {
+        thiz.pc.onaddstream = function (evt) {
             // console.log("onaddstream: ", evt);
-            self.setVideoStream(false, evt.stream);
+            thiz.setVideoStream(false, evt.stream);
         };
 
-        self.pc.oniceconnectionstatechange = function(event) {
-            if(self.pc && self.pc.iceConnectionState === "disconnected"){
-                self.endVideoCall();
+        thiz.pc.oniceconnectionstatechange = function(event) {
+            if(thiz.pc && thiz.pc.iceConnectionState === "disconnected"){
+                thiz.endVideoCall();
             }
         }
 
@@ -91,17 +96,17 @@ export default class VideoCall extends Component {
         navigator.mediaDevices.getUserMedia({ "audio": true, "video": true })
         .then(function (stream) {
                 // console.log("getUserMedia response: ", stream);
-                self.setVideoStream(true, stream);
-                self.pc.addStream(stream);
+                thiz.setVideoStream(true, stream);
+                thiz.pc.addStream(stream);
 
                 if (isCaller) {
-                    self.pc.createOffer(offerOptions).then(
-                        self.gotDescription.bind(self),
+                    thiz.pc.createOffer(offerOptions).then(
+                        thiz.gotDescription.bind(thiz),
                         (err: any) => { console.error("Error in createOffer: ", err); }
                     );
                 } else {
-                    self.pc.createAnswer().then(
-                        self.gotDescription.bind(self),
+                    thiz.pc.createAnswer().then(
+                        thiz.gotDescription.bind(thiz),
                         (err: any) => { console.error("Error in createAnswer: ", err); }
                     );
                 }
@@ -155,15 +160,16 @@ export default class VideoCall extends Component {
     }
 
     gotDescription(desc) {
-        // console.log("gotDescription.bind(self): ", desc);
+        // console.log("gotDescription.bind(thiz): ", desc);
         this.pc.setLocalDescription(desc);
         this.sendMessage("sdp", desc);
     }
 
     listenToMessages() {
-        let self = this;
+        let thiz = this;
         let path = `users/${auth.currentUser.uid}/privateButAddable/signal`;
-        db.ref(path).on('value',(snap) => {
+        thiz.videoSignalRef = db.ref(path);
+        thiz.videoSignalRef.on('value',(snap) => {
             let signals = snap.val();
             // console.log("Got signals=", signals);
             if (!signals) return;
@@ -173,18 +179,19 @@ export default class VideoCall extends Component {
             let updates = {};
             for (let signalId of signalIds) {
               updates[signalId] = null;
-              self.receivedMessage(signals[signalId]);
+              thiz.receivedMessage(signals[signalId]);
             }
             db.ref(path).update(updates);
         });
     }
 
     receivedMessage(signalMsg) {
+        console.log('receivedMessage', this.pc);
         const CALL_RECEIVE_WINDOW = 15 * 1000;
         // console.log("receivedMessage signalMsg=", signalMsg);
         const now = new Date().getTime();
         if (now - CALL_RECEIVE_WINDOW > signalMsg.timestamp) {
-          console.warn("Ignoring signal because it's more than a minute old");
+          console.warn("Ignoring signal because it's more than 15 seconds old");
           return;
         }
         if (!this.pc) {
@@ -238,6 +245,7 @@ export default class VideoCall extends Component {
     }
 
     render(){
+        console.log(this.state.localStream, this.state.remoteStream);
         let myComponent = this.state.localStream && this.state.remoteStream ?
             (
                 <div>
