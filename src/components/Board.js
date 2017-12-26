@@ -28,11 +28,12 @@ export default class Board extends Component {
       this.updatePiecesListener = false;
       this.canvasPiecesUpdated = null;
       this.pieceIndices = new Array(this.props.pieces.length).fill(0);
+      this.pieceRotation = new Array(this.props.pieces.length).fill(0);
       this.groupParticipantsRef = db.ref(`gamePortal/groups/${this.props.groupId}/participants`);
       this.groupParticipantsRef.on('value', (snap)=>{
           let participants = snap.val();
           thiz.numParticipants = Object.keys(participants).length;
-          thiz.thizParticipantIndex = participants[auth.currentUser.uid].participantIndex;
+          thiz.selfParticipantIndex = participants[auth.currentUser.uid].participantIndex;
           thiz.participantNames = {};
           Object.keys(participants).forEach((uid)=>{
               let userRef = db.ref(`users/${uid}/publicFields/displayName`);
@@ -66,6 +67,7 @@ export default class Board extends Component {
       if(nextProps.pieces !== this.props.pieces){
           this.createNewPieceCanvases = true;
           this.pieceIndices = new Array(nextProps.pieces.length).fill(0);
+          this.pieceRotation = new Array(this.props.pieces.length).fill(0);
           this.updateCardVisibility(nextProps);
       }
       if(nextProps.matchRef !== this.props.matchRef){
@@ -94,13 +96,18 @@ export default class Board extends Component {
               }
               if(thiz.props.pieces[index].kind === 'card'){
                   thiz.cardVisibility[index] = val.currentState.cardVisibility;
-                  if(thiz.cardVisibility[index] && thiz.cardVisibility[index][thiz.thizParticipantIndex]){
+                  if(thiz.cardVisibility[index] && thiz.cardVisibility[index][thiz.selfParticipantIndex]){
                       thiz.updateImage(index, 1);
                   } else{
                       thiz.updateImage(index, 0);
                   }
               } else{
                   thiz.updateImage(index, imageIndex);
+              }
+              if(thiz.props.pieces[index].kind === 'standard') {
+                  thiz.pieceRotation[index] = val.currentState.rotationDegrees ? val.currentState.rotationDegrees : 0;
+                  let degree = thiz.pieceRotation[index];
+                  thiz.updateRotation(index, degree);
               }
               thiz.updatePosition(index, position.x, position.y);
               thiz.updateZIndex(index, zDepth);
@@ -126,7 +133,7 @@ export default class Board extends Component {
                   }
                   if(thiz.props.pieces[index].kind === 'card'){
                       thiz.cardVisibility[index] = pieceState.currentState.cardVisibility;
-                      if(thiz.cardVisibility[index] && thiz.cardVisibility[index][thiz.thizParticipantIndex]){
+                      if(thiz.cardVisibility[index] && thiz.cardVisibility[index][thiz.selfParticipantIndex]){
                           thiz.updateImage(index, 1);
                       } else{
                           thiz.updateImage(index, 0);
@@ -134,10 +141,22 @@ export default class Board extends Component {
                   } else{
                       thiz.updateImage(index, imageIndex);
                   }
+                  if(thiz.props.pieces[index].kind === 'standard') {
+                    thiz.pieceRotation[index] = pieceState.currentState.rotationDegrees ? pieceState.currentState.rotationDegrees : 0;
+                    let degree = thiz.pieceRotation[index];
+                    thiz.updateRotation(index, degree);
+                  }
                   thiz.updateZIndex(index, zDepth);
               });
           }
       });
+  }
+
+  updateRotation(index, degree) {
+    let thiz = this;
+    let canvasRef = 'canvasImage'+index;
+    thiz.refs[canvasRef].refs.image.rotation(degree);
+    thiz.refs.piecesCanvasesLayer.draw();
   }
 
   updateImage(index, imageIndex){
@@ -190,11 +209,32 @@ export default class Board extends Component {
           x: position.x/this.width*100,
           y: position.y/this.height*100,
           zDepth: ++this.maxZIndex,
+          rotationDegrees:this.pieceRotation[index] ? this.pieceRotation[index] : 0,
           cardVisibility: cardVisibility
       };
       value = {currentState: value};
       let pieceRef = this.props.matchRef.child('pieces').child(index);
       pieceRef.set(value);
+  }
+
+  rotatePiece(canvasRef, index, piece){
+    let thiz = this;
+    let position = thiz.refs['canvasImage'+index].refs.image.getAbsolutePosition();
+    let degree = (piece.rotatableDegrees + thiz.pieceRotation[index]) % 360;
+    thiz.pieceRotation[index] = degree;
+    thiz.refs[canvasRef].refs.image.rotation(degree);
+    thiz.refs.piecesCanvasesLayer.draw();
+    let value = {
+      currentImageIndex:thiz.pieceIndices[index],
+      x: position.x/thiz.width*100,
+      y: position.y/thiz.height*100,
+      rotationDegrees:degree,
+      zDepth: ++thiz.maxZIndex
+    };
+    value = {currentState: value};
+    let pieceRef = thiz.props.matchRef.child('pieces').child(index);
+    pieceRef.set(value);
+
   }
 
   togglePiece(canvasRef, index, piece){
@@ -284,7 +324,7 @@ export default class Board extends Component {
   }
 
   handleCardClick(canvasRef, index, piece){
-      this.props.showCardOptions(index, this.thizParticipantIndex, this.participantNames, this.props.pieces[index].deckPieceIndex);
+      this.props.showCardOptions(index, this.selfParticipantIndex, this.participantNames, this.props.pieces[index].deckPieceIndex);
   }
 
   updateCardVisibility(props){
@@ -331,7 +371,7 @@ export default class Board extends Component {
                         draggable={piece.draggable || piece.kind === 'standard'}
                         onClick={()=>{
                             if(piece.kind === 'standard'){
-                                //do nothing, just make it draggable
+                                this.rotatePiece('canvasImage'+index, index, piece);
                             } else if(piece.kind === 'toggable'){
                                 this.togglePiece('canvasImage'+index, index, piece);
                             } else if(piece.kind === 'dice'){
