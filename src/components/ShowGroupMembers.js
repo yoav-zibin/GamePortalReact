@@ -163,7 +163,7 @@ export default class ShowGroupMembers extends Component {
         });
     return (
         <div className="delete-member-container">
-        <returnButton value="Back" tag={Link} to="/" onClick={this.backToPrev.bind(this)}> &#8249; </returnButton>
+        <returnButton value="Back" to="/" onClick={this.backToPrev.bind(this)}> &#8249; </returnButton>
             <ul className='recently-connected-list-container'>
                  {content}
             </ul>
