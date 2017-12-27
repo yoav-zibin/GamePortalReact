@@ -16,10 +16,14 @@ export default class MyGroups extends React.Component {
         this.toggle = this.toggle.bind(this);
     }
 
+    componentWillUnmount(){
+        this.groupsRef.off();
+    }
+
     componentWillMount(){
-        let groupsRef = db.ref('users/'+auth.currentUser.uid+'/privateButAddable/groups');
-        let self = this;
-        groupsRef.on('value', function(snapshot){
+        this.groupsRef = db.ref('users/'+auth.currentUser.uid+'/privateButAddable/groups');
+        let thiz = this;
+        thiz.groupsRef.on('value', function(snapshot){
             if(snapshot.exists()){
                 let myGroupList = [];
                 Object.keys(snapshot.val()).forEach((groupId)=>{
@@ -43,14 +47,14 @@ export default class MyGroups extends React.Component {
                                     if(participants.length === numParticipants){
                                         groupVal.participants = participants;
                                         myGroupList.push(groupVal);
-                                        self.setState({
+                                        thiz.setState({
                                             content: myGroupList
                                         });
                                     }
-                                }).catch(self.handleFirebaseException);
+                                }).catch(thiz.handleFirebaseException);
                             });
                         }
-                    }).catch(self.handleFirebaseException);
+                    }).catch(thiz.handleFirebaseException);
                 });
             }
         });
