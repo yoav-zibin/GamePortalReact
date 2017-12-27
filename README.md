@@ -33,6 +33,6 @@ firebase.messaging().setBackgroundMessageHandler(function(payload) {
 3. The pull request to master branch should always be peer reviewed.
 
 ### Contributors:
-- [Simranjyot Singh Gill](github.com/surgical)
+- [Simranjyot Singh Gill](https://github.com/surgicaI)
 - [Xintong Wang](https://github.com/xintong621)
 - [Yara Qian](https://github.com/yaraqian)
