@@ -47,13 +47,13 @@ export default class RecentlyConnected extends React.Component {
     // Do not modify if don't completely understand
     componentWillMount(){
         let self = this;
-        let userReference = this.props.path === 'recentlyConnected' ?
+        this.userReference = this.props.path === 'recentlyConnected' ?
                             db.ref('gamePortal/recentlyConnected') :
                             db.ref('users/'+auth.currentUser.uid+'/privateFields/friends');
         let updateUsers = (users) =>{
             this.setState({content : users});
         }
-        userReference.on('value', function(snapshot) {
+        this.userReference.on('value', function(snapshot) {
             self.isConnectedRefs.forEach((ref)=>{
                 ref.off();
             });
@@ -110,6 +110,13 @@ export default class RecentlyConnected extends React.Component {
                     }
                 }).catch(self.handleFirebaseException);
               }
+        });
+    }
+
+    componentWillUnmount(){
+        this.userReference.off();
+        this.isConnectedRefs.forEach((ref)=>{
+            ref.off();
         });
     }
 
