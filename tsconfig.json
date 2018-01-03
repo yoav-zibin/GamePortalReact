@@ -1,0 +1,13 @@
+{
+    "compilerOptions": {
+        "outDir": "./src",
+        "rootDir": "./src-tsc",
+        "allowJs": true,
+        "target": "es6",
+        "noImplicitAny": true,
+        "suppressImplicitAnyIndexErrors": false
+    },
+    "include": [
+        "./src-tsc"
+    ]
+}

@@ -102,16 +102,16 @@ export default class VideoCall extends Component {
                 if (isCaller) {
                     thiz.pc.createOffer(offerOptions).then(
                         thiz.gotDescription.bind(thiz),
-                        (err: any) => { console.error("Error in createOffer: ", err); }
+                        (err) => { console.error("Error in createOffer: ", err); }
                     );
                 } else {
                     thiz.pc.createAnswer().then(
                         thiz.gotDescription.bind(thiz),
-                        (err: any) => { console.error("Error in createAnswer: ", err); }
+                        (err) => { console.error("Error in createAnswer: ", err); }
                     );
                 }
 
-            }, (err: any) => { console.error("Error in getUserMedia: ", err); });
+            }, (err) => { console.error("Error in getUserMedia: ", err); });
     }
 
     sendMessage(signalType, signalData){
@@ -207,12 +207,12 @@ export default class VideoCall extends Component {
         if (signalType === "sdp") {
           this.pc.setRemoteDescription(new RTCSessionDescription(signalData)).then(
             () => { console.log("setRemoteDescription success"); },
-            (err: any) => { console.error("Error in setRemoteDescription: ", err); }
+            (err) => { console.error("Error in setRemoteDescription: ", err); }
           );
         } else if (signalType === "candidate")  {
           this.pc.addIceCandidate(new RTCIceCandidate(signalData)).then(
             () => { console.log("addIceCandidate success"); },
-            (err: any) => { console.error("Error in addIceCandidate: ", err); }
+            (err) => { console.error("Error in addIceCandidate: ", err); }
           );
         }
       }
